@@ -9,3 +9,10 @@ Public Repository for Data Science Cloud Solutions HS20
 ## Instructions for collaboration
 1. cd into the location where you want the folder to be
 2. git clone https://github.com/matthiasrossini/foody 
+3. Test pushing and pulling:
+	- git pull
+	- #add a new file e.g. touch test.txt
+	- #attempt to push new file
+	- git add . 
+	- git commit -m "name's first commit"
+	- git push 
