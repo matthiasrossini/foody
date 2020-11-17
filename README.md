@@ -8,7 +8,6 @@ Public Repository for Data Science Cloud Solutions HS20
 
 ## Instructions for collaboration
 1. cd into the location where you want the folder to be and clone project
-	- cd <desired location>
 	- git clone https://github.com/matthiasrossini/foody 
 2. Test pushing and pulling:
 	- git pull
