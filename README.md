@@ -2,7 +2,7 @@
 Public Repository for Data Science Cloud Solutions HS20 
 
 ## Content
-1. [Google.com](www.google.com)
+1. [Youtube Tutorial for Github](https://www.youtube.com/watch?v=SWYqp7iY_Tc)
 2. list
 3. list 
 
