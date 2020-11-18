@@ -8,6 +8,7 @@ Public Repository for Data Science Cloud Solutions HS20
 4. Usage
 5. Resources & Links
 
+<br>
 
 # 1 - Project Description
 Welcome to Foody 🎉 
@@ -23,6 +24,7 @@ Foody is a beginner project built using the following stack:
 Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
 - To do: Add Project Screenshot
 
+<br>
 
 # 2 - Installation & Setup
 This section will describe the steps to install the foody application for a non-python user. (tbd in version 3+)
@@ -64,7 +66,6 @@ Make sure requirements are installed:
 ```bash
 pip list
 ```
-
 <br>
 
 # 3 - Instructions for collaboration
@@ -80,9 +81,11 @@ pip list
 
 3. Working with branches
 
+<br>
 
 # 4 - Usage
 
+<br>
 
 # 5 - Resources & Links
 1. [Youtube Tutorial for Github](https://www.youtube.com/watch?v=SWYqp7iY_Tc)
