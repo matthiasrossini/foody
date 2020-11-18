@@ -59,11 +59,17 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
+Make sure requirements are installed:
+
+```bash
+pip list
+```
+
 <br>
 
 # 3 - Instructions for collaboration
-1. cd into the location where you want the folder to be and clone project
-	- git clone https://github.com/matthiasrossini/foody 
+1. Installed the application as specified above
+
 2. Test pushing and pulling:
 	- git pull
 	- #add a new file e.g. touch test.txt
@@ -71,6 +77,8 @@ pip install -r requirements.txt
 	- git add . 
 	- git commit -m "name's first commit"
 	- git push 
+
+3. Working with branches
 
 
 # 4 - Usage
