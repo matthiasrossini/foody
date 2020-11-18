@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Overview</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">
+        <img src="static\BK.svg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+        Burger King
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+    <div class="container">
+      <h1>Welcome</h1>
+      <br>
+      <h5>Welcome, {{ admin_user }}, to the overview of the tables.</h5>
+      <br>
+      <h2>Tables</h2>
+      <br>
+    </div>
+    <div class="container" style="width: 420px;margin-left: auto; margin-right: auto;">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Table number</th>
+            <th scope="col">Taken?</th>
+            <th scope="col">Number of guests</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for index,row in df.iterrows() %}
+          <tr>
+            <th scope="row">{{ row["table_number"] }}</th>
+            <td>{{ row["taken"] }}</td>
+            <td>{{ row["number_guests"] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
