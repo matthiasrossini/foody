@@ -72,12 +72,14 @@ pip list
 1. Installed the application as specified above
 
 2. Test pushing and pulling:
-	- git pull
-	- #add a new file e.g. touch test.txt
-	- #attempt to push new file
-	- git add . 
-	- git commit -m "name's first commit"
-	- git push 
+
+- ```bash cd flaskapp && python3 app.py ```
+- git pull
+- #add a new file e.g. touch test.txt
+- #attempt to push new file
+- git add . 
+- git commit -m "name's first commit"
+- git push 
 
 3. Working with branches
 
