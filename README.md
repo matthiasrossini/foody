@@ -8,8 +8,6 @@ Public Repository for Data Science Cloud Solutions HS20
 4. Usage
 5. Resources & Links
 
-<br>
-
 # 1 - Project Description
 Welcome to Foody 🎉 
 
