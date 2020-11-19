@@ -1,5 +1,4 @@
 # foody
-Public Repository for Data Science Cloud Solutions HS20 
 
 ## Table of Content
 1. Project Description
