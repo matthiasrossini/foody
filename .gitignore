@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #Keys
 keys.txt
 
@@ -24,3 +25,7 @@ venv.bak/
 
 # vscode config
 .vscode/
+=======
+log.txt
+/dir2
+>>>>>>> 522be6cc8b6a19a2b0a0db9b4d695d6d3ea9990c
