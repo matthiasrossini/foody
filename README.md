@@ -66,6 +66,11 @@ pip list
 <br>
 
 # 3 - Instructions for collaboration
+
+BEFORE STARTING
+- ``` git pull ```
+- enter virtualenv 
+
 1. Installed the application as specified above
 
 2. Test pushing and pulling:
