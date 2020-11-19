@@ -5,6 +5,7 @@ keys.txt
 __pycache__/
 *.py[cod]
 *$py.class
+.DS_Store
 
 # pyenv
 .python-version
