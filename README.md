@@ -74,7 +74,6 @@ BEFORE STARTING
 1. Installed the application as specified above
 
 2. Test pushing and pulling:
-- ``` cd flaskapp && python3 app.py ```
 - ``` git pull ```
 - #add a new file/change e.g. touch test.txt
 - add all changes: ``` git add . ```
