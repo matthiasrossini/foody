@@ -1,0 +1,29 @@
+{% extends "error_layout.html" %}
+
+{% block content %}
+    <div class="content-section">
+        <h1>Something went wrong (500)</h1>
+        <p>We're experiencing some trouble on our end. Please try again in the near future</p>
+    </div>
+{% endblock content %} 
+
+{% block content %}
+    <div class="content-section">
+        <h1 style="text-align:center; font-size:200px">Oops.</h1>
+        <h1 style="text-align:center;">Something went wrong (500)</h1>
+        <p style="text-align:center;">We're experiencing some trouble on our end. Please try again in the near future</p>
+        <p> </p>
+        <div style="text-align:center;">
+        	<button type="button" class="btn btn-light"> 	
+        		<a href="{{ url_for('main.home') }}">	
+        			Click here to return to the homescreen
+    			</a> 
+        	</button>
+    	</div>
+    	<div>
+	    	<br>
+	    	<br>
+    	</div>
+
+    </div>
+{% endblock content %}

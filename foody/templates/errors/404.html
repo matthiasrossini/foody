@@ -1,0 +1,22 @@
+{% extends "error_layout.html" %}
+
+{% block content %}
+    <div class="content-section">
+        <h1 style="text-align:center; font-size:200px">Oops.</h1>
+        <h1 style="text-align:center;">Page Not Found (404)</h1>
+        <p style="text-align:center;">That page does not exist. Please try a different location</p>
+        <p> </p>
+        <div style="text-align:center;">
+        	<button type="button" class="btn btn-light"> 	
+        		<a href="{{ url_for('main.home') }}">	
+        			Click here to return to the homescreen
+    			</a> 
+        	</button>
+    	</div>
+    	<div>
+	    	<br>
+	    	<br>
+    	</div>
+
+    </div>
+{% endblock content %}
