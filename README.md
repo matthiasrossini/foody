@@ -46,7 +46,7 @@ To use the env on Unix:
 source <env name>/bin/activate
 ```
 
-To use the env on Windows:
+To use the env on Windows: -> Axel should update this
 
 ```bash
 source <env name>/Scripts/activate
