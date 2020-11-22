@@ -1,7 +1,9 @@
 from flask import Flask, render_template, redirect, url_for
 from foody import app, db
 from foody.forms import TableForm, MenuForm
-from foody.models import load_user, Table, register
+from foody.models import load_user, User, register
+from flask_login import LoginManager, UserMixin, login_user, current_user
+from flask_login import logout_user, login_required
 import pandas as pd
 
 ##########
@@ -16,6 +18,7 @@ def home():
 
 
 @app.route("/during")
+@login_required
 def during():
     return render_template("during.html")
 
@@ -24,8 +27,8 @@ def during():
 def end():
     return render_template("end.html")
 
-
 @app.route("/overview", methods=["GET", "POST"])
+@login_required
 def overview():
     table_df = pd.read_sql(Table.query.statement, db.session.bind)
     return render_template("overview.html", df=table_df)
@@ -37,5 +40,7 @@ def table(table_number):
     table_number = table_number
     if form.validate_on_submit():
         register(form, table_number)
+		login_user(table_number)
         return redirect(url_for("during"))
+
     return render_template("table.html", form=form, table_number=table_number)
