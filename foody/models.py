@@ -3,6 +3,7 @@ import datetime
 from foody import db, login_manager
 from flask import current_app
 from flask_login import UserMixin, current_user #UserMixin makes user mgmt easier, not quite sure how this works tho
+import uuid
 
 ###########
 # Models  #
@@ -20,6 +21,10 @@ class User(db.Model, UserMixin):
     table_number = db.Column(db.Integer, nullable=False)
     number_guests = db.Column(db.Integer, nullable=False)
     date=db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    uuid_table=db.Column(db.String(60), nullable=False)
+    def __repr__(self):
+            return f"User(id: {self.id}, table number: {self.table_number}"+\
+                   f" number of guests: {self.number_guests}, date: {self.date})"
 
 class Admin(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True)
@@ -27,13 +32,18 @@ class Admin(db.Model, UserMixin):
     password=db.Column(db.String(30), nullable=False)
 
 # this is to insert in the database what the user has input
-def register(form, table_number):
+def register_login(form, table_number):
+    uuid_table=uuid.uuid1()
     table = User(
         table_number=table_number,
-        number_guests=form.number_guests.data
+        number_guests=form.number_guests.data,
+        uuid_table= uuid_table
     	)
+    db.create_all()
     db.session.add(table)
     db.session.commit()
 
+    user=User.query.filter_by(uuid_table=uuid_table).first()
+    login_user(user)
 
 
