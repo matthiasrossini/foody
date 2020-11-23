@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
  
 #setup database
 db = SQLAlchemy(app)
+menu_data = pd.read_csv("database.csv", sep=",")
 
 #LoginManager + Bcrypt for hashing passwords
 bcrypt = Bcrypt(app)
