@@ -13,13 +13,7 @@ class TableForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
-class MenuForm(FlaskForm):
-	name = StringField('name', validators=[DataRequired()])
-	description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
-	submit = SubmitField('Save')
-
-
-class MenuForm(FlaskForm):
+class ProductUpload(FlaskForm):
     pname = StringField("Product Name", validators=[DataRequired()])
     pdescription = StringField("Description", validators=[DataRequired()])
     pprice = FloatField("Price", validators=[DataRequired()])
