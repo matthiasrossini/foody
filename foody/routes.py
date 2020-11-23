@@ -69,16 +69,16 @@ def upload():
 
         data.to_csv("database.csv", index=False)
 
-        return redirect(url_for("showroom"))
+        return redirect(url_for("menu"))
 
     return render_template("menu/upload.html", form=form)
 
 
-@app.route("/showroom")
-def showroom():
+@app.route("/menu")
+def menu():
     global data
     length = len(data)
-    return render_template("menu/showroom.html", df=data, length=length)
+    return render_template("menu/menu.html", df=data, length=length)
 
 
 @app.route("/product/<product_name>")
@@ -88,4 +88,4 @@ def single_product(product_name):
     # we transform the single row into a dictionary (this is easier to access in the html)
     # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
     product_info = product_info.to_dict('records')[0]
-    return render_template("menu/single_product.html", product_info=product_info)
+    return render_template("menu/single_item.html", product_info=product_info)
