@@ -2,7 +2,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer #function
 import datetime
 from foody import db, login_manager
 from flask import current_app
-from flask_login import UserMixin, current_user #UserMixin makes user mgmt easier, not quite sure how this works tho
+from flask_login import UserMixin, current_user, login_user #UserMixin makes user mgmt easier, not quite sure how this works tho
 import uuid
 
 ###########
@@ -20,8 +20,8 @@ class User(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True)
     table_number = db.Column(db.Integer, nullable=False)
     number_guests = db.Column(db.Integer, nullable=False)
-    date=db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
     uuid_table=db.Column(db.String(60), nullable=False)
+    date=db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
     def __repr__(self):
             return f"User(id: {self.id}, table number: {self.table_number}"+\
                    f" number of guests: {self.number_guests}, date: {self.date})"
@@ -33,7 +33,7 @@ class Admin(db.Model, UserMixin):
 
 # this is to insert in the database what the user has input
 def register_login(form, table_number):
-    uuid_table=uuid.uuid1()
+    uuid_table = str(uuid.uuid1())
     table = User(
         table_number=table_number,
         number_guests=form.number_guests.data,
@@ -45,5 +45,6 @@ def register_login(form, table_number):
 
     user=User.query.filter_by(uuid_table=uuid_table).first()
     login_user(user)
+
 
 
