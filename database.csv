@@ -1,0 +1,5 @@
+name,description,price,img_path
+pizza,The tastiest pizza,69.95,product_images/pizza
+ramen,the tastiest ramen,100.0,product_images/ramen
+sushi,The tastiest sushi,10.0,product_images/sushi
+sandwichburger,The tastiest burger,42.0,product_images/sandwichburger
