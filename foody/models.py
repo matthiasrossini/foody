@@ -26,7 +26,15 @@ class User(db.Model, UserMixin):
             return f"User(id: {self.id}, table number: {self.table_number}"+\
                    f" number of guests: {self.number_guests}, date: {self.date})"
 
+
+#class of admin that can upload new products and see overview of tables
 class Admin(db.Model, UserMixin):
+    id=db.Column(db.Integer, primary_key=True)
+    username=db.Column(db.String(60), nullable=False)
+    password=db.Column(db.String(30), nullable=False)
+
+#class of waiter than can access overview of tables
+class Waiter(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String(60), nullable=False)
     password=db.Column(db.String(30), nullable=False)
@@ -46,5 +54,9 @@ def register_login(form, table_number):
     user=User.query.filter_by(uuid_table=uuid_table).first()
     login_user(user)
 
+#this is to check that the admin login
+
+
+#this is to check the waiter login
 
 

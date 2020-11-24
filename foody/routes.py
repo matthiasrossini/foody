@@ -25,6 +25,7 @@ def during():
 
 @app.route("/end")
 def end():
+	logout_user(user)
     return render_template("end.html")
 
 @app.route("/overview", methods=["GET", "POST"])
