@@ -15,7 +15,7 @@ import sys
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template('home.html')
+    return render_template('home.html')
 
 
 @app.route("/during")
@@ -43,6 +43,7 @@ def table(table_number):
         return redirect(url_for("during"))
     return render_template("table.html", form=form, table_number=table_number)
 
+
 @app.route("/upload-product", methods=["GET", "POST"])
 def upload():
     form = ProductUpload()
@@ -60,7 +61,7 @@ def upload():
 
         f.save(filepath)
 
-        global data #global allows data to be modified inside function
+        global data  # global allows data to be modified inside function
         data = data.append({"name": form.pname.data,
                             "description": form.pdescription.data,
                             "price": form.pprice.data,
