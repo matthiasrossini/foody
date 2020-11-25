@@ -29,4 +29,3 @@ def register(form, table_number):
     	)
     db.session.add(table)
     db.session.commit()
-
