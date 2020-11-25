@@ -59,7 +59,11 @@ def register_login(form, table_number):
     db.create_all()
     db.session.add(table)
     db.session.commit()
-
+"""
+add in not possible to have two tablennumbers loggin in same time
++
+menu route accessible for all people
+"""
     user=User.query.filter_by(uuid_table=uuid_table).first()
     login_user(user)
 
@@ -89,7 +93,7 @@ def add_admin(form):
     db.session.commit()
 
 #this is to check that the admin login is correct and log them in
-def admin_login(form):
+def check_admin(form):
     username= form.username.data
     admin = Admin.query.filter_by(username=username).first()
 

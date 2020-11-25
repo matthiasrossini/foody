@@ -24,6 +24,7 @@ def during():
 
 
 @app.route("/end")
+@login_required
 def end():
 	logout_user(user)
 	return render_template("end.html")
