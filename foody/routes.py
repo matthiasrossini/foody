@@ -1,8 +1,11 @@
-from flask import Flask, render_template, redirect, url_for
-from foody import app, db
-from foody.forms import TableForm, MenuForm
+from flask import Flask, render_template, redirect, url_for, request
+from foody import app, db, data
+from foody.forms import TableForm, ProductUpload
 from foody.models import load_user, Table, register
 import pandas as pd
+import os
+import sys
+
 
 ##########
 # Routes #
@@ -12,7 +15,7 @@ import pandas as pd
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template('home.html')
+    return render_template('home.html')
 
 
 @app.route("/during")
@@ -39,3 +42,54 @@ def table(table_number):
         register(form, table_number)
         return redirect(url_for("during"))
     return render_template("table.html", form=form, table_number=table_number)
+
+
+@app.route("/upload-product", methods=["GET", "POST"])
+def upload():
+    form = ProductUpload()
+
+    if form.validate_on_submit():
+
+        f = form.pimage.data
+
+        # this path is for saving a filepath to the csv file. This is also the
+        # file path we will be using in the html to load the image
+        path_in_static_folder = os.path.join("product_images", form.pname.data)
+
+        # this is the path we will use to actually store the image
+        filepath = os.path.join("foody/static", path_in_static_folder)
+
+        f.save(filepath)
+
+        product = Product(
+            pname=form.pname.data,
+            pdescription=form.pdescription.data,
+            pprice=form.pprice.data,
+            ptype=form.ptype.data,
+            pvegan=form.pvegan.data,
+            pvegetarian=form.pvegan.data,
+            pglutenfree=form.pglutenfree.data
+        )
+        db.session.add(product)
+        db.session.commit()
+
+        return redirect(url_for("menu"))
+
+    return render_template("menu/upload.html", form=form)
+
+
+@app.route("/menu")
+def menu():
+    global data
+    length = len(data)
+    return render_template("menu/menu.html", df=data, length=length)
+
+
+@app.route("/product/<product_name>")
+def single_product(product_name):
+    # we access the row of the dataframe that we want
+    product_info = data.loc[data["name"] == product_name, :]
+    # we transform the single row into a dictionary (this is easier to access in the html)
+    # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
+    product_info = product_info.to_dict('records')[0]
+    return render_template("menu/single_item.html", product_info=product_info)
