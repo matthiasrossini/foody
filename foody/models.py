@@ -49,9 +49,11 @@ class User(db.Model, UserMixin):
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
     access_level = db.Column(db.Integer, nullable=False)
 
-    def __repr__(self):
-        return f"User(id: {self.id}, table number: {self.table_number}" +\
-               f" number of guests: {self.number_guests}, date: {self.date})"
+    #output1 = (f" User ID: {self.id}, table number: {self.table_number} ")
+    #output2 = (f" Number of guests: {self.number_guests}, date: {self.date} ")
+
+    #def __repr__(self):
+        #return output1 + output2
 
 
 # class of waiter than can access overview of tables

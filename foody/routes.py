@@ -98,8 +98,8 @@ def upload():
             ptype=form.ptype.data,
             pvegan=form.pvegan.data,
             pvegetarian=form.pvegan.data,
-            pglutenfree=form.pglutenfree.data
-        )
+            pglutenfree=form.pglutenfree.data)
+        
         db.session.add(product)
         db.session.commit()
         global data  # global allows data to be modified inside function
