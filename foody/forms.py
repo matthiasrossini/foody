@@ -25,20 +25,25 @@ class ProductUpload(FlaskForm):
     pvegan = SelectField("Vegan?", choices=[("Yes"), ("No")])
     submit_button = SubmitField("Go")
 
-    
-class MenuForm(FlaskForm):
-	name = StringField('name', validators=[DataRequired()])
-	description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
-	submit = SubmitField('Save')
 
-  
+class MenuForm(FlaskForm):
+    name = StringField('name', validators=[DataRequired()])
+    description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
+    submit = SubmitField('Save')
+
+
 class AddAdmin(FlaskForm):
     full_name = StringField("full name", validators=[DataRequired()])
     email = StringField("email", validators=[DataRequired(), Email()])
     username = StringField("username", validators=[DataRequired()])
-    password = PasswordField("password", validators = [DataRequired()])
+    password = PasswordField("password", validators=[DataRequired()])
 
-    
+
 class AdminLogin(FlaskForm):
-     username=StringField("username", validators=[DataRequired()])
-     password= PasswordField("password", validators=[DataRequired()])
+    username = StringField("username", validators=[DataRequired()])
+    password = PasswordField("password", validators=[DataRequired()])
+
+
+class OrderFood(FlaskForm):
+    Food = StringField("Type in your choice of food", validators=[DataRequired()])
+    submit_button = SubmitField("Submit order")

@@ -26,6 +26,7 @@ class Table(db.Model):
     table_number = db.Column(db.Integer, nullable=False)
     taken = db.Column(db.String(10), nullable=False)
     number_guests = db.Column(db.Integer)
+    orders = db.Column(db.Integer)
     ptype = db.Column(db.String(20))
     pgluten_free = db.Column(db.String(10))
     plactose_free = db.Column(db.String(10))
@@ -58,8 +59,8 @@ class User(db.Model, UserMixin):
     #output1 = (f" User ID: {self.id}, table number: {self.table_number} ")
     #output2 = (f" Number of guests: {self.number_guests}, date: {self.date} ")
 
-    #def __repr__(self):
-        #return output1 + output2
+    # def __repr__(self):
+    # return output1 + output2
 
 
 # class of waiter than can access overview of tables
@@ -138,3 +139,9 @@ def admin_login(form):
             return True
 
 # this is to check the waiter login
+
+
+def add_order(form):
+    order = Table(order=form.order.data)
+    db.session.add(order)
+    db.session.commit()

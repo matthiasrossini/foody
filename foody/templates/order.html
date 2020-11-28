@@ -30,40 +30,27 @@
           </li>
           <li class="nav-item active">
             <a class="nav-link" href={{ url_for("upload") }}>Menu Item Upload</a>
-</div>
           </li>
 
         </ul>
       </div>
     </nav>
-    <br><br>
 
-    </div>
-
-    <div class="row">
-
-      {% for index, row in df.iterrows() %}
-        <div class="card" style="width: 18rem; margin-left: 20px;" >
-          <img class="card-img-top" width="150px" src={{ url_for("static", filename=row["img_path"]) }} alt="Card image cap">
-          <div class="card-body" >
-            <h5 class="card-title">{{ row['name'] }}</h5>
-            <p class="card-text">{{ row['description'] }}</p>
-            <p class="card-text">{{ row['price'] }}</p>
-            <a href={{ url_for("single_product", product_name=row['name']) }} class="btn btn-primary">See more</a>
-            <a href={{ url_for("single_product", product_name=row['name']) }} class="btn btn-primary">Add to cart</a>
-                      </div>
-        </div>
-      {% endfor %}
-    </div>
-    <br>
-    <form  method="post" enctype="multipart/form-data">
-      {{ form.hidden_tag() }}
-
-      {{ form.Food.label }} {{ form.Food() }}
+    <div class="container">
       <br>
-      {{ form.submit_button() }}
 
-    </form>
+      <form  method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        {{ form.Food.label }} {{ form.Food() }}
+        <br>
+        {{ form.submit_button() }}
+
+      </form>
+
+    </div>
+
+
   </body>
 
 </html>

@@ -1,12 +1,18 @@
 import pandas as pd
 import os
 import sys
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from django.contrib.auth.decorators import login_required
 
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
+
+from wtforms import StringField, SubmitField, FloatField, IntegerField, TextAreaField, SelectField, PasswordField
+from wtforms.validators import DataRequired, Length, Email
+
 from foody import app, db, data
-from foody.forms import TableForm, ProductUpload  # MenuForm
-from foody.models import Products, Table  # ,User, register_login
+from foody.forms import TableForm, ProductUpload, OrderFood  # MenuForm
+from foody.models import Products, Table, add_order  # ,User, register_login
 
 
 #from flask_login import LoginManager, UserMixin, login_user, current_user
@@ -100,8 +106,8 @@ def upload():
             pvegetarian=form.pvegan.data,
             pgluten_free=form.pgluten_free.data,
             plactose_free=form.plactose_free.data
-            )
-        
+        )
+
         db.session.add(product)
         db.session.commit()
         global data  # global allows data to be modified inside function
@@ -122,7 +128,12 @@ def upload():
 def menu():
     global data
     length = len(data)
-    return render_template("menu/menu.html", df=data, length=length)
+    # return render_template("menu/menu.html", df=data, length=length)
+    form = OrderFood()
+    if form.validate_on_submit():
+        add_order(form)
+        flash("order submitted sucessfully")
+    return render_template("menu/menu.html", df=data, length=length, form=form)
 
 
 @app.route("/product/<product_name>")
@@ -133,3 +144,13 @@ def single_product(product_name):
     # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
     product_info = product_info.to_dict('records')[0]
     return render_template("menu/single_item.html", product_info=product_info)
+
+
+# @app.route("/order", methods=["GET", "POST"])
+# # @login_required
+# def order():
+#     form = OrderFood()
+#     if form.validate_on_submit():
+#         add_order(form)
+#         flash("order submitted sucessfully")
+#     return render_template("order.html", form=form)
