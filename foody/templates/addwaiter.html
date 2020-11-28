@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>New waiter</title>
+  </head>
+  <body>
+    <h1>Hello!</h1>
+    <br>
+    <h2>Please add a new waiter.</h2>
+    <h3>Watch out! Waiters have <em>level 1 access</em>, meaning they can access
+    the overview of all tables with current orders and number of people.</h3>
+    <form class="" action="index.html" method="post">
+      {{ form.hidden_tag() }}
+      {{ form.full_name.label }} {{form.full_name() }}
+      <br>
+      {{ form.username.label }} {{ form.username() }}
+      <br>
+      {{ form.password.label }} {{ form.password() }}
+      <br><br>
+      {{ form.submit() }}
+    </form>
+
+  </body>
+</html>

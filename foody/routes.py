@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 from foody import app, db
-from foody.forms import TableForm, MenuForm
-from foody.models import load_user, User, register_login
+from foody.forms import TableForm, MenuForm, AddAdmin, AdminLogin, AddWaiter, WaiterLogin
+from foody.models import load_user, User, register_login, add_admin, add_waiter, check_admin, check_waiter
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
 import pandas as pd
@@ -39,6 +39,7 @@ def add_admin_route():
 	if form.validate_on_submit():
 		add_admin(form)
 		return redirect(url_for("admin_login"))
+	return render_template("addadmin.html")
 
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
@@ -46,7 +47,23 @@ def admin_login():
 	if form.validate_on_submit():
 		if check_admin(form):
 			return redirect(url_for("overview"))
+	return render_template("adminlogin.html")
 
+@app.route("/add-waiter")
+def add_waiter_route():
+	form = AddWaiter()
+	if form.validate_on_submit():
+		add_waiter(form)
+		return redirect(url_for("waiter_login"))
+	return render_template("addwaiter.html")
+
+@app.route("/waiter-login")
+def waiter_login():
+	form=WaiterLogin()
+	if form.validate_on_submit():
+		if check_waiter(form):
+			return redirect(url_for("overview"))
+	return render_template("waiterlogin.html")
 @app.route("/overview", methods=["GET", "POST"])
 @login_required
 def overview():

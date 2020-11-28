@@ -33,6 +33,7 @@ class Waiter(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String(60), nullable=False)
     password=db.Column(db.String(30), nullable=False)
+    full_name=db.Column(db.String(50), nullable=False)
     access_level=db.Column(db.Integer, nullable=False)
 
 
@@ -56,14 +57,20 @@ def register_login(form, table_number):
         uuid_table= uuid_table,
         access_level=0
     	)
+    check_user = User.query.filter_by(table_number=table_number).first()
+    if check_user.is_active:
+        flash("This table is currently already in the process of a meal. Please +\
+            check with the people at your table if nobody started the process. +\
+            If not, call a waiter for the process to be restarted and please excuse +\
+            us for the inconvenience.")
+        return False
     db.create_all()
     db.session.add(table)
     db.session.commit()
-"""
-add in not possible to have two tablennumbers loggin in same time
-+
-menu route accessible for all people
-"""
+    """
+    +
+    menu route accessible for all people
+    """
     user=User.query.filter_by(uuid_table=uuid_table).first()
     login_user(user)
 
@@ -102,7 +109,34 @@ def check_admin(form):
             login_user(admin)
             return True
 
+#this is to add in new waiters
+def add_waiter(form):
+    waiter_username = form.username.data
+
+    if Waiter.query.filter_by(username=waiter_username).count():
+        flash("Username is taken. Try another one.")
+        return False
+
+    hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+
+    new_waiter = Waiter(
+                    full_name = form.full_name.data,
+                    username=form.username.data,
+                    password=hashed_password,
+                    access_level=1
+                    )
+    db.create_all()
+    db.session.add(new_waiter)
+    db.session.commit()
 
 #this is to check the waiter login
 
+def check_waiter(form):
+    username= form.username.data
+    waiter = Waiter.query.filter_by(username=username).first()
+
+    if Waiter is not None:
+        if bcypt.check_password_hash(form.password.data, waiter.password):
+            login_user(waiter)
+            return True
 

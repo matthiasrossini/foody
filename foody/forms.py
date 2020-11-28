@@ -18,5 +18,14 @@ class AddAdmin(FlaskForm):
     password = PasswordField("password", validators = [DataRequired()])
 
 class AdminLogin(FlaskForm):
-     username=StringField("username", validators=[DataRequired()])
-     password= PasswordField("password", validators=[DataRequired()])
+    username=StringField("username", validators=[DataRequired()])
+    password= PasswordField("password", validators=[DataRequired()])
+
+class AddWaiter(FlaskForm):
+    full_name = StringField("full name", validators=[DataRequired()])
+    username = StringField("username", validators=[DataRequired()])
+    password = PasswordField("password", validators = [DataRequired()])
+
+class WaiterLogin(FlaskForm):
+    username=StringField("username", validators=[DataRequired()])
+    password= PasswordField("password", validators=[DataRequired()])
