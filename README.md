@@ -46,10 +46,10 @@ To use the env on Unix:
 source <env name>/bin/activate
 ```
 
-To use the env on Windows: -> Axel should update this
+To use the env on Windows: 
 
 ```bash
-source <env name>/Scripts/activate
+<env name>\Scripts\activate
 ```
 
 Install the requirements:
@@ -96,3 +96,4 @@ BEFORE STARTING
 1. [Youtube Tutorial for Github](https://www.youtube.com/watch?v=SWYqp7iY_Tc)
 2. [Youtube Tutorial for Package Structure](https://www.youtube.com/watch?v=44PvX0Yv368)
 3. Notion (tbd) 
+
