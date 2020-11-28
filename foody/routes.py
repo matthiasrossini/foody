@@ -1,10 +1,17 @@
-from flask import Flask, render_template, redirect, url_for
-from foody import app, db
-from foody.forms import TableForm, MenuForm
-from foody.models import load_user, User, register_login
-from flask_login import LoginManager, UserMixin, login_user, current_user
-from flask_login import logout_user, login_required
 import pandas as pd
+import os
+import sys
+from flask import Flask, render_template, redirect, url_for, request
+
+
+from foody import app, db, data
+from foody.forms import TableForm, ProductUpload #MenuForm 
+from foody.models import load_user, Table, register #,User, register_login
+
+
+#from flask_login import LoginManager, UserMixin, login_user, current_user
+#from flask_login import logout_user, login_required
+
 
 ##########
 # Routes #
@@ -81,6 +88,17 @@ def upload():
 
         f.save(filepath)
 
+        product = Product(
+            pname=form.pname.data,
+            pdescription=form.pdescription.data,
+            pprice=form.pprice.data,
+            ptype=form.ptype.data,
+            pvegan=form.pvegan.data,
+            pvegetarian=form.pvegan.data,
+            pglutenfree=form.pglutenfree.data
+        )
+        db.session.add(product)
+        db.session.commit()
         global data  # global allows data to be modified inside function
         data = data.append({"name": form.pname.data,
                             "description": form.pdescription.data,
@@ -89,6 +107,7 @@ def upload():
                            ignore_index=True)
 
         data.to_csv("database.csv", index=False)
+
 
         return redirect(url_for("menu"))
 
