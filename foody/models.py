@@ -36,7 +36,13 @@ class Table(db.Model):
 class Products(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     pname = db.Column(db.String(30), unique=True, nullable=False)
+    pdescription = db.Column(db.String(30), nullable=False)
     pprice = db.Column(db.Integer, nullable=False)
+    ptype = db.Column(db.String)
+    pgluten_free = db.Column(db.String)
+    plactose_free = db.Column(db.String)
+    pvegan = db.Column(db.String)
+    pvegetarian = db.Column(db.String)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
 

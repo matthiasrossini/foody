@@ -91,14 +91,16 @@ def upload():
 
         f.save(filepath)
 
-        product = Product(
+        product = Products(
             pname=form.pname.data,
             pdescription=form.pdescription.data,
             pprice=form.pprice.data,
             ptype=form.ptype.data,
             pvegan=form.pvegan.data,
             pvegetarian=form.pvegan.data,
-            pglutenfree=form.pglutenfree.data)
+            pgluten_free=form.pgluten_free.data,
+            plactose_free=form.plactose_free.data
+            )
         
         db.session.add(product)
         db.session.commit()

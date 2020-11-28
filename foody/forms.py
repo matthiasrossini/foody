@@ -27,7 +27,6 @@ class ProductUpload(FlaskForm):
 
     
 class MenuForm(FlaskForm):
-
 	name = StringField('name', validators=[DataRequired()])
 	description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
 	submit = SubmitField('Save')
