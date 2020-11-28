@@ -142,6 +142,6 @@ def admin_login(form):
 
 
 def add_order(form):
-    order = Table(order=form.order.data)
+    order = Table(orders=form.order.data)
     db.session.add(order)
     db.session.commit()
