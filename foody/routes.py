@@ -77,32 +77,13 @@ def table(table_number):
 @app.route("/upload-product", methods=["GET", "POST"])
 def upload():
     form = ProductUpload()
-
-
     if form.validate_on_submit():
-
 
         #Saving Image
         f = form.pimage.data
         path_in_static_folder = os.path.join("product_images", form.pname.data)
         filepath = os.path.join("foody/static", path_in_static_folder)
         f.save(filepath)
-
-        """
-        #CSV
-        global data  # global allows data to be modified inside function
-        data = data.append({"name": form.pname.data,
-                            "description": form.pdescription.data,
-                            "price": form.pprice.data,
-                            "type": form.ptype.data,
-                            "gluten free": form.pgluten_free.data,
-                            "lactose free": form.plactose_free.data,
-                            "vegetarian": form.pvegetarian.data,
-                            "vegan": form.pvegan.data,
-                            "img_path": path_in_static_folder},
-                           ignore_index=True)
-        data.to_csv("database.csv", index=False)
-        """
 
         #SQL
         product = Products(
@@ -120,9 +101,7 @@ def upload():
         db.session.add(product)
         db.session.commit()
 
-
         return redirect(url_for("menu"))
-
 
     return render_template("menu/upload.html", form=form)
 
