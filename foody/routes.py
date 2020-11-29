@@ -4,9 +4,9 @@ import sys
 from flask import Flask, render_template, redirect, url_for, request
 from django.contrib.auth.decorators import login_required
 
-from foody import app, db, data
+from foody import app, db #data
 from foody.forms import TableForm, ProductUpload  # MenuForm
-from foody.models import Products, Table  # ,User, register_login
+from foody.models import Products, Table, get_products, User, register_login 
 
 
 #from flask_login import LoginManager, UserMixin, login_user, current_user
@@ -24,15 +24,15 @@ def home():
     return render_template('home.html')
 
 
-@app.route("/during")
-@login_required
+@app.route("/during", methods=["GET", "POST"])
+#@login_required
 def during():
     return render_template("during.html")
 
 
 @app.route("/end")
 def end():
-    logout_user(user)
+    #logout_user(user)
     return render_template("end.html")
 
 
@@ -78,51 +78,60 @@ def table(table_number):
 def upload():
     form = ProductUpload()
 
+
     if form.validate_on_submit():
 
+
+        #Saving Image
         f = form.pimage.data
-
-        # this path is for saving a filepath to the csv file. This is also the
-        # file path we will be using in the html to load the image
         path_in_static_folder = os.path.join("product_images", form.pname.data)
-
-        # this is the path we will use to actually store the image
         filepath = os.path.join("foody/static", path_in_static_folder)
-
         f.save(filepath)
 
+        """
+        #CSV
+        global data  # global allows data to be modified inside function
+        data = data.append({"name": form.pname.data,
+                            "description": form.pdescription.data,
+                            "price": form.pprice.data,
+                            "type": form.ptype.data,
+                            "gluten free": form.pgluten_free.data,
+                            "lactose free": form.plactose_free.data,
+                            "vegetarian": form.pvegetarian.data,
+                            "vegan": form.pvegan.data,
+                            "img_path": path_in_static_folder},
+                           ignore_index=True)
+        data.to_csv("database.csv", index=False)
+        """
+
+        #SQL
         product = Products(
             pname=form.pname.data,
             pdescription=form.pdescription.data,
             pprice=form.pprice.data,
             ptype=form.ptype.data,
             pvegan=form.pvegan.data,
-            pvegetarian=form.pvegan.data,
+            pvegetarian=form.pvegetarian.data,
             pgluten_free=form.pgluten_free.data,
-            plactose_free=form.plactose_free.data
+            plactose_free=form.plactose_free.data,
+            pimage=path_in_static_folder
             )
-        
+
         db.session.add(product)
         db.session.commit()
-        global data  # global allows data to be modified inside function
-        data = data.append({"name": form.pname.data,
-                            "description": form.pdescription.data,
-                            "price": form.pprice.data,
-                            "img_path": path_in_static_folder},
-                           ignore_index=True)
 
-        data.to_csv("database.csv", index=False)
 
         return redirect(url_for("menu"))
+
 
     return render_template("menu/upload.html", form=form)
 
 
 @app.route("/menu")
 def menu():
-    global data
-    length = len(data)
-    return render_template("menu/menu.html", df=data, length=length)
+    products = get_products()
+
+    return render_template("menu/menu.html", products_df=products)
 
 
 @app.route("/product/<product_name>")

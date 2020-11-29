@@ -6,6 +6,7 @@ from flask import current_app, flash
 from flask_login import UserMixin, current_user, login_user
 import uuid
 import bcrypt
+import pandas as pd
 
 
 ###########
@@ -43,21 +44,22 @@ class Products(db.Model, UserMixin):
     plactose_free = db.Column(db.String)
     pvegan = db.Column(db.String)
     pvegetarian = db.Column(db.String)
+    pimage = db.Column(db.String)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
+    #user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
 
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     table_number = db.Column(db.Integer, nullable=False)
     number_guests = db.Column(db.Integer, nullable=False)
-    uuid_table = db.Column(db.String(60), nullable=False)
+    uuid = db.Column(db.String(60), nullable=False)
+    seated = db.Column(db.String, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
     access_level = db.Column(db.Integer, nullable=False)
 
     #output1 = (f" User ID: {self.id}, table number: {self.table_number} ")
     #output2 = (f" Number of guests: {self.number_guests}, date: {self.date} ")
-
     #def __repr__(self):
         #return output1 + output2
 
@@ -65,6 +67,7 @@ class User(db.Model, UserMixin):
 # class of waiter than can access overview of tables
 class Waiter(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    uuid = db.Column(db.String, nullable=False)
     username = db.Column(db.String(60), nullable=False)
     password = db.Column(db.String(30), nullable=False)
     access_level = db.Column(db.Integer, nullable=False)
@@ -84,22 +87,24 @@ class Admin(db.Model, UserMixin):
 def register_login(form, table_number):
     uuid_table = str(uuid.uuid1())
     table = User(
+        uuid=uuid_table,
         table_number=table_number,
         number_guests=form.number_guests.data,
-        taken="yes"
-    )
-    db.session.add(table)
-    db.session.commit(
-        uuid_table=uuid_table,
+        seated="yes",
         access_level=0
-    )
-    db.create_all()
+        )
     db.session.add(table)
     db.session.commit()
+    db.create_all()
 
-    user = User.query.filter_by(uuid_table=uuid_table).first()
+    user = User.query.filter_by(uuid=uuid_table).first()
     login_user(user)
 
+#Getting products from SQL
+def get_products():
+    df = pd.read_sql(Products.query.statement, db.session.bind)
+
+    return df
 
 # this is to add in new admins
 def add_admin(form):

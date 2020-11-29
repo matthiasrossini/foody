@@ -40,17 +40,20 @@
     </div>
 
     <div class="row">
+      {% for index, row in products_df.iterrows() %}
 
-      {% for index, row in df.iterrows() %}
-        <div class="card" style="width: 18rem; margin-left: 20px;" >
-          <img class="card-img-top" width="150px" src={{ url_for("static", filename=row["img_path"]) }} alt="Card image cap">
-          <div class="card-body" >
-            <h5 class="card-title">{{ row['name'] }}</h5>
-            <p class="card-text">{{ row['description'] }}</p>
-            <p class="card-text">{{ row['price'] }}</p>
-            <a href={{ url_for("single_product", product_name=row['name']) }} class="btn btn-primary">See more</a>
-          </div>
+      <div class="card" style="width: 18rem; margin-left: 20px;" >
+        <img class="card-img-top" width="150px" src={{ url_for("static", filename=row["pimage"]) }} alt="Card image cap">
+        <div class="card-body" >
+
+        <div class="card">
+          <h3>Product No. {{ index+1 }}:</h3>
+          <p>{{ row['pname'] }}</p>
+          <p>{{ row['pdescription'] }}</p>
+          <p>{{ row['pprice'] }} CHF</p>
+
         </div>
+
       {% endfor %}
     </div>
 
