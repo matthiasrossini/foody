@@ -59,14 +59,21 @@
         </div>
         <div class="col-md-4">
           <div class="content-section">
-            <h3>Quick Links</h3>
+            <h3>Developer Quick Links</h3>
               <ul class="list-group">
+
+                <li class="list-group-item list-group-item-light"> <a href={{ url_for("home") }}> #Home </a></li>
+
+                <li class="list-group-item list-group-item-light"> <a href={{ url_for("menu") }}> #Menu </a></li>
+
+                <li class="list-group-item list-group-item-light"> <a href={{ url_for("upload") }}> #Upload </a></li>
+
+                <li class="list-group-item list-group-item-light"> <a href={{ url_for("table", table_number=1) }}> #Table_1 </a></li>
 
                 <li class="list-group-item list-group-item-light"> <a href="https://flask.palletsprojects.com/en/1.1.x/quickstart/" target="blank"> #Flask Documentation </a></li>
 
-
                 <li class="list-group-item list-group-item-light"> <a href="https://getbootstrap.com/" target="blank"> #Bootstrap </a></li>
-                
+
               </ul>
             </p>
           </div>
