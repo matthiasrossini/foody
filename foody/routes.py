@@ -57,11 +57,15 @@ def admin_login():
 
 
 @app.route("/overview", methods=["GET", "POST"])
-@login_required
+#@login_required
 def overview():
+    table_df = pd.read_sql(Table.query.statement, db.session.bind)
+    """
     if current_user.access_level in [1, 2]:
         table_df = pd.read_sql(Table.query.statement, db.session.bind)
         return render_template("overview.html", df=table_df)
+    """
+    return render_template("overview.html", df=table_df)
 
 
 @app.route("/table/<table_number>", methods=["GET", "POST"])

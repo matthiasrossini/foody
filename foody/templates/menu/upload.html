@@ -1,33 +1,36 @@
-<html>
-  <body>
-    <div class="container">
+{% extends "layout.html" %}
+{% block content %}
 
 
-      <form  method="post" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-
-        {{ form.pname.label }} {{ form.pname() }}
-        <br>
-        {{ form.pdescription.label }} {{ form.pdescription() }}
-        <br>
-        {{ form.pprice.label }} {{ form.pprice() }}
-        <br>
-        {{ form.ptype.label }} {{ form.ptype() }}
-        <br>
-        {{ form.pgluten_free.label }} {{ form.pgluten_free() }}
-        <br>
-        {{ form.plactose_free.label }} {{ form.plactose_free() }}
-        <br>
-        {{ form.pvegetarian.label }} {{ form.pvegetarian() }}
-        <br>
-        {{ form.pvegan.label }} {{ form.pvegan() }}
-        <br>
-        {{ form.pimage() }}
-        <br>
-        {{ form.submit_button() }}
-      </form>
+<div class="container">
 
 
-    </div>
-  </body>
-</html>
+  <form  method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    {{ form.pname.label }} {{ form.pname() }}
+    <br>
+    {{ form.pdescription.label }} {{ form.pdescription() }}
+    <br>
+    {{ form.pprice.label }} {{ form.pprice() }}
+    <br>
+    {{ form.ptype.label }} {{ form.ptype() }}
+    <br>
+    {{ form.pgluten_free.label }} {{ form.pgluten_free() }}
+    <br>
+    {{ form.plactose_free.label }} {{ form.plactose_free() }}
+    <br>
+    {{ form.pvegetarian.label }} {{ form.pvegetarian() }}
+    <br>
+    {{ form.pvegan.label }} {{ form.pvegan() }}
+    <br>
+    {{ form.pimage() }}
+    <br>
+    {{ form.submit_button() }}
+  </form>
+
+
+</div>
+
+
+{% endblock content %}
