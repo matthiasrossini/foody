@@ -1,5 +1,9 @@
-name,description,price,img_path
-pizza,The tastiest pizza,69.95,product_images/pizza
-ramen,the tastiest ramen,100.0,product_images/ramen
-sushi,The tastiest sushi,10.0,product_images/sushi
-sandwichburger,The tastiest burger,42.0,product_images/sandwichburger
+name,description,price,img_path,gluten free,lactose free,type,vegan,vegetarian
+pizza,The tastiest pizza,69.95,product_images/pizza,,,,,
+ramen,the tastiest ramen,100.0,product_images/ramen,,,,,
+sushi,The tastiest sushi,10.0,product_images/sushi,,,,,
+sandwichburger,The tastiest burger,42.0,product_images/sandwichburger,,,,,
+pasta,The tastiest pasta,10.95,product_images/pasta,no,no,main Course,no,no
+Pasta,The tastiest pasta,9.95,product_images/Pasta,no,no,main Course,no,no
+pasta3,The tastiest pasta,69.95,product_images/pasta3,no,no,main Course,no,no
+pasta3,The tastiest pasta,69.95,product_images/pasta3,no,no,main Course,no,no

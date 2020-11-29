@@ -17,12 +17,12 @@ class ProductUpload(FlaskForm):
     pname = StringField("Product Name", validators=[DataRequired()])
     pdescription = StringField("Description", validators=[DataRequired()])
     pprice = FloatField("Price", validators=[DataRequired()])
+    ptype = SelectField("Which Course: ", choices=[("starter", "Starter"), ("main Course", "Main Course"), ("dessert", "Dessert")])
+    pgluten_free = SelectField("Gluten Free?", choices=[("no", "No"), ("yes", "Yes")])
+    plactose_free = SelectField("Lactose Free?", choices=[("no", "No"), ("yes", "Yes")])
+    pvegetarian = SelectField("Vegetarian?", choices=[("no", "No"), ("yes", "Yes")])
+    pvegan = SelectField("Vegan?", choices=[("no", "No"), ("yes", "Yes")])
     pimage = FileField("Image of Product", validators=[DataRequired()])
-    ptype = SelectField("Product Type", choices=[("Starter"), ("Main Course"), ("Dessert")])
-    pgluten_free = SelectField("Gluten Free?", choices=[("Yes"), ("No")])
-    plactose_free = SelectField("Lactose Free?", choices=[("Yes"), ("No")])
-    pvegetarian = SelectField("Vegetarian?", choices=[("Yes"), ("No")])
-    pvegan = SelectField("Vegan?", choices=[("Yes"), ("No")])
     submit_button = SubmitField("Go")
 
     
@@ -42,3 +42,4 @@ class AddAdmin(FlaskForm):
 class AdminLogin(FlaskForm):
      username=StringField("username", validators=[DataRequired()])
      password= PasswordField("password", validators=[DataRequired()])
+
