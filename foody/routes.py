@@ -2,11 +2,10 @@ import pandas as pd
 import os
 import sys
 from flask import Flask, render_template, redirect, url_for, request
-from django.contrib.auth.decorators import login_required
 
 from foody import app, db #data
 from foody.forms import TableForm, ProductUpload  # MenuForm
-from foody.models import Products, Table, get_products, User, register_login 
+from foody.models import Products, Table, get_products, User, register_login
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
@@ -31,7 +30,7 @@ def table(table_number):
         register_login(form, table_number)
         return redirect(url_for("during"))
     return render_template("table.html", form=form, table_number=table_number)
-    
+
 
 @app.route("/during", methods=["GET", "POST"])
 @login_required
