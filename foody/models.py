@@ -32,7 +32,7 @@ class User(db.Model, UserMixin):
 class Waiter(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String(60), nullable=False)
-    password=db.Column(db.String(30), nullable=False)
+    password=db.Column(db.String(100), nullable=False)
     full_name=db.Column(db.String(50), nullable=False)
     access_level=db.Column(db.Integer, nullable=False)
 
@@ -41,7 +41,7 @@ class Waiter(db.Model, UserMixin):
 class Admin(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String(60), nullable=False)
-    password=db.Column(db.String(30), nullable=False)
+    password=db.Column(db.String(100), nullable=False)
     full_name= db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(60), nullable=False)
     access_level=db.Column(db.Integer, nullable=False)
@@ -57,6 +57,7 @@ def register_login(form, table_number):
         uuid_table= uuid_table,
         access_level=0
     	)
+    """
     check_user = User.query.filter_by(table_number=table_number).first()
     if check_user.is_active:
         flash("This table is currently already in the process of a meal. Please +\
@@ -64,6 +65,7 @@ def register_login(form, table_number):
             If not, call a waiter for the process to be restarted and please excuse +\
             us for the inconvenience.")
         return False
+    """
     db.create_all()
     db.session.add(table)
     db.session.commit()
@@ -85,8 +87,9 @@ def add_admin(form):
     if Admin.query.filter_by(email=form.email.data).count():
         flash("This email is already taken! Please pick another.")
         return False
-
-    hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+    salt = bcrypt.gensalt()
+    password=form.password.data.encode("utf-8")
+    hashed_password = bcrypt.hashpw(password, salt).decode('utf-8')
 
     new_admin = Admin(
                     full_name = form.full_name.data,
@@ -99,13 +102,15 @@ def add_admin(form):
     db.session.add(new_admin)
     db.session.commit()
 
+    return True
+
 #this is to check that the admin login is correct and log them in
 def check_admin(form):
     username= form.username.data
     admin = Admin.query.filter_by(username=username).first()
 
     if admin is not None:
-        if bcypt.check_password_hash(form.password.data, admin.password):
+        if bcrypt.checkpw(form.password.data, admin.password):
             login_user(admin)
             return True
 
@@ -116,8 +121,9 @@ def add_waiter(form):
     if Waiter.query.filter_by(username=waiter_username).count():
         flash("Username is taken. Try another one.")
         return False
-
-    hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+    salt = bcrypt.gensalt()
+    password=form.password.data.encode("utf-8")
+    hashed_password = bcrypt.hashpw(password, salt).decode('utf-8')
 
     new_waiter = Waiter(
                     full_name = form.full_name.data,
@@ -133,10 +139,11 @@ def add_waiter(form):
 
 def check_waiter(form):
     username= form.username.data
-    waiter = Waiter.query.filter_by(username=username).first()
+    password=form.password.data
+    waiter= Waiter.query.filter_by(username=username).first()
 
     if Waiter is not None:
-        if bcypt.check_password_hash(form.password.data, waiter.password):
+        if bcrypt.checkpw(password, waiter.password):
             login_user(waiter)
             return True
 

@@ -7,7 +7,7 @@ from wtforms.validators import DataRequired, Length, Email
 
 class TableForm(FlaskForm):
     number_guests = IntegerField("Number of people:", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    submit = SubmitField("OK")
 
 
 class MenuForm(FlaskForm):
@@ -21,16 +21,20 @@ class AddAdmin(FlaskForm):
     email = StringField("email", validators=[DataRequired(), Email()])
     username = StringField("username", validators=[DataRequired()])
     password = PasswordField("password", validators = [DataRequired()])
+    submit = SubmitField("OK")
 
 class AdminLogin(FlaskForm):
     username=StringField("username", validators=[DataRequired()])
     password= PasswordField("password", validators=[DataRequired()])
+    submit = SubmitField("OK")
 
 class AddWaiter(FlaskForm):
     full_name = StringField("full name", validators=[DataRequired()])
     username = StringField("username", validators=[DataRequired()])
     password = PasswordField("password", validators = [DataRequired()])
+    submit = SubmitField("OK")
 
 class WaiterLogin(FlaskForm):
     username=StringField("username", validators=[DataRequired()])
     password= PasswordField("password", validators=[DataRequired()])
+    submit = SubmitField("OK")

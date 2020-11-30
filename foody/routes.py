@@ -37,9 +37,9 @@ def add_admin_route():
 	"""
 	form = AddAdmin()
 	if form.validate_on_submit():
-		add_admin(form)
-		return redirect(url_for("admin_login"))
-	return render_template("addadmin.html")
+		if add_admin(form):
+			return redirect(url_for("admin_login"))
+	return render_template("addadmin.html", form=form)
 
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
@@ -47,23 +47,24 @@ def admin_login():
 	if form.validate_on_submit():
 		if check_admin(form):
 			return redirect(url_for("overview"))
-	return render_template("adminlogin.html")
+	return render_template("adminlogin.html", form=form)
 
-@app.route("/add-waiter")
+@app.route("/add-waiter", methods=["GET","POST"])
 def add_waiter_route():
 	form = AddWaiter()
 	if form.validate_on_submit():
-		add_waiter(form)
+		"add_waiter(form)"
 		return redirect(url_for("waiter_login"))
-	return render_template("addwaiter.html")
+	return render_template("addwaiter.html", form=form)
 
-@app.route("/waiter-login")
+@app.route("/waiter-login", methods=["GET","POST"])
 def waiter_login():
 	form=WaiterLogin()
 	if form.validate_on_submit():
 		if check_waiter(form):
 			return redirect(url_for("overview"))
-	return render_template("waiterlogin.html")
+	return render_template("waiterlogin.html", form=form)
+
 @app.route("/overview", methods=["GET", "POST"])
 @login_required
 def overview():

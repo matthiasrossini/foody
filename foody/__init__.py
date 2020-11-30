@@ -4,11 +4,13 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
+from google.cloud import storage
+from foody.secrets import SQL_PASSWORD, SQL_PUBLIC_IP, SQL_DATABASE_NAME
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "hard-to-guess-string"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
+app.config["SECRET_KEY"]= "9289hab_wfdyqpvsa9ah-awf9AWdbzz"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 #setup database
 db = SQLAlchemy(app)
 

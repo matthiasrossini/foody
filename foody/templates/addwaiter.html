@@ -10,7 +10,7 @@
     <h2>Please add a new waiter.</h2>
     <h3>Watch out! Waiters have <em>level 1 access</em>, meaning they can access
     the overview of all tables with current orders and number of people.</h3>
-    <form class="" action="index.html" method="post">
+    <form method="post">
       {{ form.hidden_tag() }}
       {{ form.full_name.label }} {{form.full_name() }}
       <br>
@@ -20,6 +20,5 @@
       <br><br>
       {{ form.submit() }}
     </form>
-
   </body>
 </html>
