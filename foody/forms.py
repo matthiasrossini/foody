@@ -4,7 +4,6 @@ from wtforms import StringField, SubmitField, FloatField, IntegerField, TextArea
 from wtforms.validators import DataRequired, Length, Email
 
 
-
 class TableForm(FlaskForm):
     number_guests = IntegerField("Number of people:", validators=[DataRequired()])
     submit = SubmitField("OK")
@@ -12,9 +11,10 @@ class TableForm(FlaskForm):
 
 class MenuForm(FlaskForm):
 
-	name = StringField('name', validators=[DataRequired()])
-	description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
-	submit = SubmitField('Save')
+    name = StringField('name', validators=[DataRequired()])
+    description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
+    submit = SubmitField('Save')
+
 
 class AddAdmin(FlaskForm):
     full_name = StringField("full name", validators=[DataRequired()])
