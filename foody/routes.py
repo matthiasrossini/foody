@@ -8,9 +8,8 @@ from foody import app, db #data
 from foody.forms import TableForm, ProductUpload  # MenuForm
 from foody.models import Products, Table, get_products, User, register_login 
 
-
-#from flask_login import LoginManager, UserMixin, login_user, current_user
-#from flask_login import logout_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, current_user
+from flask_login import logout_user, login_required
 
 
 ##########
@@ -24,15 +23,25 @@ def home():
     return render_template('home.html')
 
 
+@app.route("/table/<table_number>", methods=["GET", "POST"])
+def table(table_number):
+    form = TableForm()
+    table_number = table_number
+    if form.validate_on_submit():
+        register_login(form, table_number)
+        return redirect(url_for("during"))
+    return render_template("table.html", form=form, table_number=table_number)
+    
+
 @app.route("/during", methods=["GET", "POST"])
-#@login_required
+@login_required
 def during():
     return render_template("during.html")
 
 
 @app.route("/end")
 def end():
-    #logout_user(user)
+    logout_user(user)
     return render_template("end.html")
 
 
@@ -66,16 +75,6 @@ def overview():
         return render_template("overview.html", df=table_df)
     """
     return render_template("overview.html", df=table_df)
-
-
-@app.route("/table/<table_number>", methods=["GET", "POST"])
-def table(table_number):
-    form = TableForm()
-    table_number = table_number
-    if form.validate_on_submit():
-        register_login(form, table_number)
-        return redirect(url_for("during"))
-    return render_template("table.html", form=form, table_number=table_number)
 
 
 @app.route("/upload-product", methods=["GET", "POST"])
