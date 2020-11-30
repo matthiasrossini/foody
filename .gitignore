@@ -1,6 +1,8 @@
 <<<<<<< HEAD
 #Keys
 keys.txt
+secrets.py
+gcp-keys.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
