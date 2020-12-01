@@ -15,10 +15,9 @@ app.config['SECRET_KEY'] = "hard-to-guess-string"
 PASSWORD = SQL_PASSWORD
 PUBLIC_IP_ADDRESS = SQL_PUBLIC_IP
 DBNAME = SQL_DATABASE_NAME
-db = SQLAlchemy()
+db = SQLAlchemy(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://postgres:{PASSWORD}@{PUBLIC_IP_ADDRESS}/{DBNAME}"
-db.app = app
 db.init_app(app)
 db.create_all()
 
