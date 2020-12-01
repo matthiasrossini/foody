@@ -1,25 +1,31 @@
 import pandas as pd
 import os
 import sys
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
 
 from foody import app, db #data
-from foody.forms import TableForm, ProductUpload  # MenuForm
-from foody.models import Products, Table, get_products, User, register_login
+from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin
+from foody.models import Products, Table, get_products, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
+from foody.__init__ import login_manager
 
 
 ##########
 # Routes #
 ##########
 
-
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template('home.html')
+
+#this is the route Flask-login redirects you to automatically
+#if there is a login_required and you are not logged in
+@app.route("/login")
+def login():
+    return redirect(url_for("menu"))
 
 
 @app.route("/table/<table_number>", methods=["GET", "POST"])
@@ -40,7 +46,7 @@ def during():
 
 @app.route("/end")
 def end():
-    logout_user(user)
+    logout_user()
     return render_template("end.html")
 
 
@@ -52,8 +58,9 @@ def add_admin_route():
     """
     form = AddAdmin()
     if form.validate_on_submit():
-        add_admin(form)
-        return redirect(url_for("admin_login"))
+        if add_admin(form):
+        	return redirect(url_for("admin_login"))
+    return render_template("addadmin.html", form=form)
 
 
 @app.route("/admin-login", methods=["GET", "POST"])
@@ -62,7 +69,37 @@ def admin_login():
     if form.validate_on_submit():
         if check_admin(form):
             return redirect(url_for("overview"))
+    return render_template("adminlogin.html", form=form)
 
+@app.route("/add-waiter", methods=["GET","POST"])
+def add_waiter_route():
+	if current_user.access_level in [2,3]:
+		form = AddWaiter()
+		if form.validate_on_submit():
+			add_waiter(form)
+			return redirect(url_for("waiter_login"))
+		return render_template("addwaiter.html", form=form)
+
+	else:
+		#flash access level for debugging
+		flash( f"number guests is {current_user.number_guests}, table number is {current_user.table_number}" )
+		return redirect(url_for("menu"))
+
+
+@app.route("/waiter-login", methods=["GET","POST"])
+def waiter_login():
+	form=WaiterLogin()
+	if form.validate_on_submit():
+		if check_waiter(form):
+			return redirect(url_for("overview"))
+	return render_template("waiterlogin.html", form=form)
+
+@app.route("/logout")
+def logout():
+	if current_user.is_active:
+		logout_user()
+		return redirect(url_for("waiter_login"))
+	return redirect(url_for("menu"))
 
 @app.route("/overview", methods=["GET", "POST"])
 #@login_required

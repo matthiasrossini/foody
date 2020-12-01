@@ -1,9 +1,10 @@
 # function within flask to allow secure & time sensitive token crea
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime  # time from local server
-from foody import db, login_manager
 from flask import current_app, flash
-from flask_login import UserMixin, current_user, login_user
+from flask_login import LoginManager, UserMixin, login_user, current_user
+from flask_login import logout_user, login_required
+from foody import login_manager, db
 import uuid
 import bcrypt
 import pandas as pd
@@ -14,12 +15,10 @@ import pandas as pd
 ###########
 
 
-# user_loader helper function for the login manager
-
-
+# setup LoginManager
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
 class Table(db.Model):
@@ -51,36 +50,21 @@ class Products(db.Model, UserMixin):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    table_number = db.Column(db.Integer, nullable=False)
-    number_guests = db.Column(db.Integer, nullable=False)
-    uuid = db.Column(db.String(60), nullable=False)
-    seated = db.Column(db.String, nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    access_level = db.Column(db.Integer, nullable=False)
+    table_number = db.Column(db.Integer)
+    number_guests = db.Column(db.Integer)
+    full_name=db.Column(db.String(50))
+    username=db.Column(db.String(60))
+    password=db.Column(db.String(100))
+    email = db.Column(db.String(60))
+    uuid = db.Column(db.String(60))
+    date = db.Column(db.DateTime, default=datetime.now)
+    role = db.Column(db.String(20), nullable=False)
 
     #output1 = (f" User ID: {self.id}, table number: {self.table_number} ")
     #output2 = (f" Number of guests: {self.number_guests}, date: {self.date} ")
     #def __repr__(self):
         #return output1 + output2
 
-
-# class of waiter than can access overview of tables
-class Waiter(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(db.String, nullable=False)
-    username = db.Column(db.String(60), nullable=False)
-    password = db.Column(db.String(30), nullable=False)
-    access_level = db.Column(db.Integer, nullable=False)
-
-
-# class of admin that can upload new products and see overview of tables
-class Admin(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(60), nullable=False)
-    password = db.Column(db.String(30), nullable=False)
-    full_name = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(60), nullable=False)
-    access_level = db.Column(db.Integer, nullable=False)
 
 
 # this is to insert in the database what the user has input
@@ -90,12 +74,10 @@ def register_login(form, table_number):
         uuid=uuid_table,
         table_number=table_number,
         number_guests=form.number_guests.data,
-        seated="yes",
-        access_level=0
+        role="client",
         )
     db.session.add(table)
     db.session.commit()
-    db.create_all()
 
     user = User.query.filter_by(uuid=uuid_table).first()
     login_user(user)
@@ -110,36 +92,76 @@ def get_products():
 def add_admin(form):
     admin_username = form.username.data
 
-    if Admin.query.filter_by(username=admin_username).count():
+    if User.query.filter_by(username=admin_username).count():
         flash("username is taken. Try another one.")
         return False
-    if Admin.query.filter_by(email=form.email.data).count():
+    if User.query.filter_by(email=form.email.data).count():
         flash("This email is already taken! Please pick another.")
         return False
+    salt = bcrypt.gensalt()
+    password=form.password.data.encode("utf-8")
+    hashed_password = bcrypt.hashpw(password, salt)
 
-    hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-
-    new_admin = Admin(
-        full_name=form.full_name.data,
-        email=form.email.data,
-        username=form.username.data,
-        password=hashed_password,
-        access_level=2
-    )
-    db.create_all()
+    new_admin = User(
+                    full_name = form.full_name.data,
+                    email=form.email.data,
+                    username=form.username.data,
+                    password=hashed_password,
+                    role="admin"
+                    )
     db.session.add(new_admin)
     db.session.commit()
+
+    return True
+
 
 # this is to check that the admin login is correct and log them in
 
 
-def admin_login(form):
-    username = form.username.data
-    admin = Admin.query.filter_by(username=username).first()
+def check_admin(form):
+    email= form.email.data
+    admin = User.query.filter_by(email=email).first()
 
     if admin is not None:
-        if bcypt.check_password_hash(form.password.data, admin.password):
+        if bcrypt.checkpw(form.password.data.encode("utf-8"), admin.password):
             login_user(admin)
             return True
+        else:
+            flash("pasword mistake")
+            return redirect(url_for("admin_login"))
 
-# this is to check the waiter login
+    else:
+        flash("Admin not in database. Check credentials")
+        return redirect(url_for("admin_login"))
+
+# this is to add waiters
+def add_waiter(form):
+    waiter_username = form.username.data
+
+    if User.query.filter_by(username=waiter_username).count():
+        flash("Username is taken. Try another one.")
+        return False
+    salt = bcrypt.gensalt()
+    password=form.password.data.encode("utf-8")
+    hashed_password = bcrypt.hashpw(password, salt)
+
+    new_waiter = User(
+                    full_name = form.full_name.data,
+                    username=form.username.data,
+                    password=hashed_password,
+                    role="waiter"
+                    )
+    db.session.add(new_waiter)
+    db.session.commit()
+
+#this is to check the waiter login
+
+def check_waiter(form):
+    username= form.username.data
+    password=form.password.data.encode("utf-8")
+    waiter= User.query.filter_by(username=username).first()
+
+    if Waiter is not None:
+        if bcrypt.checkpw(password, waiter.password):
+            login_user(waiter)
+            return True

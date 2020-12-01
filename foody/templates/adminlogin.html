@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Admin login</title>
+  </head>
+  <body>
+    <h1>Hello, admin!</h1>
+    <br>
+    <h3>Please log in.</h3>
+    <form class=""  method="post">
+      {{ form.hidden_tag() }}
+      <br>
+      {{ form.username.label }} {{ form.username() }}
+      <br>
+      {{ form.password.label }} {{ form.password() }}
+      <br><br>
+      {{ form.submit() }}
+    </form>
+
+  </body>
+</html>
