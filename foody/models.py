@@ -119,8 +119,8 @@ def add_admin(form):
 
 
 def check_admin(form):
-    email= form.email.data
-    admin = User.query.filter_by(email=email).first()
+    username= form.username.data
+    admin = User.query.filter_by(username=username).first()
 
     if admin is not None:
         if bcrypt.checkpw(form.password.data.encode("utf-8"), admin.password):
@@ -161,7 +161,7 @@ def check_waiter(form):
     password=form.password.data.encode("utf-8")
     waiter= User.query.filter_by(username=username).first()
 
-    if Waiter is not None:
+    if waiter is not None:
         if bcrypt.checkpw(password, waiter.password):
             login_user(waiter)
             return True

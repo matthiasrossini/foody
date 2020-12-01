@@ -45,6 +45,7 @@ def during():
 
 
 @app.route("/end")
+@login_required
 def end():
     logout_user()
     return render_template("end.html")
@@ -72,17 +73,17 @@ def admin_login():
     return render_template("adminlogin.html", form=form)
 
 @app.route("/add-waiter", methods=["GET","POST"])
+@login_required
 def add_waiter_route():
-	if current_user.access_level in [2,3]:
+	if current_user.role == "admin":
 		form = AddWaiter()
 		if form.validate_on_submit():
 			add_waiter(form)
-			return redirect(url_for("waiter_login"))
+			return redirect(url_for("menu"))
 		return render_template("addwaiter.html", form=form)
 
 	else:
-		#flash access level for debugging
-		flash( f"number guests is {current_user.number_guests}, table number is {current_user.table_number}" )
+		flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
 		return redirect(url_for("menu"))
 
 
@@ -95,6 +96,7 @@ def waiter_login():
 	return render_template("waiterlogin.html", form=form)
 
 @app.route("/logout")
+@login_required
 def logout():
 	if current_user.is_active:
 		logout_user()
@@ -102,47 +104,50 @@ def logout():
 	return redirect(url_for("menu"))
 
 @app.route("/overview", methods=["GET", "POST"])
-#@login_required
+@login_required
 def overview():
-    table_df = pd.read_sql(Table.query.statement, db.session.bind)
-    """
-    if current_user.access_level in [1, 2]:
+    if current_user.role in ["admin", "waiter"]:
         table_df = pd.read_sql(Table.query.statement, db.session.bind)
         return render_template("overview.html", df=table_df)
-    """
-    return render_template("overview.html", df=table_df)
-
-
-@app.route("/upload-product", methods=["GET", "POST"])
-def upload():
-    form = ProductUpload()
-    if form.validate_on_submit():
-
-        #Saving Image
-        f = form.pimage.data
-        path_in_static_folder = os.path.join("product_images", form.pname.data)
-        filepath = os.path.join("foody/static", path_in_static_folder)
-        f.save(filepath)
-
-        #SQL
-        product = Products(
-            pname=form.pname.data,
-            pdescription=form.pdescription.data,
-            pprice=form.pprice.data,
-            ptype=form.ptype.data,
-            pvegan=form.pvegan.data,
-            pvegetarian=form.pvegetarian.data,
-            pgluten_free=form.pgluten_free.data,
-            plactose_free=form.plactose_free.data,
-            pimage=path_in_static_folder
-            )
-
-        db.session.add(product)
-        db.session.commit()
-
+    else:
+        flash(f"Sorry, but a {current_user.role} cannot access this page.")
         return redirect(url_for("menu"))
 
-    return render_template("menu/upload.html", form=form)
+@app.route("/upload-product", methods=["GET", "POST"])
+@login_required
+def upload():
+    if current_user.role in ["admin", "waiter"]:
+        form = ProductUpload()
+        if form.validate_on_submit():
+
+            #Saving Image
+            f = form.pimage.data
+            path_in_static_folder = os.path.join("product_images", form.pname.data)
+            filepath = os.path.join("foody/static", path_in_static_folder)
+            f.save(filepath)
+
+            #SQL
+            product = Products(
+                pname=form.pname.data,
+                pdescription=form.pdescription.data,
+                pprice=form.pprice.data,
+                ptype=form.ptype.data,
+                pvegan=form.pvegan.data,
+                pvegetarian=form.pvegetarian.data,
+                pgluten_free=form.pgluten_free.data,
+                plactose_free=form.plactose_free.data,
+                pimage=path_in_static_folder
+                )
+
+            db.session.add(product)
+            db.session.commit()
+
+            return redirect(url_for("menu"))
+
+        return render_template("menu/upload.html", form=form)
+    else:
+        flash(f"Sorry, but a {current_user.role} cannot add new products.")
+        return redirect(url_for("menu"))
 
 
 @app.route("/menu")

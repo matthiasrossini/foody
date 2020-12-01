@@ -12,14 +12,13 @@ app.config['SECRET_KEY'] = "hard-to-guess-string"
 
 
 #setup database
-PASSWORD = SQL_PASSWORD
-PUBLIC_IP_ADDRESS = SQL_PUBLIC_IP
-DBNAME = SQL_DATABASE_NAME
+app = Flask(__name__)
+app.config['SECRET_KEY'] = "hard-to-guess-string"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+#setup database
 db = SQLAlchemy(app)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://postgres:{PASSWORD}@{PUBLIC_IP_ADDRESS}/{DBNAME}"
-db.init_app(app)
-db.create_all()
 
 #data = pd.read_csv("database.csv", sep=",")
 
