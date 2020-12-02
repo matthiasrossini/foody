@@ -57,6 +57,7 @@ class User(db.Model, UserMixin):
     password=db.Column(db.String(100))
     email = db.Column(db.String(60))
     uuid = db.Column(db.String(60))
+    client_is_gone= db.Column(db.String(5))
     date = db.Column(db.DateTime, default=datetime.now)
     role = db.Column(db.String(20), nullable=False)
 
@@ -165,3 +166,12 @@ def check_waiter(form):
         if bcrypt.checkpw(password, waiter.password):
             login_user(waiter)
             return True
+
+# This logs the client out and sets his client_is_gone to "yes"
+# Doing so ensures this table doesn't show up in the "overview" page
+def logout_client():
+    user = User.query.filter_by(uuid=current_user.uuid).first()
+    user.client_is_gone = "yes"
+    db.session.commit()
+    logout_user()
+

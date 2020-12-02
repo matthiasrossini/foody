@@ -10,7 +10,7 @@
   <br>
   <h5>Welcome, User: ____ (needs to be configured) {{ admin_user }}, to the overview of the tables.</h5>
   <br>
-  <h2>Tables</h2>
+  <h2>Tables currently in use:</h2>
   <br>
 </div>
 
@@ -19,16 +19,16 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col">Table number</th>
-        <th scope="col">Taken?</th>
         <th scope="col">Number of guests</th>
       </tr>
     </thead>
     <tbody>
       {% for index,row in df.iterrows() %}
       <tr>
-        <th scope="row">{{ row["table_number"] }}</th>
-        <td>{{ row["taken"] }}</td>
-        <td>{{ row["number_guests"] }}</td>
+        {% if row["client_is_gone"] != "yes" %}
+          <th scope="row">{{ row["table_number"] }}</th>
+          <td>{{ row["number_guests"] }}</td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>
