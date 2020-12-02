@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 
 from foody import app, db #data
 from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin
-from foody.models import Products, Table, get_products, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter
+from foody.models import Products, Table, get_products, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
@@ -47,7 +47,7 @@ def during():
 @app.route("/end")
 @login_required
 def end():
-    logout_user()
+    logout_client()
     return render_template("end.html")
 
 
@@ -107,8 +107,8 @@ def logout():
 @login_required
 def overview():
     if current_user.role in ["admin", "waiter"]:
-        table_df = pd.read_sql(Table.query.statement, db.session.bind)
-        return render_template("overview.html", df=table_df)
+        client_df = pd.read_sql(User.query.filter_by(role="client").statement, db.session.bind)
+        return render_template("overview.html", df=client_df)
     else:
         flash(f"Sorry, but a {current_user.role} cannot access this page.")
         return redirect(url_for("menu"))
