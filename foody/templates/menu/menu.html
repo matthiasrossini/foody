@@ -24,5 +24,15 @@
   {% endfor %}
 </div>
 
+<br>
+    <p>Please enter your orders individually</p>
+      <form  method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        {{ form.Food.label }} {{ form.Food() }}
+        <br>
+        {{ form.submit_button() }}
+
+      </form>
 
 {% endblock content %}
