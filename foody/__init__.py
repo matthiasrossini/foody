@@ -3,7 +3,7 @@ from flask import Flask, request
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, current_user
-from foody.secrets import SQL_PASSWORD, SQL_PUBLIC_IP, SQL_DATABASE_NAME
+#from foody.secrets import SQL_PASSWORD, SQL_PUBLIC_IP, SQL_DATABASE_NAME
 from google.cloud import storage
 import pandas as pd
 
