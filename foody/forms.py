@@ -17,7 +17,8 @@ class ProductUpload(FlaskForm):
     pname = StringField("Product Name", validators=[DataRequired()])
     pdescription = StringField("Description", validators=[DataRequired()])
     pprice = FloatField("Price", validators=[DataRequired()])
-    ptype = SelectField("Which Course: ", choices=[("starter", "Starter"), ("main Course", "Main Course"), ("dessert", "Dessert")])
+    ptype = SelectField("Which Course: ", choices=[
+                        ("starter", "Starter"), ("main Course", "Main Course"), ("dessert", "Dessert")])
     pgluten_free = SelectField("Gluten Free?", choices=[("no", "No"), ("yes", "Yes")])
     plactose_free = SelectField("Lactose Free?", choices=[("no", "No"), ("yes", "Yes")])
     pvegetarian = SelectField("Vegetarian?", choices=[("no", "No"), ("yes", "Yes")])
@@ -27,32 +28,38 @@ class ProductUpload(FlaskForm):
 
 
 class MenuForm(FlaskForm):
-	name = StringField('name', validators=[DataRequired()])
-	description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
-	submit = SubmitField('Save')
+    name = StringField('name', validators=[DataRequired()])
+    description = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=200)])
+    submit = SubmitField('Save')
 
 
 class AddAdmin(FlaskForm):
     full_name = StringField("full name", validators=[DataRequired()])
     email = StringField("email", validators=[DataRequired(), Email()])
     username = StringField("username", validators=[DataRequired()])
-    password = PasswordField("password", validators = [DataRequired()])
+    password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("OK")
 
 
 class AdminLogin(FlaskForm):
-    username=StringField("username", validators=[DataRequired()])
-    password= PasswordField("password", validators=[DataRequired()])
+    username = StringField("username", validators=[DataRequired()])
+    password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("OK")
+
 
 class AddWaiter(FlaskForm):
     full_name = StringField("full name", validators=[DataRequired()])
     username = StringField("username", validators=[DataRequired()])
-    password = PasswordField("password", validators = [DataRequired()])
+    password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("OK")
+
 
 class WaiterLogin(FlaskForm):
-    username=StringField("username", validators=[DataRequired()])
-    password= PasswordField("password", validators=[DataRequired()])
+    username = StringField("username", validators=[DataRequired()])
+    password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("OK")
 
+
+class SubmitOrder(FlaskForm):
+    Food = StringField("Type in your order", validators=[DataRequired()])
+    submit_button = SubmitField("Submit order")

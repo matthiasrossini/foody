@@ -3,26 +3,32 @@ import os
 import sys
 from flask import Flask, render_template, redirect, url_for, request, flash
 
-from foody import app, db #data
-from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin
-from foody.models import Products, Table, get_products, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
+from foody import app, db  # data
+from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, SubmitOrder
+from foody.models import Products, Table, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
 from foody.__init__ import login_manager
 
+from sqlalchemy import create_engine
+
+engine = create_engine("sqlite:///site.db")
 
 ##########
 # Routes #
 ##########
+
 
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template('home.html')
 
-#this is the route Flask-login redirects you to automatically
-#if there is a login_required and you are not logged in
+# this is the route Flask-login redirects you to automatically
+# if there is a login_required and you are not logged in
+
+
 @app.route("/login")
 def login():
     return redirect(url_for("menu"))
@@ -60,7 +66,7 @@ def add_admin_route():
     form = AddAdmin()
     if form.validate_on_submit():
         if add_admin(form):
-        	return redirect(url_for("admin_login"))
+            return redirect(url_for("admin_login"))
     return render_template("addadmin.html", form=form)
 
 
@@ -72,36 +78,39 @@ def admin_login():
             return redirect(url_for("overview"))
     return render_template("adminlogin.html", form=form)
 
-@app.route("/add-waiter", methods=["GET","POST"])
+
+@app.route("/add-waiter", methods=["GET", "POST"])
 @login_required
 def add_waiter_route():
-	if current_user.role == "admin":
-		form = AddWaiter()
-		if form.validate_on_submit():
-			add_waiter(form)
-			return redirect(url_for("menu"))
-		return render_template("addwaiter.html", form=form)
+    if current_user.role == "admin":
+        form = AddWaiter()
+        if form.validate_on_submit():
+            add_waiter(form)
+            return redirect(url_for("menu"))
+        return render_template("addwaiter.html", form=form)
 
-	else:
-		flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
-		return redirect(url_for("menu"))
+    else:
+        flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
+        return redirect(url_for("menu"))
 
 
-@app.route("/waiter-login", methods=["GET","POST"])
+@app.route("/waiter-login", methods=["GET", "POST"])
 def waiter_login():
-	form=WaiterLogin()
-	if form.validate_on_submit():
-		if check_waiter(form):
-			return redirect(url_for("overview"))
-	return render_template("waiterlogin.html", form=form)
+    form = WaiterLogin()
+    if form.validate_on_submit():
+        if check_waiter(form):
+            return redirect(url_for("overview"))
+    return render_template("waiterlogin.html", form=form)
+
 
 @app.route("/logout")
 @login_required
 def logout():
-	if current_user.is_active:
-		logout_user()
-		return redirect(url_for("waiter_login"))
-	return redirect(url_for("menu"))
+    if current_user.is_active:
+        logout_user()
+        return redirect(url_for("waiter_login"))
+    return redirect(url_for("menu"))
+
 
 @app.route("/overview", methods=["GET", "POST"])
 @login_required
@@ -113,6 +122,7 @@ def overview():
         flash(f"Sorry, but a {current_user.role} cannot access this page.")
         return redirect(url_for("menu"))
 
+
 @app.route("/upload-product", methods=["GET", "POST"])
 @login_required
 def upload():
@@ -120,13 +130,13 @@ def upload():
         form = ProductUpload()
         if form.validate_on_submit():
 
-            #Saving Image
+            # Saving Image
             f = form.pimage.data
             path_in_static_folder = os.path.join("product_images", form.pname.data)
             filepath = os.path.join("foody/static", path_in_static_folder)
             f.save(filepath)
 
-            #SQL
+            # SQL
             product = Products(
                 pname=form.pname.data,
                 pdescription=form.pdescription.data,
@@ -137,7 +147,7 @@ def upload():
                 pgluten_free=form.pgluten_free.data,
                 plactose_free=form.plactose_free.data,
                 pimage=path_in_static_folder
-                )
+            )
 
             db.session.add(product)
             db.session.commit()
@@ -150,11 +160,33 @@ def upload():
         return redirect(url_for("menu"))
 
 
-@app.route("/menu")
+@app.route("/menu", methods=["GET", "POST"])
 def menu():
     products = get_products()
+    form = SubmitOrder()
+    if form.validate_on_submit():
+        food = form.Food.data
+        product = Products.query.filter_by(pname=food).first()
+        name = product.pname
+        price = product.pprice
+        Order = Orders(food=name, price=price)
+        db.session.add(Order)
+        db.session.commit()
+        flash("Order submitted successfully")
+    return render_template("menu/menu.html", products_df=products, form=form)
 
-    return render_template("menu/menu.html", products_df=products)
+
+@app.route("/orders")
+def orders():
+    orders = get_orders()
+    # query = """ to be added once we have the logged in function
+    # SELECT *
+    # FROM orders
+    # LEFT JOIN Table
+    # ON Table.id == Orders.user_id
+    # """
+    # orders = pd.read_sql(query, db.session.bind)
+    return render_template("orders.html", orders_df=orders)
 
 
 @app.route("/product/<product_name>")

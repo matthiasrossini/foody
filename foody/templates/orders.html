@@ -1,0 +1,22 @@
+
+
+{% extends "layout.html" %}
+{% block content %}
+
+<br>
+<br>
+
+<div class="row">
+  {% for index, row in orders_df.iterrows() %}
+
+    <div class="card">
+      <!-- <h3>Product No. {{ index+1 }}:</h3> -->
+      <p>{{ row['food'] }}</p>
+      <p>{{ row['price'] }} CHF</p>
+
+
+    </div>
+
+  {% endfor %}
+
+  {% endblock content %}
