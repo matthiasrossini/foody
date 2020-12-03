@@ -72,9 +72,13 @@
 
                 <li class="list-group-item list-group-item-light"> <a href={{ url_for("overview") }}> #Overview </a></li>
 
-                <li class="list-group-item list-group-item-light"> <a href="https://flask.palletsprojects.com/en/1.1.x/quickstart/" target="blank"> #Flask Documentation </a></li>
+                <li class="list-group-item list-group-item-light"> <a href= {{ url_for("admin_login") }} target="blank"> #Admin Login </a></li>
 
-                <li class="list-group-item list-group-item-light"> <a href="https://getbootstrap.com/" target="blank"> #Bootstrap </a></li>
+                <li class="list-group-item list-group-item-light"> <a href= {{ url_for("add_admin_route") }} target="blank"> #Add Admin </a></li>
+
+                <li class="list-group-item list-group-item-light"> <a href= {{ url_for("waiter_login") }} target="blank"> #Waiter Login </a></li>
+
+                <li class="list-group-item list-group-item-light"> <a href= {{ url_for("add_waiter_route") }} target="blank"> #Add Waiter </a></li>
 
               </ul>
             </p>
