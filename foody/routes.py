@@ -113,7 +113,7 @@ def admin_page():
 
 @app.route("/waiter-login", methods=["GET", "POST"])
 def waiter_login():
-    
+
     form = WaiterLogin()
 
     if form.validate_on_submit():
@@ -228,7 +228,6 @@ def upload():
     else:
         flash(f"Sorry, but a {current_user.role} cannot add new products.")
         return redirect(url_for("menu"))
-<<<<<<< HEAD
 
 
 @app.route("/menu", methods=["GET", "POST"])
@@ -268,5 +267,4 @@ def single_product(product_name):
     # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
     product_info = product_info.to_dict('records')[0]
     return render_template("menu/single_item.html", product_info=product_info)
-=======
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
+
