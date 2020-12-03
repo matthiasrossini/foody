@@ -27,16 +27,14 @@ engine = create_engine("sqlite:///site.db")
 def home():
     return render_template('home.html', layout=home)
 
-<<<<<<< HEAD
 # this is the route Flask-login redirects you to automatically
 # if there is a login_required and you are not logged in
 
 
 @app.route("/login")
 def login():
-    return redirect(url_for("menu"))
-=======
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
+    return redirect(url_for("home"))
+
 
 @app.route("/about")
 def about():
@@ -90,9 +88,6 @@ def admin_login():
             return redirect(url_for("admin_page"))
     return render_template("adminlogin.html", form=form)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 @app.route("/add-waiter", methods=["GET", "POST"])
 @login_required
 def add_waiter_route():
@@ -107,9 +102,6 @@ def add_waiter_route():
         flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
         return redirect(url_for("menu"))
 
-=======
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
-=======
 @app.route("/admin")
 def admin_page():
     if current_user.is_authenticated:
@@ -119,15 +111,11 @@ def admin_page():
         flash("You must be an admin to view this page.")
         return redirect(url_for("home"))
 
->>>>>>> dynavbar
-
 @app.route("/waiter-login", methods=["GET", "POST"])
 def waiter_login():
-<<<<<<< HEAD
+    
     form = WaiterLogin()
-=======
-    form=WaiterLogin()
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
+
     if form.validate_on_submit():
         if check_waiter(form):
             return redirect(url_for("waiter_page"))
