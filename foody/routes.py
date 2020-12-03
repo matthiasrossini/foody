@@ -51,7 +51,7 @@ def about():
 #Flask-login redirects you automatically here if login_required and you are not logged in
 @app.route("/login")
 def login():
-    return redirect(url_for("menu"))
+    return redirect(url_for("home"))
 
 
 @app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
@@ -74,7 +74,7 @@ def add_waiter_route():
         form = AddWaiter()
         if form.validate_on_submit():
             add_waiter(form)
-            return redirect(url_for("menu"))
+            return redirect(url_for("admin"))
         return render_template("addwaiter.html", form=form)
 
     else:
@@ -87,9 +87,10 @@ def admin_login():
     form = AdminLogin()
     if form.validate_on_submit():
         if check_admin(form):
-            return redirect(url_for("overview"))
+            return redirect(url_for("admin_page"))
     return render_template("adminlogin.html", form=form)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 @app.route("/add-waiter", methods=["GET", "POST"])
@@ -108,6 +109,17 @@ def add_waiter_route():
 
 =======
 >>>>>>> c081374c1b267b287260c08c0ad87785432162ff
+=======
+@app.route("/admin")
+def admin_page():
+    if current_user.is_authenticated:
+        if current_user.role  == "admin":
+            return render_template("adminpage.html")
+    else:
+        flash("You must be an admin to view this page.")
+        return redirect(url_for("home"))
+
+>>>>>>> dynavbar
 
 @app.route("/waiter-login", methods=["GET", "POST"])
 def waiter_login():
@@ -118,20 +130,24 @@ def waiter_login():
 >>>>>>> c081374c1b267b287260c08c0ad87785432162ff
     if form.validate_on_submit():
         if check_waiter(form):
-            return redirect(url_for("overview"))
+            return redirect(url_for("waiter_page"))
     return render_template("waiterlogin.html", form=form)
 
+@app.route("/waiter")
+def waiter_page():
+    if current_user.role in ["admin", "waiter"]:
+        return render_template("waiterpage.html")
+    else:
+        flash("You must at least be a waiter to access this page.")
+        return redirect(url_for("home"))
 
 @app.route("/logout")
 @login_required
 def logout():
-    if current_user.is_active:
-        logout_user()
-        return redirect(url_for("waiter_login"))
-    return redirect(url_for("menu"))
 
-<<<<<<< HEAD
-=======
+    logout_user()
+    return redirect(url_for("home"))
+
 
 ###################
 # Customer Routes #
@@ -176,7 +192,6 @@ def end():
 # Waiter and Admin Routes #
 ###########################
 
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
 
 @app.route("/overview", methods=["GET", "POST"])
 @login_required
