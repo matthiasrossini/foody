@@ -51,18 +51,6 @@ def about():
 def login():
     return redirect(url_for("home"))
 
-@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
-def add_admin_route():
-    """
-    ADD THIS IN LATER FOR SECURITY
-    if current_user.access_level = 3:
-    """
-    form = AddAdmin()
-    if form.validate_on_submit():
-        if add_admin(form):
-        	return redirect(url_for("admin_login"))
-    return render_template("addadmin.html", form=form)
-
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     form = AdminLogin()
