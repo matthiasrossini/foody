@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash, ses
 
 from foody import app, db  # data
 from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, SubmitOrder
-from foody.models import Products, Table, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
+from foody.models import Products, Table, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
@@ -159,7 +159,7 @@ def upload():
         return redirect(url_for("menu"))
 
 
-@app.route("/menu")
+@app.route("/menu", methods=["GET", "POST"])
 def menu():
     products = get_products()
     products = get_products()
