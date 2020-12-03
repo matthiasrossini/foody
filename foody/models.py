@@ -193,7 +193,10 @@ def check_waiter(form):
 
 
 def logout_client():
-    user = User.query.filter_by(uuid=current_user.uuid).first()
-    user.client_is_gone = "yes"
-    db.session.commit()
-    logout_user()
+    if current_user.role == "client":
+        user = User.query.filter_by(uuid=current_user.uuid).first()
+        user.client_is_gone = "yes"
+        db.session.commit()
+        logout_user()
+    else:
+        return redirect(url_for("logout"))

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="container">
+    <h1>Dear Customer</h1>
+    <br>
+    <h3><em>We are working hard to prepare your order as efficiently and deliciously.</em></h3>
+    <br>
+    <img src="static/img/gallery/beautifulplate.jpg" width= 512 height= 362>
+    <br>
+    <h4><em><b>Thank you</b> for your patience</em></h4>
+    <br><br>
+    <h4>Ready to order <b>more</b>? Click here!</h4>
+    <br>
+    <a class="btn btn-primary" href="{{ url_for("menu") }}" role="button">New Order</a>
+    <br><br>
+    <h4>All done and ready to pay? Click here!</h4>
+    <br>
+    <a class="btn btn-primary" href="{{ url_for("stripe") }}" role="button">Payment</a>
+    <br><br>
+  </div>
+
+{% endblock content %}

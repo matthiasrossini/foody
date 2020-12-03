@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="container">
+    <h1>Mmmh, what a <em>delicious</em> meal that hopefully was!</h1>
+    <br>
+    <h3>Enter your payment info here:</h3>
+    <br>
+    <h6>Insert totally secure form here</h6>
+    <br>
+    <h4>Temporary button waiting for stripe API implementation to auto-redirect:</h4>
+    <br>
+    <a class="btn btn-primary" href="{{ url_for("end") }}" role="button">Payment succesful</a>
+    <br><br>
+  </div>
+
+
+{% endblock content %}

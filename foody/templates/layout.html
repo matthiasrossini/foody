@@ -118,6 +118,30 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Checkout</a>
       </li>
+      {% if current_user.is_authenticated %}
+        {% if current_user.role == "admin" %}
+        <li class="nav-item">
+          <a class="nav-link" href={{ url_for("admin_page") }}>Admin page</a>
+        </li>
+        {% endif %}
+
+        {% if current_user.role == "waiter" %}
+        <li class="nav-item">
+          <a class="nav-link" href={{ url_for("waiter_page") }}>Waiter page</a>
+        </li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link" href={{ url_for("logout") }}>Logout</a>
+        </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href={{ url_for("admin_login") }}>Admin</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href={{ url_for("waiter_login") }}>Waiter</a>
+      </li>
+      {% endif %}
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -137,7 +161,18 @@
   </nav>
 
 {% endif %}
-
+<div class="container" style="min-height:100% width:80%">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+      {{ message }}
+      </div>
+    {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
 
   {% block content0 %}{% endblock %}
 
