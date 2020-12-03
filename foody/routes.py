@@ -154,12 +154,6 @@ def during():
     return render_template("during.html")
 
 
-@app.route("/menu")
-def menu():
-    products = get_products()
-
-    return render_template("menu/menu.html", products_df=products,title="Menu")
-
 
 @app.route("/product/<product_name>")
 def single_product(product_name):
