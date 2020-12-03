@@ -66,7 +66,7 @@ def add_waiter_route():
         form = AddWaiter()
         if form.validate_on_submit():
             add_waiter(form)
-            return redirect(url_for("admin_page "))
+            return redirect(url_for("admin_page"))
         return render_template("addwaiter.html", form=form)
 
     else:
