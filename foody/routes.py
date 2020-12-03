@@ -19,7 +19,7 @@ from foody.__init__ import login_manager
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    return render_template('home.html', layout=home)
 
 #this is the route Flask-login redirects you to automatically
 #if there is a login_required and you are not logged in
@@ -154,14 +154,18 @@ def upload():
 def menu():
     products = get_products()
 
-    return render_template("menu/menu.html", products_df=products)
+    return render_template("menu/menu.html", products_df=products,title="Menu")
 
 
 @app.route("/product/<product_name>")
 def single_product(product_name):
     # we access the row of the dataframe that we want
-    product_info = data.loc[data["name"] == product_name, :]
+    product_info = db.loc[data["name"] == product_name, :]
     # we transform the single row into a dictionary (this is easier to access in the html)
     # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
     product_info = product_info.to_dict('records')[0]
     return render_template("menu/single_item.html", product_info=product_info)
+
+@app.route("/about")
+def about():
+    return render_template("about.html", title="About", layout=About)

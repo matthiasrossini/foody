@@ -2,35 +2,44 @@
 {% block content %}
 
 
-<div class="container">
+<div class="card text-white bg-dark mb-3" >
+    <div class="container" data-aos="fade-up" >
+
+    <br>
 
 
-  <form  method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+      <form  method="post" enctype="multipart/form-data">
+        <div>
+            <h3> Upload new menu items here </h3> 
+            {{ form.hidden_tag() }}
 
-    {{ form.pname.label }} {{ form.pname() }}
-    <br>
-    {{ form.pdescription.label }} {{ form.pdescription() }}
-    <br>
-    {{ form.pprice.label }} {{ form.pprice() }}
-    <br>
-    {{ form.ptype.label }} {{ form.ptype() }}
-    <br>
-    {{ form.pgluten_free.label }} {{ form.pgluten_free() }}
-    <br>
-    {{ form.plactose_free.label }} {{ form.plactose_free() }}
-    <br>
-    {{ form.pvegetarian.label }} {{ form.pvegetarian() }}
-    <br>
-    {{ form.pvegan.label }} {{ form.pvegan() }}
-    <br>
-    {{ form.pimage() }}
-    <br>
-    {{ form.submit_button() }}
-  </form>
+            {{ form.pname.label }} {{ form.pname() }}
+            <br>
+            {{ form.pdescription.label }} {{ form.pdescription() }}
+            <br>
+            {{ form.pprice.label }} {{ form.pprice() }}
+            <br>
+            {{ form.ptype.label }} {{ form.ptype() }}
+            <br>
+            {{ form.pgluten_free.label }} {{ form.pgluten_free() }}
+            <br>
+            {{ form.plactose_free.label }} {{ form.plactose_free() }}
+            <br>
+            {{ form.pvegetarian.label }} {{ form.pvegetarian() }}
+            <br>
+            {{ form.pvegan.label }} {{ form.pvegan() }}
+            <br>
+            {{ form.pimage() }}
+            <br>
+            <br>
+            {{ form.submit_button() }}
+            <br>
+            <br>
+        </div>
+      </form>
 
 
+    </div>
 </div>
-
 
 {% endblock content %}

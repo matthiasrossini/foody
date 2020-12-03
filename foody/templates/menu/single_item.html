@@ -4,7 +4,7 @@
 
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
   <div class="col-md-5 p-lg-5 mx-auto my-5">
-    <img width="500px" src={{ url_for("static", filename=product_info["img_path"]) }} alt="">
+    <img width="500px" src={{ url_for("static", filename=product_info["pimage"]) }} alt="">
     <h1 class="display-4 font-weight-normal">{{ product_info["name"] }}</h1>
     <p class="lead font-weight-normal">{{ product_info["description"] }}</p>
     <p class="lead font-weight-normal">{{ product_info["price"] }} CHF</p>

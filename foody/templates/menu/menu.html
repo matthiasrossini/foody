@@ -2,22 +2,43 @@
 
 {% extends "layout.html" %}
 {% block content %}
+  <!-- ======= Menu Section ======= -->
+<section id="menu" class="menu section-bg">
+  <div class="container" data-aos="fade-up">
 
-<br>
-<br>
+    <div class="section-title">
+      <h2>Menu</h2>
+      <p>Check Our Tasty Menu</p>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-lg-12 d-flex justify-content-center">
+        <ul id="menu-flters">
+          <li data-filter="*" class="filter-active">All</li>
+          <li data-filter=".filter-starter">Starters</li>
+          <li data-filter=".filter-main">Mains</li>
+          <li data-filter=".filter-dessert">Desserts</li>
+        </ul>
+      </div>
+    </div>
 
 {% for index, row in products_df.iterrows() %}
-<div class="row">
-  <div class="card text-center bg-light mb-3" style="width: 15rem; margin-right: 1rem; margin-left: 1rem" >
-    <img class="card-img-top" width="150px" src={{ url_for("static", filename=row["pimage"]) }} alt="Card image cap">
-    <div class="card-body" > 
-      <h3>{{ index+1 }}. {{ row['pname'] }}</h3>
-      <p>{{ row['pdescription'] }}</p>
-      <p>{{ row['pprice'] }} CHF</p>
-      <a href={{ url_for("single_product", product_name=row['name']) }} class="btn btn-secondary">See more</a>
+
+  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+    <div class="col-lg-6 menu-item filter-{{row['ptype']}}">
+      <img src={{ url_for("static", filename=row["pimage"]) }} class="menu-img" alt="">
+      <div class="menu-content">
+        <a href="#">{{ index+1 }}. {{ row['pname'] }} </a><span> {{ row['pprice'] }} </span>
+      </div>
+      <div class="menu-ingredients">
+        Gluten Free: {{ row['pgluten_free'] }}, Vegetarian: {{ row['pvegetarian'] }}, Vegan: {{ row['pvegan'] }}
+      </div>
     </div>
   </div>
-</div>
+
 {% endfor %}
+
+</section>
+<!-- End Menu Section -->
 
 {% endblock content %}
