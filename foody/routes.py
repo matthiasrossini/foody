@@ -12,20 +12,91 @@ from flask_login import logout_user, login_required
 from foody.__init__ import login_manager
 
 
-##########
-# Routes #
-##########
+###############
+# Main Routes #
+###############
+
 
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template('home.html', layout=home)
 
-#this is the route Flask-login redirects you to automatically
-#if there is a login_required and you are not logged in
+
+@app.route("/about")
+def about():
+    return render_template("about.html", title="About", layout=About)
+
+
+################
+# Login Routes #
+################
+
+
+#Flask-login redirects you automatically here if login_required and you are not logged in
 @app.route("/login")
 def login():
     return redirect(url_for("menu"))
+
+
+@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
+def add_admin_route():
+    """
+    ADD THIS IN LATER FOR SECURITY
+    if current_user.access_level = 3:
+    """
+    form = AddAdmin()
+    if form.validate_on_submit():
+        if add_admin(form):
+            return redirect(url_for("admin_login"))
+    return render_template("addadmin.html", form=form)
+
+
+@app.route("/add-waiter", methods=["GET","POST"])
+@login_required
+def add_waiter_route():
+    if current_user.role == "admin":
+        form = AddWaiter()
+        if form.validate_on_submit():
+            add_waiter(form)
+            return redirect(url_for("menu"))
+        return render_template("addwaiter.html", form=form)
+
+    else:
+        flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
+        return redirect(url_for("menu"))
+
+
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+    form = AdminLogin()
+    if form.validate_on_submit():
+        if check_admin(form):
+            return redirect(url_for("overview"))
+    return render_template("adminlogin.html", form=form)
+
+
+@app.route("/waiter-login", methods=["GET","POST"])
+def waiter_login():
+    form=WaiterLogin()
+    if form.validate_on_submit():
+        if check_waiter(form):
+            return redirect(url_for("overview"))
+    return render_template("waiterlogin.html", form=form)
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    if current_user.is_active:
+        logout_user()
+        return redirect(url_for("waiter_login"))
+    return redirect(url_for("menu"))
+
+
+###################
+# Customer Routes #
+###################
 
 
 @app.route("/table/<table_number>", methods=["GET", "POST"])
@@ -44,6 +115,23 @@ def during():
     return render_template("during.html")
 
 
+@app.route("/menu")
+def menu():
+    products = get_products()
+
+    return render_template("menu/menu.html", products_df=products,title="Menu")
+
+
+@app.route("/product/<product_name>")
+def single_product(product_name):
+    # we access the row of the dataframe that we want
+    product_info = db.loc[data["name"] == product_name, :]
+    # we transform the single row into a dictionary (this is easier to access in the html)
+    # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
+    product_info = product_info.to_dict('records')[0]
+    return render_template("menu/single_item.html", product_info=product_info)
+
+
 @app.route("/end")
 @login_required
 def end():
@@ -51,57 +139,10 @@ def end():
     return render_template("end.html")
 
 
-@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
-def add_admin_route():
-    """
-    ADD THIS IN LATER FOR SECURITY
-    if current_user.access_level = 3:
-    """
-    form = AddAdmin()
-    if form.validate_on_submit():
-        if add_admin(form):
-        	return redirect(url_for("admin_login"))
-    return render_template("addadmin.html", form=form)
+###########################
+# Waiter and Admin Routes #
+###########################
 
-
-@app.route("/admin-login", methods=["GET", "POST"])
-def admin_login():
-    form = AdminLogin()
-    if form.validate_on_submit():
-        if check_admin(form):
-            return redirect(url_for("overview"))
-    return render_template("adminlogin.html", form=form)
-
-@app.route("/add-waiter", methods=["GET","POST"])
-@login_required
-def add_waiter_route():
-	if current_user.role == "admin":
-		form = AddWaiter()
-		if form.validate_on_submit():
-			add_waiter(form)
-			return redirect(url_for("menu"))
-		return render_template("addwaiter.html", form=form)
-
-	else:
-		flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
-		return redirect(url_for("menu"))
-
-
-@app.route("/waiter-login", methods=["GET","POST"])
-def waiter_login():
-	form=WaiterLogin()
-	if form.validate_on_submit():
-		if check_waiter(form):
-			return redirect(url_for("overview"))
-	return render_template("waiterlogin.html", form=form)
-
-@app.route("/logout")
-@login_required
-def logout():
-	if current_user.is_active:
-		logout_user()
-		return redirect(url_for("waiter_login"))
-	return redirect(url_for("menu"))
 
 @app.route("/overview", methods=["GET", "POST"])
 @login_required
@@ -112,6 +153,7 @@ def overview():
     else:
         flash(f"Sorry, but a {current_user.role} cannot access this page.")
         return redirect(url_for("home"))
+
 
 @app.route("/upload-product", methods=["GET", "POST"])
 @login_required
@@ -148,24 +190,3 @@ def upload():
     else:
         flash(f"Sorry, but a {current_user.role} cannot add new products.")
         return redirect(url_for("menu"))
-
-
-@app.route("/menu")
-def menu():
-    products = get_products()
-
-    return render_template("menu/menu.html", products_df=products,title="Menu")
-
-
-@app.route("/product/<product_name>")
-def single_product(product_name):
-    # we access the row of the dataframe that we want
-    product_info = db.loc[data["name"] == product_name, :]
-    # we transform the single row into a dictionary (this is easier to access in the html)
-    # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
-    product_info = product_info.to_dict('records')[0]
-    return render_template("menu/single_item.html", product_info=product_info)
-
-@app.route("/about")
-def about():
-    return render_template("about.html", title="About", layout=About)
