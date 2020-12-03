@@ -59,18 +59,6 @@ def admin_login():
             return redirect(url_for("admin_page"))
     return render_template("adminlogin.html", form=form)
 
-@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
-def add_admin_route():
-    """
-    ADD THIS IN LATER FOR SECURITY
-    if current_user.access_level = 3:
-    """
-    form = AddAdmin()
-    if form.validate_on_submit():
-        if add_admin(form):
-        	return redirect(url_for("admin_login"))
-    return render_template("addadmin.html", form=form)
-    
 @app.route("/add-waiter", methods=["GET", "POST"])
 @login_required
 def add_waiter_route():
@@ -78,7 +66,7 @@ def add_waiter_route():
         form = AddWaiter()
         if form.validate_on_submit():
             add_waiter(form)
-            return redirect(url_for("admin"))
+            return redirect(url_for("admin_page "))
         return render_template("addwaiter.html", form=form)
 
     else:
@@ -86,6 +74,7 @@ def add_waiter_route():
         return redirect(url_for("home"))
 
 @app.route("/admin")
+@login_required
 def admin_page():
     if current_user.is_authenticated:
         if current_user.role  == "admin":
@@ -105,6 +94,7 @@ def waiter_login():
     return render_template("waiterlogin.html", form=form)
 
 @app.route("/waiter")
+@login_required
 def waiter_page():
     if current_user.role in ["admin", "waiter"]:
         return render_template("waiterpage.html")
@@ -131,14 +121,44 @@ def table(table_number):
     table_number = table_number
     if form.validate_on_submit():
         register_login(form, table_number)
-        return redirect(url_for("during"))
+        return redirect(url_for("menu"))
     return render_template("table.html", form=form, table_number=table_number)
 
+@app.route("/menu", methods=["GET", "POST"])
+def menu():
+    products = get_products()
+    form = SubmitOrder()
+    if form.validate_on_submit():
+        food = form.Food.data
+        product = Products.query.filter_by(pname=food).first()
+        name = product.pname
+        price = product.pprice
+        Order = Orders(food=name, price=price)
+        db.session.add(Order)
+        db.session.commit()
+        flash("Your order was successfully submitted!")
+        return redirect(url_for("meal"))
+    return render_template("menu/menu.html", products_df=products, form=form)
 
-@app.route("/during", methods=["GET", "POST"])
+@app.route("/meal")
 @login_required
-def during():
-    return render_template("during.html")
+def meal():
+    if current_user.role == "client":
+        return render_template("meal.html")
+    else:
+        flash("Sorry, but this route is for clients only. To try it out yourself, +\
+        try out the customer journey from /table/<insert_number_here>!")
+        return redirect(url_for("home"))
+
+@app.route("/stripe")
+@login_required
+def stripe():
+    if current_user.role == "client":
+        return render_template("stripe.html")
+    else:
+        flash("Sorry, but this route is for clients only. To try it out yourself, +\
+        try out the customer journey from /table/<insert_number_here>!")
+        return redirect(url_for("home"))
 
 
 
@@ -203,33 +223,22 @@ def upload():
         return redirect(url_for("menu"))
 
 
-@app.route("/menu", methods=["GET", "POST"])
-def menu():
-    products = get_products()
-    form = SubmitOrder()
-    if form.validate_on_submit():
-        food = form.Food.data
-        product = Products.query.filter_by(pname=food).first()
-        name = product.pname
-        price = product.pprice
-        Order = Orders(food=name, price=price)
-        db.session.add(Order)
-        db.session.commit()
-        flash("Order submitted successfully")
-    return render_template("menu/menu.html", products_df=products, form=form)
-
-
 @app.route("/orders")
+@login_required
 def orders():
-    orders = get_orders()
-    # query = """ to be added once we have the logged in function
-    # SELECT *
-    # FROM orders
-    # LEFT JOIN Table
-    # ON Table.id == Orders.user_id
-    # """
-    # orders = pd.read_sql(query, db.session.bind)
-    return render_template("orders.html", orders_df=orders)
+    if current_user.role in ["admin","waiter"]:
+        orders = get_orders()
+        # query = """ to be added once we have the logged in function
+        # SELECT *
+        # FROM orders
+        # LEFT JOIN Table
+        # ON Table.id == Orders.user_id
+        # """
+        # orders = pd.read_sql(query, db.session.bind)
+        return render_template("orders.html", orders_df=orders)
+    else:
+        flash("Sorry, but customers cannot access this page.")
+        return redirect(url_for("menu"))
 
 
 @app.route("/product/<product_name>")
