@@ -59,6 +59,18 @@ def admin_login():
             return redirect(url_for("admin_page"))
     return render_template("adminlogin.html", form=form)
 
+@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
+def add_admin_route():
+    """
+    ADD THIS IN LATER FOR SECURITY
+    if current_user.access_level = 3:
+    """
+    form = AddAdmin()
+    if form.validate_on_submit():
+        if add_admin(form):
+        	return redirect(url_for("admin_login"))
+    return render_template("addadmin.html", form=form)
+    
 @app.route("/add-waiter", methods=["GET", "POST"])
 @login_required
 def add_waiter_route():
