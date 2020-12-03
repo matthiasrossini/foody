@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+
+  <br>
+  <br>
+  <h1 style="text-align:center;">Welcome, Admin.</h1>
+  <br>
+  <h3><em>You might be interested in the following links:</em> </h3>
+  <br>
+  <h4>Logout as waiter:</h4>
+  <a class="btn btn-primary" href="{{ url_for("logout") }}" role="button">Logout</a>
+  <br><br>
+  <h4>Overview of tables currently taken:</h4>
+  <a class="btn btn-primary" href="{{ url_for("overview") }}" role="button">Table Overview</a>
+  <br><br>
+  <h4>Access the menu:</h4>
+  <a class="btn btn-primary" href="{{ url_for("menu") }}" role="button">Menu</a>
+  <br><br>
+
+
+</div>
+
+
+
+
+
+
+{% endblock content %}

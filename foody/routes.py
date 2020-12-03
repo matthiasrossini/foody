@@ -73,8 +73,16 @@ def admin_login():
     form = AdminLogin()
     if form.validate_on_submit():
         if check_admin(form):
-            return redirect(url_for("overview"))
+            return redirect(url_for("admin_page"))
     return render_template("adminlogin.html", form=form)
+
+@app.route("/admin")
+def admin_page():
+    if current_user.role == "admin":
+        return render_template("adminpage.html")
+    else:
+        flash("You must be an admin to view this page.")
+        return redirect(url_for("home"))
 
 
 @app.route("/waiter-login", methods=["GET","POST"])
@@ -82,17 +90,23 @@ def waiter_login():
     form=WaiterLogin()
     if form.validate_on_submit():
         if check_waiter(form):
-            return redirect(url_for("overview"))
+            return redirect(url_for("waiter_page"))
     return render_template("waiterlogin.html", form=form)
 
+@app.route("/waiter")
+def waiter_page():
+    if current_user.role in ["admin", "waiter"]:
+        return render_template("waiterpage.html")
+    else:
+        flash("You must at least be a waiter to access this page.")
+        return redirect(url_for("home"))
 
 @app.route("/logout")
 @login_required
 def logout():
     if current_user.is_active:
         logout_user()
-        return redirect(url_for("waiter_login"))
-    return redirect(url_for("menu"))
+    return redirect(url_for("home"))
 
 
 ###################
