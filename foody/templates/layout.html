@@ -45,13 +45,13 @@
 <body>
 
 {% if layout %}
-    
+
   <!-- ======= Top Bar ======= -->
   <div id="topbar" class="d-flex align-items-center fixed-top">
     <div class="container d-flex">
       <div class="contact-info mr-auto">
         <i class="icofont-phone"></i> +41 061 061 06 06
-        <span class="d-none d-lg-inline-block"><i class="icofont-clock-time icofont-rotate-180"></i> Mon-Sat: 11:00 AM - 23:00 PM</span>
+        <span class="d-none d-lg-inline-block"><i class="icofont-clock-time icofont-rotate-180"></i> Mon-Sat: 11:00 AM - 11:00 PM</span>
       </div>
       <div class="languages">
         <ul>
@@ -75,12 +75,21 @@
           <li class="active"><a href={{ url_for("home") }}>Home</a></li>
           <li><a href={{ url_for("about") }}>About</a></li>
           <li><a href={{ url_for("menu") }}>Menu</a></li>
-          <li><a href={{ url_for("upload") }}>Upload</a></li>
-          <li><a href={{ url_for("table", table_number=1) }}>Table Check-In</a></li>
-          <li><a href={{ url_for("overview") }}>Overview</a></li>
-          <li><a href={{ url_for("admin_login") }}>Admin</a></li>
-          <li><a href={{ url_for("waiter_login") }}>Waiter</a></li>
-          <li class="book-a-table text-center"><a href={{ url_for("table", table_number=1) }}>Book a table</a></li>
+          {% if current_user.is_authenticated %}
+            {% if current_user.role == "admin" %}
+              <li><a href={{ url_for("admin_page") }}>Admin Page</a></li>
+            {% endif %}
+
+            {% if current_user.role == "waiter" %}
+              <li><a href={{ url_for("waiter_page") }}>Waiter Page</a></li>
+            {% endif %}
+
+              <li><a href={{ url_for("logout") }}>Logout</a></li>
+          {% else %}
+
+              <li><a href={{ url_for("admin_login") }}>Admin</a></li>
+              <li><a href={{ url_for("waiter_login") }}>Waiter</a></li>
+          {% endif %}
         </ul>
       </nav>
       <!-- .nav-menu -->

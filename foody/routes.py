@@ -37,7 +37,7 @@ def about():
 #Flask-login redirects you automatically here if login_required and you are not logged in
 @app.route("/login")
 def login():
-    return redirect(url_for("menu"))
+    return redirect(url_for("home"))
 
 
 @app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
@@ -60,7 +60,7 @@ def add_waiter_route():
         form = AddWaiter()
         if form.validate_on_submit():
             add_waiter(form)
-            return redirect(url_for("menu"))
+            return redirect(url_for("admin"))
         return render_template("addwaiter.html", form=form)
 
     else:
@@ -78,8 +78,9 @@ def admin_login():
 
 @app.route("/admin")
 def admin_page():
-    if current_user.role == "admin":
-        return render_template("adminpage.html")
+    if current_user.is_authenticated:
+        if current_user.role  == "admin":
+            return render_template("adminpage.html")
     else:
         flash("You must be an admin to view this page.")
         return redirect(url_for("home"))
@@ -104,8 +105,8 @@ def waiter_page():
 @app.route("/logout")
 @login_required
 def logout():
-    if current_user.is_active:
-        logout_user()
+
+    logout_user()
     return redirect(url_for("home"))
 
 
