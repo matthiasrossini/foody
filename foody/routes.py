@@ -100,7 +100,7 @@ def waiter_page():
         flash("You must at least be a waiter to access this page.")
         return redirect(url_for("home"))
 
-@app.route("/logout")
+@app.route("/logout", methods=["GET", "POST"])
 @login_required
 def logout():
 
@@ -119,16 +119,23 @@ def table(table_number):
     table_number = table_number
     if form.validate_on_submit():
         register_login(form, table_number)
-        return redirect(url_for("during"))
+        return redirect(url_for("menu"))
     return render_template("table.html", form=form, table_number=table_number)
 
-
-@app.route("/during", methods=["GET", "POST"])
-@login_required
-def during():
-    return render_template("during.html")
-
-
+@app.route("/menu", methods=["GET", "POST"])
+def menu():
+    products = get_products()
+    form = SubmitOrder()
+    if form.validate_on_submit():
+        food = form.Food.data
+        product = Products.query.filter_by(pname=food).first()
+        name = product.pname
+        price = product.pprice
+        Order = Orders(food=name, price=price)
+        db.session.add(Order)
+        db.session.commit()
+        flash("Order submitted successfully")
+    return render_template("menu/menu.html", products_df=products, form=form)
 
 @app.route("/end")
 @login_required
@@ -190,21 +197,6 @@ def upload():
         flash(f"Sorry, but a {current_user.role} cannot add new products.")
         return redirect(url_for("menu"))
 
-
-@app.route("/menu", methods=["GET", "POST"])
-def menu():
-    products = get_products()
-    form = SubmitOrder()
-    if form.validate_on_submit():
-        food = form.Food.data
-        product = Products.query.filter_by(pname=food).first()
-        name = product.pname
-        price = product.pprice
-        Order = Orders(food=name, price=price)
-        db.session.add(Order)
-        db.session.commit()
-        flash("Order submitted successfully")
-    return render_template("menu/menu.html", products_df=products, form=form)
 
 
 @app.route("/orders")

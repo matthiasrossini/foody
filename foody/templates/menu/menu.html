@@ -38,20 +38,20 @@
 
 {% endfor %}
 
-<<<<<<< HEAD
 <br>
+
+</section>
+<!-- End Menu Section -->
+{% if current_user.is_authenticated and current_user.role == "client" %}
+  <div class="container">
     <p>Please enter your orders individually</p>
       <form  method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-
         {{ form.Food.label }} {{ form.Food() }}
         <br>
         {{ form.submit_button() }}
-
       </form>
-=======
-</section>
-<!-- End Menu Section -->
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
+  </div>
+{% endif %}
 
 {% endblock content %}
