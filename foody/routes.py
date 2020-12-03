@@ -18,6 +18,7 @@ from foody.__init__ import login_manager
 
 
 @app.route("/")
+@app.route("/index")
 @app.route("/home")
 def home():
     return render_template('home.html', layout=home)

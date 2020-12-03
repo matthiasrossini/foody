@@ -127,7 +127,7 @@ def check_admin(form):
             login_user(admin)
             return True
         else:
-            flash("pasword mistake")
+            flash("password mistake")
             return redirect(url_for("admin_login"))
 
     else:
