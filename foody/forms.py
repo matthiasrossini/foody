@@ -45,11 +45,13 @@ class AdminLogin(FlaskForm):
     password= PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("OK")
 
+
 class AddWaiter(FlaskForm):
     full_name = StringField("full name", validators=[DataRequired()])
     username = StringField("username", validators=[DataRequired()])
     password = PasswordField("password", validators = [DataRequired()])
     submit = SubmitField("OK")
+
 
 class WaiterLogin(FlaskForm):
     username=StringField("username", validators=[DataRequired()])
