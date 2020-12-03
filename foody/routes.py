@@ -32,7 +32,7 @@ def home():
 
 
 @app.route("/login")
-def login():
+def login_route():
     return redirect(url_for("home"))
 
 
@@ -51,35 +51,6 @@ def about():
 def login():
     return redirect(url_for("home"))
 
-
-@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
-def add_admin_route():
-    """
-    ADD THIS IN LATER FOR SECURITY
-    if current_user.access_level = 3:
-    """
-    form = AddAdmin()
-    if form.validate_on_submit():
-        if add_admin(form):
-            return redirect(url_for("admin_login"))
-    return render_template("addadmin.html", form=form)
-
-
-@app.route("/add-waiter", methods=["GET","POST"])
-@login_required
-def add_waiter_route():
-    if current_user.role == "admin":
-        form = AddWaiter()
-        if form.validate_on_submit():
-            add_waiter(form)
-            return redirect(url_for("admin"))
-        return render_template("addwaiter.html", form=form)
-
-    else:
-        flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
-        return redirect(url_for("menu"))
-
-
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     form = AdminLogin()
@@ -95,12 +66,12 @@ def add_waiter_route():
         form = AddWaiter()
         if form.validate_on_submit():
             add_waiter(form)
-            return redirect(url_for("menu"))
+            return redirect(url_for("admin"))
         return render_template("addwaiter.html", form=form)
 
     else:
         flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
-        return redirect(url_for("menu"))
+        return redirect(url_for("home"))
 
 @app.route("/admin")
 def admin_page():
@@ -157,16 +128,6 @@ def table(table_number):
 def during():
     return render_template("during.html")
 
-
-
-@app.route("/product/<product_name>")
-def single_product(product_name):
-    # we access the row of the dataframe that we want
-    product_info = db.loc[data["name"] == product_name, :]
-    # we transform the single row into a dictionary (this is easier to access in the html)
-    # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
-    product_info = product_info.to_dict('records')[0]
-    return render_template("menu/single_item.html", product_info=product_info)
 
 
 @app.route("/end")

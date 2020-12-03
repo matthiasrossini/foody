@@ -89,20 +89,13 @@ def register_login(form, table_number):
     user = User.query.filter_by(uuid=uuid_table).first()
     login_user(user)
 
-<<<<<<< HEAD
-# Getting products from SQL
-
-
-=======
 
 #Getting products from SQL
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
 def get_products():
     df = pd.read_sql(Products.query.statement, db.session.bind)
 
     return df
 
-<<<<<<< HEAD
 # Getting orders from SQL
 
 
@@ -110,8 +103,6 @@ def get_orders():
     df1 = pd.read_sql(Orders.query.statement, db.session.bind)
 
     return df1
-=======
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
 
 # this is to add in new admins
 
@@ -182,11 +173,8 @@ def add_waiter(form):
     db.session.add(new_waiter)
     db.session.commit()
 
-<<<<<<< HEAD
 # this is to check the waiter login
 
-=======
->>>>>>> c081374c1b267b287260c08c0ad87785432162ff
 
 #this is to check the waiter login
 def check_waiter(form):
