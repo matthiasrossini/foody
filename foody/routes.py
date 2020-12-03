@@ -111,7 +111,7 @@ def overview():
         return render_template("overview.html", df=client_df)
     else:
         flash(f"Sorry, but a {current_user.role} cannot access this page.")
-        return redirect(url_for("menu"))
+        return redirect(url_for("home"))
 
 @app.route("/upload-product", methods=["GET", "POST"])
 @login_required
