@@ -7,20 +7,15 @@ from flask_login import LoginManager, UserMixin, current_user
 from google.cloud import storage
 import pandas as pd
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = "hard-to-guess-string"
 
-
-#setup database
+#setup app and database
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "hard-to-guess-string"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-
-#setup database
 db = SQLAlchemy(app)
+#old version: data = pd.read_csv("database.csv", sep=",")
 
-#data = pd.read_csv("database.csv", sep=",")
 
 #Bcrypt for hashing passwords and LoginManager
 bcrypt = Bcrypt(app)

@@ -17,8 +17,12 @@ class ProductUpload(FlaskForm):
     pname = StringField("Product Name", validators=[DataRequired()])
     pdescription = StringField("Description", validators=[DataRequired()])
     pprice = FloatField("Price", validators=[DataRequired()])
+<<<<<<< HEAD
     ptype = SelectField("Which Course: ", choices=[
                         ("starter", "Starter"), ("main Course", "Main Course"), ("dessert", "Dessert")])
+=======
+    ptype = SelectField("Which Course: ", choices=[("starter", "Starter"), ("main", "Main Course"), ("dessert", "Dessert")])
+>>>>>>> c081374c1b267b287260c08c0ad87785432162ff
     pgluten_free = SelectField("Gluten Free?", choices=[("no", "No"), ("yes", "Yes")])
     plactose_free = SelectField("Lactose Free?", choices=[("no", "No"), ("yes", "Yes")])
     pvegetarian = SelectField("Vegetarian?", choices=[("no", "No"), ("yes", "Yes")])

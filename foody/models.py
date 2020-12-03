@@ -74,7 +74,6 @@ class User(db.Model, UserMixin):
     # def __repr__(self):
     # return output1 + output2
 
-
 # this is to insert in the database what the user has input
 def register_login(form, table_number):
     uuid_table = str(uuid.uuid1())
@@ -90,14 +89,20 @@ def register_login(form, table_number):
     user = User.query.filter_by(uuid=uuid_table).first()
     login_user(user)
 
+<<<<<<< HEAD
 # Getting products from SQL
 
 
+=======
+
+#Getting products from SQL
+>>>>>>> c081374c1b267b287260c08c0ad87785432162ff
 def get_products():
     df = pd.read_sql(Products.query.statement, db.session.bind)
 
     return df
 
+<<<<<<< HEAD
 # Getting orders from SQL
 
 
@@ -105,6 +110,8 @@ def get_orders():
     df1 = pd.read_sql(Orders.query.statement, db.session.bind)
 
     return df1
+=======
+>>>>>>> c081374c1b267b287260c08c0ad87785432162ff
 
 # this is to add in new admins
 
@@ -136,8 +143,6 @@ def add_admin(form):
 
 
 # this is to check that the admin login is correct and log them in
-
-
 def check_admin(form):
     username = form.username.data
     admin = User.query.filter_by(username=username).first()
@@ -147,12 +152,13 @@ def check_admin(form):
             login_user(admin)
             return True
         else:
-            flash("pasword mistake")
+            flash("password mistake")
             return redirect(url_for("admin_login"))
 
     else:
         flash("Admin not in database. Check credentials")
         return redirect(url_for("admin_login"))
+
 
 # this is to add waiters
 
@@ -176,9 +182,13 @@ def add_waiter(form):
     db.session.add(new_waiter)
     db.session.commit()
 
+<<<<<<< HEAD
 # this is to check the waiter login
 
+=======
+>>>>>>> c081374c1b267b287260c08c0ad87785432162ff
 
+#this is to check the waiter login
 def check_waiter(form):
     username = form.username.data
     password = form.password.data.encode("utf-8")
@@ -188,6 +198,7 @@ def check_waiter(form):
         if bcrypt.checkpw(password, waiter.password):
             login_user(waiter)
             return True
+
 
 # This logs the client out and sets his client_is_gone to "yes"
 # Doing so ensures this table doesn't show up in the "overview" page
