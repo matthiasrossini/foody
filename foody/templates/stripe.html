@@ -1,17 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-  <div class="container">
-    <h1>Mmmh, what a <em>delicious</em> meal that hopefully was!</h1>
-    <br>
-    <h3>Enter your payment info here:</h3>
-    <br>
-    <h6>Insert totally secure form here</h6>
-    <br>
-    <h4>Temporary button waiting for stripe API implementation to auto-redirect:</h4>
-    <br>
-    <a class="btn btn-primary" href="{{ url_for("end") }}" role="button">Payment succesful</a>
-    <br><br>
-  </div>
+  <form action="/charge" method="post">
+    <article>
+      <label>
+        <span>Amount is $ {{ amount/100 }}</span>
+      </label>
+    </article>
 
-
-{% endblock content %}
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="A Flask Charge" data-amount={{ amount }} data-locale="auto"></script>
+  </form>
+{% endblock %}
