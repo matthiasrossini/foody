@@ -74,6 +74,21 @@ def add_waiter_route():
         flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
         return redirect(url_for("home"))
 
+# to delete afterwards
+
+
+@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
+def add_admin_route():
+    """
+    ADD THIS IN LATER FOR SECURITY
+    if current_user.access_level = 3:
+    """
+    form = AddAdmin()
+    if form.validate_on_submit():
+        if add_admin(form):
+            return redirect(url_for("admin_login"))
+    return render_template("addadmin.html", form=form)
+
 
 @app.route("/admin")
 @login_required
@@ -140,7 +155,7 @@ def menu():
         product = Products.query.filter_by(pname=food).first()
         name = product.pname
         price = product.pprice
-        Order = Orders(food=name, price=price)
+        Order = Orders(food=name, price=price, user_id=current_user.table_number)
         db.session.add(Order)
         db.session.commit()
         flash("Your order was successfully submitted!")
@@ -260,15 +275,17 @@ def upload():
 @login_required
 def orders():
     if current_user.role in ["admin", "waiter"]:
-        # orders = get_orders()
-        # query = """
-        # SELECT *
-        # FROM Table
-        # LEFT JOIN Orders
-        # ON User.id == Orders.user_id
-        # """
-        # orders = pd.read_sql(query, db.session.bind)
-        return render_template("orders.html", orders_df=orders)
+        orders = get_orders()
+        query = """
+        SELECT *
+        FROM User
+        LEFT JOIN Orders
+        ON User.table_number == Orders.user_id
+        """
+        orders_overview = pd.read_sql(query, db.session.bind)
+        orders_overview = orders_overview.sort_values(by=['table_number'], ascending=False)
+        # orders_overview1 = orders_overview.groupby("table_number")
+        return render_template("orders.html", orders_df=orders_overview)
     else:
         flash("Sorry, but customers cannot access this page.")
         return redirect(url_for("menu"))

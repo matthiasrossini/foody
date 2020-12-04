@@ -5,16 +5,23 @@
 
 <br>
 <br>
+<div class="container">
 
+    <h5>See all orders displayed here {{ current_user.full_name }} </h5>
+    <br>
+    <br>
 <div class="row">
   {% for index, row in orders_df.iterrows() %}
+  {% if row["client_is_gone"] != "yes" %}
 
-    <div class="card">
+    <div class="card col-sm" style="width: 18rem;">
       <!-- <h3>Product No. {{ index+1 }}:</h3> -->
+      <p> Table {{row['table_number']}}</p>
       <p>{{ row['food'] }}</p>
       <p>{{ row['price'] }} CHF</p>
 
 
+{% endif %}
     </div>
 
   {% endfor %}

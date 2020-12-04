@@ -24,24 +24,23 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-class Table(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    table_number = db.Column(db.Integer, nullable=False)
-    taken = db.Column(db.String(10), nullable=False)
-    number_guests = db.Column(db.Integer)
-    ptype = db.Column(db.String(20))
-    pgluten_free = db.Column(db.String(10))
-    plactose_free = db.Column(db.String(10))
-    pvegetarian = db.Column(db.String(10))
-    pvegan = db.Column(db.String(10))
-    # orders = db.relationship("Orders", backref="table", lazy=True)
+# class Table(db.Model, UserMixin):
+#     id = db.Column(db.Integer, primary_key=True)
+#     table_number = db.Column(db.Integer, nullable=False)
+#     taken = db.Column(db.String(10), nullable=False)
+#     number_guests = db.Column(db.Integer)
+#     ptype = db.Column(db.String(20))
+#     pgluten_free = db.Column(db.String(10))
+#     plactose_free = db.Column(db.String(10))
+#     pvegetarian = db.Column(db.String(10))
+#     pvegan = db.Column(db.String(10))
 
 
 class Orders(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     food = db.Column(db.String)
     price = db.Column(db.Integer)
-    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     @validates('food')
     def convert_upper(self, key, value):
@@ -78,7 +77,7 @@ class User(db.Model, UserMixin):
     client_is_gone = db.Column(db.String(5))
     date = db.Column(db.DateTime, default=datetime.now)
     role = db.Column(db.String(20), nullable=False)
-
+    orders = db.relationship("Orders", backref="table", lazy=True)
     #output1 = (f" User ID: {self.id}, table number: {self.table_number} ")
     #output2 = (f" Number of guests: {self.number_guests}, date: {self.date} ")
     # def __repr__(self):
