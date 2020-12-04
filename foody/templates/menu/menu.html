@@ -28,7 +28,7 @@
     <div class="col-lg-6 menu-item filter-{{row['ptype']}}">
       <img src={{ url_for("static", filename=row["pimage"]) }} class="menu-img" alt="">
       <div class="menu-content">
-        <a href="#">{{ index+1 }}. {{ row['pname'] }} </a><span> {{ row['pprice'] }} </span>
+        <a href="#">{{ index+1 }}. {{ row['pname'] }} </a><span> {{ row['pprice'] }}</span>
       </div>
       <div class="menu-ingredients">
         Gluten Free: {{ row['pgluten_free'] }}, Vegetarian: {{ row['pvegetarian'] }}, Vegan: {{ row['pvegan'] }}
@@ -39,21 +39,20 @@
 {% endfor %}
 
 <br>
+<br>
 
-</section>
-<!-- End Menu Section -->
 {% if current_user.is_authenticated and current_user.role == "client" %}
-  <div class="container">
+  <div class="container" style = "color: White">
     <p>Please enter your orders individually</p>
-      <form  method="post" enctype="multipart/form-data">
+      <form style = "color: White;" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.Food.label }} {{ form.Food() }}
+        <br>
         <br>
         {{ form.submit_button() }}
       </form>
   </div>
 {% endif %}
-</section>
-<!-- End Menu Section -->
+
 
 {% endblock content %}

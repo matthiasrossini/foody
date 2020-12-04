@@ -1,27 +1,30 @@
 # function within flask to allow secure & time sensitive token crea
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime  # time from local server
-from flask import current_app, flash, redirect, url_for
+from flask import current_app, flash, redirect, url_for, Flask
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
 from foody import login_manager, db
+from flask_login import LoginManager, UserMixin, login_user, current_user
 import uuid
 import bcrypt
 import pandas as pd
-
+from sqlalchemy.orm import validates
+from flask_sqlalchemy import SQLAlchemy
 
 ###########
 # Models  #
 ###########
 
-
 # setup LoginManager
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
 
 
-class Table(db.Model):
+class Table(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     table_number = db.Column(db.Integer, nullable=False)
     taken = db.Column(db.String(10), nullable=False)
@@ -31,14 +34,18 @@ class Table(db.Model):
     plactose_free = db.Column(db.String(10))
     pvegetarian = db.Column(db.String(10))
     pvegan = db.Column(db.String(10))
-    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) --> backref needed for waiters view
+    # orders = db.relationship("Orders", backref="table", lazy=True)
 
 
 class Orders(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     food = db.Column(db.String)
     price = db.Column(db.Integer)
-    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) --> backref needed for waiters view
+    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+    @validates('food')
+    def convert_upper(self, key, value):
+        return value.upper()
 
 
 class Products(db.Model, UserMixin):
@@ -53,7 +60,10 @@ class Products(db.Model, UserMixin):
     pvegetarian = db.Column(db.String)
     pimage = db.Column(db.String)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    #user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
+
+    @validates('pname')
+    def convert_upper(self, key, value):
+        return value.upper()
 
 
 class User(db.Model, UserMixin):
@@ -75,6 +85,8 @@ class User(db.Model, UserMixin):
     # return output1 + output2
 
 # this is to insert in the database what the user has input
+
+
 def register_login(form, table_number):
     uuid_table = str(uuid.uuid1())
     table = User(
@@ -90,7 +102,7 @@ def register_login(form, table_number):
     login_user(user)
 
 
-#Getting products from SQL
+# Getting products from SQL
 def get_products():
     df = pd.read_sql(Products.query.statement, db.session.bind)
 
@@ -176,7 +188,7 @@ def add_waiter(form):
 # this is to check the waiter login
 
 
-#this is to check the waiter login
+# this is to check the waiter login
 def check_waiter(form):
     username = form.username.data
     password = form.password.data.encode("utf-8")

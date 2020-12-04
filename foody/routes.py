@@ -20,7 +20,6 @@ engine = create_engine("sqlite:///site.db")
 ###############
 
 
-
 @app.route("/")
 @app.route("/index")
 @app.route("/home")
@@ -46,10 +45,11 @@ def about():
 ################
 
 
-#Flask-login redirects you automatically here if login_required and you are not logged in
+# Flask-login redirects you automatically here if login_required and you are not logged in
 @app.route("/login")
 def login():
     return redirect(url_for("home"))
+
 
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
@@ -58,6 +58,7 @@ def admin_login():
         if check_admin(form):
             return redirect(url_for("admin_page"))
     return render_template("adminlogin.html", form=form)
+
 
 @app.route("/add-waiter", methods=["GET", "POST"])
 @login_required
@@ -73,15 +74,17 @@ def add_waiter_route():
         flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
         return redirect(url_for("home"))
 
+
 @app.route("/admin")
 @login_required
 def admin_page():
     if current_user.is_authenticated:
-        if current_user.role  == "admin":
+        if current_user.role == "admin":
             return render_template("adminpage.html")
     else:
         flash("You must be an admin to view this page.")
         return redirect(url_for("home"))
+
 
 @app.route("/waiter-login", methods=["GET", "POST"])
 def waiter_login():
@@ -93,6 +96,7 @@ def waiter_login():
             return redirect(url_for("waiter_page"))
     return render_template("waiterlogin.html", form=form)
 
+
 @app.route("/waiter")
 @login_required
 def waiter_page():
@@ -101,6 +105,7 @@ def waiter_page():
     else:
         flash("You must at least be a waiter to access this page.")
         return redirect(url_for("home"))
+
 
 @app.route("/logout", methods=["GET", "POST"])
 @login_required
@@ -124,12 +129,14 @@ def table(table_number):
         return redirect(url_for("menu"))
     return render_template("table.html", form=form, table_number=table_number)
 
+
 @app.route("/menu", methods=["GET", "POST"])
 def menu():
     products = get_products()
     form = SubmitOrder()
     if form.validate_on_submit():
         food = form.Food.data
+        food = food.upper()
         product = Products.query.filter_by(pname=food).first()
         name = product.pname
         price = product.pprice
@@ -139,6 +146,33 @@ def menu():
         flash("Your order was successfully submitted!")
         return redirect(url_for("meal"))
     return render_template("menu/menu.html", products_df=products, form=form)
+
+
+# @app.route("/menu", methods=["GET", "POST"])
+# def menu():
+#     products = get_products()
+#     # form = SubmitOrder()
+#     # if form.validate_on_submit():
+#
+#     # return redirect(url_for("meal"))
+#     return render_template("menu/menu.html", products_df=products)
+
+
+# @app.route("/order")
+# def order():
+#     products = get_products()
+#     for column in products:
+#         print(products["pname"])
+#     product = Products.query.filter_by(pname=food).first()
+#     name = product.pname
+#     price = product.pprice
+#     Order = Orders(food=name, price=price)
+#     db.session.add(Order)
+#     db.session.commit()
+#     flash("Your order was successfully submitted!")
+#     return render_template("menu/menu.html", products_df=products)
+# <a href= "{{url_for("order") }}" class="btn btn-primary"> Order {{ row['pname']}}</a>
+
 
 @app.route("/meal")
 @login_required
@@ -150,6 +184,7 @@ def meal():
         try out the customer journey from /table/<insert_number_here>!")
         return redirect(url_for("home"))
 
+
 @app.route("/stripe")
 @login_required
 def stripe():
@@ -159,7 +194,6 @@ def stripe():
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")
         return redirect(url_for("home"))
-
 
 
 @app.route("/end")
@@ -183,7 +217,6 @@ def overview():
     else:
         flash(f"Sorry, but a {current_user.role} cannot access this page.")
         return redirect(url_for("home"))
-
 
 
 @app.route("/upload-product", methods=["GET", "POST"])
@@ -226,13 +259,13 @@ def upload():
 @app.route("/orders")
 @login_required
 def orders():
-    if current_user.role in ["admin","waiter"]:
-        orders = get_orders()
-        # query = """ to be added once we have the logged in function
+    if current_user.role in ["admin", "waiter"]:
+        # orders = get_orders()
+        # query = """
         # SELECT *
-        # FROM orders
-        # LEFT JOIN Table
-        # ON Table.id == Orders.user_id
+        # FROM Table
+        # LEFT JOIN Orders
+        # ON User.id == Orders.user_id
         # """
         # orders = pd.read_sql(query, db.session.bind)
         return render_template("orders.html", orders_df=orders)
@@ -249,4 +282,3 @@ def single_product(product_name):
     # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
     product_info = product_info.to_dict('records')[0]
     return render_template("menu/single_item.html", product_info=product_info)
-
