@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 
 from foody import app, db  # data
 from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, SubmitOrder
-from foody.models import Products, Table, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
+from foody.models import Products, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
@@ -45,7 +45,7 @@ def about():
 ################
 
 
-#Flask-login redirects you automatically here if login_required and you are not logged in
+# Flask-login redirects you automatically here if login_required and you are not logged in
 @app.route("/login")
 def login():
     return redirect(url_for("home"))
@@ -79,7 +79,7 @@ def add_waiter_route():
 @login_required
 def admin_page():
     if current_user.is_authenticated:
-        if current_user.role  == "admin":
+        if current_user.role == "admin":
             return render_template("users/adminpage.html")
     else:
         flash("You must be an admin to view this page.")
@@ -242,7 +242,7 @@ def upload():
 @app.route("/orders")
 @login_required
 def orders():
-    if current_user.role in ["admin","waiter"]:
+    if current_user.role in ["admin", "waiter"]:
         orders = get_orders()
         # query = """ to be added once we have the logged in function
         # SELECT *
@@ -265,4 +265,3 @@ def single_product(product_name):
     # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
     product_info = product_info.to_dict('records')[0]
     return render_template("menu/single_item.html", product_info=product_info)
-
