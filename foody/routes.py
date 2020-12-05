@@ -140,15 +140,21 @@ def table(table_number):
 
 
 @app.route("/menu", methods=["GET", "POST"])
+@login_required
 def menu():
     products = get_products()
+    # with engine.connect() as connection:
+    #     available_food = connection.execute("select pname from products")
+    available_food = Products.query.all()
+    food_list = [(i.pname) for i in available_food]
     form = SubmitOrder()
+    form.Food.choices = food_list
     if form.validate_on_submit():
         food = form.Food.data
         product = Products.query.filter_by(pname=food).first()
         name = product.pname
         price = product.pprice
-        Order = Orders(food=name, price=price)
+        Order = Orders(food=name, price=price, user_id=current_user.table_number)
         db.session.add(Order)
         db.session.commit()
         flash("Your order was successfully submitted!")
