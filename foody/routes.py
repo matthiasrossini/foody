@@ -25,7 +25,7 @@ engine = create_engine("sqlite:///site.db")
 @app.route("/index")
 @app.route("/home")
 def home():
-    return render_template('home.html', layout=home)
+    return render_template('main/home.html', layout=home)
 
 # this is the route Flask-login redirects you to automatically
 # if there is a login_required and you are not logged in
@@ -38,7 +38,7 @@ def login_route():
 
 @app.route("/about")
 def about():
-    return render_template("about.html", title="About", layout=About)
+    return render_template("main/about.html", title="About", layout=About)
 
 
 ################
@@ -51,13 +51,15 @@ def about():
 def login():
     return redirect(url_for("home"))
 
+
 @app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     form = AdminLogin()
     if form.validate_on_submit():
         if check_admin(form):
             return redirect(url_for("admin_page"))
-    return render_template("adminlogin.html", form=form)
+    return render_template("users/adminlogin.html", form=form)
+
 
 @app.route("/add-waiter", methods=["GET", "POST"])
 @login_required
@@ -67,21 +69,23 @@ def add_waiter_route():
         if form.validate_on_submit():
             add_waiter(form)
             return redirect(url_for("admin_page"))
-        return render_template("addwaiter.html", form=form)
+        return render_template("users/addwaiter.html", form=form)
 
     else:
         flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
         return redirect(url_for("home"))
+
 
 @app.route("/admin")
 @login_required
 def admin_page():
     if current_user.is_authenticated:
         if current_user.role  == "admin":
-            return render_template("adminpage.html")
+            return render_template("users/adminpage.html")
     else:
         flash("You must be an admin to view this page.")
         return redirect(url_for("home"))
+
 
 @app.route("/waiter-login", methods=["GET", "POST"])
 def waiter_login():
@@ -91,21 +95,22 @@ def waiter_login():
     if form.validate_on_submit():
         if check_waiter(form):
             return redirect(url_for("waiter_page"))
-    return render_template("waiterlogin.html", form=form)
+    return render_template("users/waiterlogin.html", form=form)
+
 
 @app.route("/waiter")
 @login_required
 def waiter_page():
     if current_user.role in ["admin", "waiter"]:
-        return render_template("waiterpage.html")
+        return render_template("users/waiterpage.html")
     else:
         flash("You must at least be a waiter to access this page.")
         return redirect(url_for("home"))
 
+
 @app.route("/logout", methods=["GET", "POST"])
 @login_required
 def logout():
-
     logout_user()
     return redirect(url_for("home"))
 
@@ -124,6 +129,7 @@ def table(table_number):
         return redirect(url_for("menu"))
     return render_template("table.html", form=form, table_number=table_number)
 
+
 @app.route("/menu", methods=["GET", "POST"])
 def menu():
     products = get_products()
@@ -140,6 +146,7 @@ def menu():
         return redirect(url_for("meal"))
     return render_template("menu/menu.html", products_df=products, form=form)
 
+
 @app.route("/meal")
 @login_required
 def meal():
@@ -150,6 +157,7 @@ def meal():
         try out the customer journey from /table/<insert_number_here>!")
         return redirect(url_for("home"))
 
+
 @app.route("/stripe")
 @login_required
 def stripe():
@@ -159,7 +167,6 @@ def stripe():
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")
         return redirect(url_for("home"))
-
 
 
 @app.route("/end")
@@ -183,7 +190,6 @@ def overview():
     else:
         flash(f"Sorry, but a {current_user.role} cannot access this page.")
         return redirect(url_for("home"))
-
 
 
 @app.route("/upload-product", methods=["GET", "POST"])
