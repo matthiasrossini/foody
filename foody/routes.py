@@ -20,7 +20,6 @@ engine = create_engine("sqlite:///site.db")
 ###############
 
 
-
 @app.route("/")
 @app.route("/index")
 @app.route("/home")
@@ -120,6 +119,16 @@ def logout():
 ###################
 
 
+@app.route("/checkin", methods=["GET", "POST"])
+def checkin():
+    form = TableForm()
+    if form.validate_on_submit():
+        table_number = form.table_number.data
+        register_login(form, table_number)
+        return redirect(url_for("menu"))
+    return render_template("checkin.html", form=form)
+
+
 @app.route("/table/<table_number>", methods=["GET", "POST"])
 def table(table_number):
     form = TableForm()
@@ -151,7 +160,8 @@ def menu():
 @login_required
 def meal():
     if current_user.role == "client":
-        return render_template("meal.html")
+        orders = get_orders()
+        return render_template("meal.html", orders_df=orders)
     else:
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")

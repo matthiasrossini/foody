@@ -15,8 +15,8 @@
     {% endif %}
 
     <!-- Favicons TO DO -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href=  {{ url_for('static', filename='img/favicon.png') }} rel="icon">
+    <link href=  {{ url_for('static', filename='img/apple-touch-icon.png') }} rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -65,11 +65,7 @@
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
-
-      <h1 class="logo mr-auto"><a href="index.html">Foody</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-
-      <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      <a href={{ url_for("home") }} class="logo mr-auto"><img src={{ url_for('static', filename='img/apple-touch-icon.png') }} alt="" class="img-fluid">  </a>
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li class="active"><a href={{ url_for("home") }}>Home</a></li>
@@ -100,7 +96,7 @@
 
 {% else %}
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href={{ url_for("home") }}>Foody</a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
