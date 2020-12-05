@@ -3,20 +3,16 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<br>
-<br>
-
 <div class="row">
-  {% for index, row in orders_df.iterrows() %}
-
-    <div class="card">
-      <!-- <h3>Product No. {{ index+1 }}:</h3> -->
-      <p>{{ row['food'] }}</p>
-      <p>{{ row['price'] }} CHF</p>
 
 
-    </div>
+ <div class="card col-sm" style="width: 18rem;">
+{% for key, value in orders.items() %}
+   <tr>
+        <th> {{ key }} </th>
+        <td> {{ value }} </td>
+   </tr>
+{% endfor %}
 
-  {% endfor %}
 
   {% endblock content %}

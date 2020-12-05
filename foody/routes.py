@@ -155,23 +155,24 @@ def table(table_number):
 @app.route("/menu", methods=["GET", "POST"])
 @login_required
 def menu():
-    products = get_products()
-    # with engine.connect() as connection:
-    #     available_food = connection.execute("select pname from products")
-    available_food = Products.query.all()
-    food_list = [(i.pname) for i in available_food]
-    form = SubmitOrder()
-    form.Food.choices = food_list
-    if form.validate_on_submit():
-        food = form.Food.data
-        product = Products.query.filter_by(pname=food).first()
-        name = product.pname
-        price = product.pprice
-        Order = Orders(food=name, price=price, user_id=current_user.table_number)
-        db.session.add(Order)
-        db.session.commit()
-        flash("Your order was successfully submitted!")
-        return redirect(url_for("meal"))
+    if current_user.role in ["client"]:
+        products = get_products()
+        # with engine.connect() as connection:
+        #     available_food = connection.execute("select pname from products")
+        available_food = Products.query.all()
+        food_list = [(i.pname) for i in available_food]
+        form = SubmitOrder()
+        form.Food.choices = food_list
+        if form.validate_on_submit():
+            food = form.Food.data
+            product = Products.query.filter_by(pname=food).first()
+            name = product.pname
+            price = product.pprice
+            Order = Orders(food=name, price=price, user_id=current_user.table_number)
+            db.session.add(Order)
+            db.session.commit()
+            flash("Your order was successfully submitted!")
+            return redirect(url_for("meal"))
     return render_template("menu/menu.html", products_df=products, form=form)
 
 
@@ -263,14 +264,21 @@ def upload():
 def orders():
     if current_user.role in ["admin", "waiter"]:
         orders = get_orders()
-        # query = """ to be added once we have the logged in function
-        # SELECT *
-        # FROM orders
-        # LEFT JOIN Table
-        # ON Table.id == Orders.user_id
-        # """
-        # orders = pd.read_sql(query, db.session.bind)
-        return render_template("orders.html", orders_df=orders)
+        query = """
+        SELECT *
+        FROM User
+        LEFT JOIN Orders
+        ON User.table_number == Orders.user_id
+        """
+        orders1 = pd.read_sql(query, db.session.bind)
+        orders = orders1.dropna(axis=0, subset=["table_number"])
+        table_nums = orders["table_number"].unique()
+        table_orders = {}
+        for table in table_nums:
+            products_for_table = orders.loc[orders["table_number"] == table, "food"]
+            products_for_table = list(products_for_table)
+            table_orders[table] = ", ".join(products_for_table)
+        return render_template("orders.html", orders=table_orders)
     else:
         flash("Sorry, but customers cannot access this page.")
         return redirect(url_for("menu"))
