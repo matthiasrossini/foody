@@ -40,11 +40,10 @@
       </div>
     </div>
 
+<div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
 
-{% for index, row in products_df.iterrows() %}
-
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
-    <div class="col-sm-6 menu-item filter-{{row['ptype']}}">
+  {% for index, row in products_df.iterrows() %}
+    <div class="col-lg-6 menu-item filter-{{row['ptype']}}">
       <img src={{ url_for("static", filename=row["pimage"]) }} class="menu-img" alt="">
       <div class="menu-content">
         <a href="#">{{ row['pname'] }} </a><span> ${{ row['pprice'] }} </span>
@@ -53,12 +52,9 @@
         Gluten Free: {{ row['pgluten_free'] }}, Vegetarian: {{ row['pvegetarian'] }}, Vegan: {{ row['pvegan'] }}
       </div>
     </div>
-  </div>
 
-{% endfor %}
+  {% endfor %}
 
-
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
     <div class="col-sm-6 menu-item filter-starter">
       <img src= {{ url_for("static", filename="product_images/Avocado") }} class="menu-img" alt="">
       <div class="menu-content">
@@ -68,33 +64,37 @@
         Gluten Free: yes, Vegetarian: yes, Vegan: yes
       </div>
     </div>
-  </div>
 
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
-    <div class="col-sm-6 menu-item filter-dessert">
-      <img src= {{ url_for("static", filename="product_images/Chocolate Cake") }} class="menu-img" alt="">
-      <div class="menu-content">
-        <a href="#">🍰 Chocolate Cake</a><span> $9.99 </span>
-      </div>
-      <div class="menu-ingredients">
-        Gluten Free: no, Vegetarian: yes, Vegan: yes
-      </div>
+  <div class="col-sm-6 menu-item filter-starter">
+    <img src= {{ url_for("static", filename="product_images/Avocado") }} class="menu-img" alt="">
+    <div class="menu-content">
+      <a href="#">🥑 Avocado</a><span>$1</span>
+    </div>
+    <div class="menu-ingredients">
+      Gluten Free: yes, Vegetarian: yes, Vegan: yes
     </div>
   </div>
 
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
-    <div class="col-sm-6 menu-item filter-dessert">
-      <img src= {{ url_for("static", filename="product_images/Chocolate Dessert") }} class="menu-img" alt="">
-      <div class="menu-content">
-        <a href="#">🍫 Chocolate Dessert</a><span> $6.99 </span>
-      </div>
-      <div class="menu-ingredients">
-        Gluten Free: no, Vegetarian: yes, Vegan: yes
-      </div>
+  <div class="col-sm-6 menu-item filter-dessert">
+    <img src= {{ url_for("static", filename="product_images/Chocolate Cake") }} class="menu-img" alt="">
+    <div class="menu-content">
+      <a href="#">🍰 Chocolate Cake</a><span> $9.99 </span>
+    </div>
+    <div class="menu-ingredients">
+      Gluten Free: no, Vegetarian: yes, Vegan: yes
     </div>
   </div>
 
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+  <div class="col-sm-6 menu-item filter-dessert">
+    <img src= {{ url_for("static", filename="product_images/Chocolate Dessert") }} class="menu-img" alt="">
+    <div class="menu-content">
+      <a href="#">🍫 Chocolate Dessert</a><span> $6.99 </span>
+    </div>
+    <div class="menu-ingredients">
+      Gluten Free: no, Vegetarian: yes, Vegan: yes
+    </div>
+  </div>
+
     <div class="col-sm-6 menu-item filter-main">
       <img src= {{ url_for("static", filename="product_images/Pork Dumplings") }} class="menu-img" alt="">
       <div class="menu-content">
@@ -104,9 +104,8 @@
         Gluten Free: no, Vegetarian: no, Vegan: no
       </div>
     </div>
-  </div>
 
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+
     <div class="col-sm-6 menu-item filter-main">
       <img src= {{ url_for("static", filename="product_images/Meatballs") }} class="menu-img" alt="">
       <div class="menu-content">
@@ -116,9 +115,8 @@
         Gluten Free: no, Vegetarian: no, Vegan: no
       </div>
     </div>
-  </div>
 
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+
     <div class="col-sm-6 menu-item filter-dessert">
       <img src= {{ url_for("static", filename="product_images/Pancakes") }} class="menu-img" alt="">
       <div class="menu-content">
@@ -128,9 +126,8 @@
         Gluten Free: no, Vegetarian: yes, Vegan: yes
       </div>
     </div>
-  </div>
 
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+
     <div class="col-sm-6 menu-item filter-main">
       <img src= {{ url_for("static", filename="product_images/Pesto Salas") }} class="menu-img" alt="">
       <div class="menu-content">
@@ -140,9 +137,8 @@
         Gluten Free: yes, Vegetarian: yes, Vegan: yes
       </div>
     </div>
-  </div>
 
-  <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+
     <div class="col-sm-6 menu-item filter-main">
       <img src= {{ url_for("static", filename="product_images/Pizza") }} class="menu-img" alt="">
       <div class="menu-content">

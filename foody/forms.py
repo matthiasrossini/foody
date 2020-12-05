@@ -8,11 +8,6 @@ from wtforms import StringField, SubmitField, FloatField, IntegerField, TextArea
 from wtforms.validators import DataRequired, Length, Email
 
 
-class CheckinForm(FlaskForm):
-    table_number = IntegerField("Table Number:", validators=[DataRequired()])
-    submit = SubmitField("Submit")
-
-
 class TableForm(FlaskForm):
     table_number = IntegerField("Table number:", validators=[DataRequired()])
     number_guests = IntegerField("Number of people:", validators=[DataRequired()])
