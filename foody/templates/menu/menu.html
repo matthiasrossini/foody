@@ -14,7 +14,7 @@
     <br>
 
     <!-- End Menu Section -->
-    {% if current_user.is_authenticated and current_user.role == "client" %}
+
       <div id ="menu" class="container">
         <p style="color:white;">Please enter your orders individually</p>
           <form  method="post" style="color:white;" enctype="multipart/form-data">
@@ -24,7 +24,7 @@
             {{ form.submit_button() }}
           </form>
       </div>
-    {% endif %}
+    
     <!-- End Menu Section -->
 
     <br>
