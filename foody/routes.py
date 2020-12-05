@@ -192,6 +192,22 @@ def meal():
 @login_required
 def stripe():
     if current_user.role == "client":
+        user_id = current_user.table_number
+        orders = get_orders()
+        # query = """
+        # SELECT *
+        # FROM User
+        # LEFT JOIN Orders
+        # ON User.table_number == Orders.user_id
+        # """
+        # orders1 = pd.read_sql(query, db.session.bind)
+        # orders = orders1.dropna(axis=0, subset=["table_number"])
+        order_nums = orders["user_id"].unique()
+        # table_orders = {}
+        for price in order_nums:
+            products_for_table = orders.loc[orders["user_id"] == price, "price"]
+            products_for_table = list(products_for_table)
+            total_price = sum(products_for_table)
         return render_template("stripe.html")
     else:
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
