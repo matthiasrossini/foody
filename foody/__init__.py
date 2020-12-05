@@ -7,7 +7,6 @@ from flask_login import LoginManager, UserMixin, current_user
 from google.cloud import storage
 import pandas as pd
 
-
 #setup app and database
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "hard-to-guess-string"
