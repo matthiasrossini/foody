@@ -61,6 +61,18 @@ class WaiterLogin(FlaskForm):
     submit = SubmitField("OK")
 
 
-class SubmitOrder(FlaskForm):
-    Food = SelectField("Select your order", validators=[InputRequired()])
+class StarterOrder(FlaskForm):
+    Starters = SelectField("Select your Starter")
+    Main = SelectField("Select your Main", validators=[InputRequired()])
+    Dessert = SelectField("Select your Dessert")
+    submit_button = SubmitField("Submit order")
+
+
+class MainOrder(FlaskForm):
+    Main = SelectField("Select your Main")
+    submit_button = SubmitField("Submit order")
+
+
+class DessertOrder(FlaskForm):
+    Dessert = SelectField("Select your Dessert")
     submit_button = SubmitField("Submit order")
