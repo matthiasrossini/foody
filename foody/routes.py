@@ -157,6 +157,33 @@ def menu():
         price = product.pprice
         Order = Orders(food=name, price=price, user_id=current_user.table_number)
         db.session.add(Order)
+        # main = form.Main.data
+        # product2 = Products.query.filter_by(pname=main).first()
+        # name2 = product2.pname
+        # price2 = product2.pprice
+        # Order2 = Orders(food=name2, price = price2, user_id=current_user.table_number)
+        # db.session.add(Order2)
+        ###
+        # OR:
+        # meals_ordered = []
+        # main = form.Main.data
+        # productmain = Products.query.filter_by(pname=main).first()
+        # namemain = productmain.pname
+        # pricemain = productmain.pprice
+        # starter = form.Starter.data
+        # productstarted = Products.query.filter_by(pname=starter).first()
+        # namestarter = productstarter.pname
+        # pricestarter = productstarter.pprice
+        # dessert = form.Dessert.data
+        # productdessert = Products.query.filter_by(pname=dessert).first()
+        # namedessert = productdessert.pname
+        # pricedessert = productdessert.pprice
+        # meals_ordered += main, starter, dessert
+        # price_order = pricedessert + pricemain + pricestarter
+        # Order = Orders(food=meals_ordered, price=price_order, user_id=current_user.table_number)
+        # db.session.add(Order)
+        # db.session.commit()
+
         db.session.commit()
         flash("Your order was successfully submitted!")
         return redirect(url_for("meal"))
