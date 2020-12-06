@@ -57,7 +57,6 @@ class Products(db.Model, UserMixin):
     plactose_free = db.Column(db.String)
     pvegan = db.Column(db.String)
     pvegetarian = db.Column(db.String)
-    img_public_url = db.Column(db.String, nullable=False)
     pimage = db.Column(db.String)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
@@ -237,4 +236,3 @@ def upload_bytes_to_gcs(bucket_name, bytes_data, destination_blob_name):
     public_img_url = blob.public_url
 
     return public_img_url
-
