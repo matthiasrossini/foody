@@ -16,10 +16,9 @@ Foody is a beginner project built using the following stack:
 
 <br>
 ![image](screenshot.png)
-<br>
 
 Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
-- To do: Add Project Screenshot
+
 
 <br>
 
@@ -58,14 +57,24 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
-Make sure requirements are installed:
+# 3 - To run the app
 
-```bash
-pip list
-```
 <br>
 
-# 3 - Instructions for collaboration
+To run the app on Unix:
+
+```bash
+cd flaskapp && python3 app.py
+```
+
+To run the app on Windows:
+```bash
+cd flaskapp && python app.py
+```
+
+<br>
+
+# 4 - Instructions for collaboration
 
 BEFORE STARTING
 - ``` git pull ```
@@ -88,12 +97,11 @@ BEFORE STARTING
 
 <br>
 
-# 4 - Usage
+# 5 - Usage
 
 <br>
 
 # 5 - Resources & Links
 1. [Youtube Tutorial for Github](https://www.youtube.com/watch?v=SWYqp7iY_Tc)
 2. [Youtube Tutorial for Package Structure](https://www.youtube.com/watch?v=44PvX0Yv368)
-3. Notion (tbd) 
-
+3. [Bootstrap Template](https://bootstrapmade.com/restaurantly-restaurant-template/)
