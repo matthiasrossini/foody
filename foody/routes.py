@@ -35,11 +35,6 @@ def login_route():
     return redirect(url_for("home"))
 
 
-@app.route("/about")
-def about():
-    return render_template("main/about.html", title="About", layout=About)
-
-
 ################
 # Login Routes #
 ################
