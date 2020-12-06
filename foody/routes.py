@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import sys
+import stripe
 from flask import Flask, render_template, redirect, url_for, request, flash
 
 from foody import app, db  # data
@@ -217,9 +218,9 @@ def meal():
 @app.route("/stripe", methods=["GET", "POST"])
 @login_required
 def stripe():
-    publishable_key = "pk_test_51HubNWKUsJQgM5cwhuLnrsSSOsiFfyFwhba9kEqnTJdQ9xB4zuPhqIM6Z6s1VeCWsCK1wkYNBDGXasFmBXyK7R4H00xIAt9ie3"
-    secret_key = "sk_test_51HubNWKUsJQgM5cw3wivbgvNzM5EQRGj2gt5Y6mltt2mqSzeRmGi5pW4cW40nCibQUhSzjEc3WcJMYuwr52mE4gf00QER6iDbf"
-
+    STRIPE_PUBLISHABLE_KEY = "pk_test_51HubNWKUsJQgM5cwhuLnrsSSOsiFfyFwhba9kEqnTJdQ9xB4zuPhqIM6Z6s1VeCWsCK1wkYNBDGXasFmBXyK7R4H00xIAt9ie3"
+    STRIPE_SECRET_KEY = "sk_test_51HubNWKUsJQgM5cw3wivbgvNzM5EQRGj2gt5Y6mltt2mqSzeRmGi5pW4cW40nCibQUhSzjEc3WcJMYuwr52mE4gf00QER6iDbf"
+    # Stripe.setPublishableKey()
     if current_user.role == "client":
         user_table = current_user.table_number
         orders = get_orders()
