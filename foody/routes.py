@@ -178,19 +178,22 @@ def menu():
                 product = Products.query.filter_by(pname=starter).first()
                 name = product.pname
                 price = product.pprice
-                Starter = Orders(food=name, price=price, user_table=current_user.table_number)
+                Starter = Orders(food=name, price=price,
+                                 user_table=current_user.table_number, uuid=current_user.uuid)
                 db.session.add(Starter)
             if main != "none":
                 product2 = Products.query.filter_by(pname=main).first()
                 name2 = product2.pname
                 price2 = product2.pprice
-                Main = Orders(food=name2, price=price2, user_table=current_user.table_number)
+                Main = Orders(food=name2, price=price2,
+                              user_table=current_user.table_number, uuid=current_user.uuid)
                 db.session.add(Main)
             if dessert != "none":
                 product3 = Products.query.filter_by(pname=dessert).first()
                 name3 = product3.pname
                 price3 = product3.pprice
-                Dessert = Orders(food=name3, price=price3, user_table=current_user.table_number)
+                Dessert = Orders(food=name3, price=price3,
+                                 user_table=current_user.table_number, uuid=current_user.uuid)
                 db.session.add(Dessert)
             # db.session.add_all([Starter, Main, Dessert])
             db.session.commit()
