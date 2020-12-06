@@ -63,4 +63,6 @@ class WaiterLogin(FlaskForm):
 
 class SubmitOrder(FlaskForm):
     Starters = SelectField("Select your Starter")
+    Main = SelectField("Select your Main")
+    Dessert = SelectField("Select your Dessert")
     submit_button = SubmitField("Submit order")
