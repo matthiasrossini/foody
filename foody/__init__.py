@@ -1,4 +1,3 @@
-from foody import routes
 import os
 from flask import Flask, request
 from flask_bcrypt import Bcrypt
@@ -29,3 +28,5 @@ login_manager.login_message_category = 'info'  # add better style
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+from foody import routes
