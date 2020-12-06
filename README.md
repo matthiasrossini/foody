@@ -1,4 +1,4 @@
-# foody
+# Foody
 
 ### Software for restaurants using the Flask framework for Python
 
