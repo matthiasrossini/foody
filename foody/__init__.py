@@ -1,3 +1,4 @@
+from foody import routes
 import os
 from flask import Flask, request
 from flask_bcrypt import Bcrypt
@@ -7,13 +8,13 @@ from flask_login import LoginManager, UserMixin, current_user
 from google.cloud import storage
 import pandas as pd
 
-from secrets import SQL_PASSWORD, PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
+#from secrets import SQL_PASSWORD, PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
 
 # setup app and database
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "hard-to-guess-string"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{SQL_PASSWORD}@{PUBLIC_IP_ADDRESS}/{SQL_DATABASE_NAME}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 # old version: data = pd.read_csv("database.csv", sep=",")
 
@@ -28,5 +29,3 @@ login_manager.login_message_category = 'info'  # add better style
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-
-from foody import routes
