@@ -1,11 +1,6 @@
-# foody
+# Foody
 
-## Table of Content
-1. Project Description
-2. Installation
-3. Collaboration 
-4. Usage
-5. Resources & Links
+### Software for restaurants using the Flask framework for Python
 
 # 1 - Project Description
 Welcome to Foody 🎉 
@@ -15,11 +10,21 @@ Foody is a beginner project built using the following stack:
 - Python
 - SQLAlchemy
 - WTForms
+- HTML/CSS/JS
 - Bootstrap
 - Google Cloud Products
 
+<br>
+
+![image](screenshot.png)
+<<<<<<< HEAD
+=======
+
+<br>
+>>>>>>> f39f271daf84188f55c4c9f3ba3f4321da7d4c1f
+
 Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
-- To do: Add Project Screenshot
+
 
 <br>
 
@@ -58,14 +63,24 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
-Make sure requirements are installed:
+# 3 - To run the app
 
-```bash
-pip list
-```
 <br>
 
-# 3 - Instructions for collaboration
+To run the app on Unix:
+
+```bash
+cd flaskapp && python3 app.py
+```
+
+To run the app on Windows:
+```bash
+cd flaskapp && python app.py
+```
+
+<br>
+
+# 4 - Instructions for collaboration
 
 BEFORE STARTING
 - ``` git pull ```
@@ -88,12 +103,11 @@ BEFORE STARTING
 
 <br>
 
-# 4 - Usage
+# 5 - Usage
 
 <br>
 
 # 5 - Resources & Links
 1. [Youtube Tutorial for Github](https://www.youtube.com/watch?v=SWYqp7iY_Tc)
 2. [Youtube Tutorial for Package Structure](https://www.youtube.com/watch?v=44PvX0Yv368)
-3. Notion (tbd) 
-
+3. [Bootstrap Template](https://bootstrapmade.com/restaurantly-restaurant-template/)

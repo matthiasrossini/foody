@@ -9,7 +9,11 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 
 from foody import app, db  # data
 from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, SubmitOrder
+
 from foody.models import Products, Table, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client, upload_bytes_to_gcs
+=======
+from foody.models import Products, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
+
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
@@ -42,6 +46,26 @@ def home():
 @app.route("/login")
 def login_route():
     return redirect(url_for("home"))
+
+
+@app.route("/about")
+def about():
+    return render_template("main/about.html", title="About", layout="About")
+
+# to delete afterwards
+
+
+@app.route("/add-admin-here-make-restricted", methods=["GET", "POST"])
+def add_admin_route():
+    """
+    ADD THIS IN LATER FOR SECURITY
+    if current_user.access_level = 3:
+    """
+    form = AddAdmin()
+    if form.validate_on_submit():
+        if add_admin(form):
+            return redirect(url_for("admin_login"))
+    return render_template("addadmin.html", form=form)
 
 
 ################
@@ -85,6 +109,7 @@ def admin_page():
     if current_user.is_authenticated:
         if current_user.role == "admin":
             return render_template("users/adminpage.html")
+
     else:
         flash("You must be an admin to view this page.")
         return redirect(url_for("home"))
@@ -144,19 +169,49 @@ def table(table_number):
 
 
 @app.route("/menu", methods=["GET", "POST"])
+@login_required
 def menu():
     products = get_products()
     form = SubmitOrder()
-    if form.validate_on_submit():
-        food = form.Food.data
-        product = Products.query.filter_by(pname=food).first()
-        name = product.pname
-        price = product.pprice
-        Order = Orders(food=name, price=price)
-        db.session.add(Order)
-        db.session.commit()
-        flash("Your order was successfully submitted!")
-        return redirect(url_for("meal"))
+    if current_user.role in ["client"]:
+        # with engine.connect() as connection:
+        #     available_food = connection.execute("select pname from products")
+        available_starters = Products.query.filter_by(ptype="starter")
+        available_main = Products.query.filter_by(ptype="main")
+        available_dessert = Products.query.filter_by(ptype="dessert")
+        starters_list = [(i.pname) for i in available_starters] + ["none"]
+        main_list = [(i.pname) for i in available_main] + ["none"]
+        dessert_list = [(i.pname) for i in available_dessert] + ["none"]
+        form = SubmitOrder()
+        form.Starters.choices = starters_list
+        form.Main.choices = main_list
+        form.Dessert.choices = dessert_list
+        if form.validate_on_submit():
+            starter = form.Starters.data
+            main = form.Main.data
+            dessert = form.Dessert.data
+            if starter != "none":
+                product = Products.query.filter_by(pname=starter).first()
+                name = product.pname
+                price = product.pprice
+                Starter = Orders(food=name, price=price, user_table=current_user.table_number)
+                db.session.add(Starter)
+            if main != "none":
+                product2 = Products.query.filter_by(pname=main).first()
+                name2 = product2.pname
+                price2 = product2.pprice
+                Main = Orders(food=name2, price=price2, user_table=current_user.table_number)
+                db.session.add(Main)
+            if dessert != "none":
+                product3 = Products.query.filter_by(pname=dessert).first()
+                name3 = product3.pname
+                price3 = product3.pprice
+                Dessert = Orders(food=name3, price=price3, user_table=current_user.table_number)
+                db.session.add(Dessert)
+            # db.session.add_all([Starter, Main, Dessert])
+            db.session.commit()
+            flash("Your order was successfully submitted!")
+            return redirect(url_for("meal"))
     return render_template("menu/menu.html", products_df=products, form=form)
 
 
@@ -172,15 +227,37 @@ def meal():
         return redirect(url_for("home"))
 
 
-@app.route("/stripe")
+@app.route("/stripe", methods=["GET", "POST"])
 @login_required
 def stripe():
+    publishable_key = "pk_test_51HubNWKUsJQgM5cwhuLnrsSSOsiFfyFwhba9kEqnTJdQ9xB4zuPhqIM6Z6s1VeCWsCK1wkYNBDGXasFmBXyK7R4H00xIAt9ie3"
+    secret_key = "sk_test_51HubNWKUsJQgM5cw3wivbgvNzM5EQRGj2gt5Y6mltt2mqSzeRmGi5pW4cW40nCibQUhSzjEc3WcJMYuwr52mE4gf00QER6iDbf"
+
     if current_user.role == "client":
-        return render_template("stripe.html")
+        user_table = current_user.table_number
+        orders = get_orders()
+        # query = """
+        # SELECT *
+        # FROM User
+        # LEFT JOIN Orders
+        # ON User.table_number == Orders.user_table
+        # """
+        # orders1 = pd.read_sql(query, db.session.bind)
+        # orders = orders1.dropna(axis=0, subset=["table_number"])
+        order_nums = orders["user_table"].unique()
+        # table_orders = {}
+        total_price = 0
+        for price in order_nums:
+            products_for_table = orders.loc[orders["user_table"] == price, "price"]
+            products_for_table = list(products_for_table)
+            total_price = sum(products_for_table)
+        return render_template("stripe.html", total_price=total_price)
     else:
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")
         return redirect(url_for("home"))
+
+    # return render_template('stripe.html', amount=amount)
 
 
 @app.route("/end")
@@ -252,14 +329,22 @@ def upload():
 def orders():
     if current_user.role in ["admin", "waiter"]:
         orders = get_orders()
-        # query = """ to be added once we have the logged in function
-        # SELECT *
-        # FROM orders
-        # LEFT JOIN Table
-        # ON Table.id == Orders.user_id
-        # """
-        # orders = pd.read_sql(query, db.session.bind)
-        return render_template("orders.html", orders_df=orders)
+        query = """
+        SELECT *
+        FROM User
+        LEFT JOIN Orders
+        ON User.table_number == Orders.user_table
+        """
+        orders1 = pd.read_sql(query, db.session.bind)
+        orders = orders1.dropna(axis=0, subset=["table_number"])
+        orders = orders[orders.food != "none"]
+        table_nums = orders["table_number"].unique()
+        table_orders = {}
+        for table in table_nums:
+            products_for_table = orders.loc[orders["table_number"] == table, "food"]
+            products_for_table = list(products_for_table)
+            table_orders[table] = ", ".join(products_for_table)
+        return render_template("orders.html", orders=table_orders)
     else:
         flash("Sorry, but customers cannot access this page.")
         return redirect(url_for("menu"))

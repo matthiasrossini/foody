@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 
 from wtforms import StringField, SubmitField, FloatField, IntegerField, TextAreaField, SelectField, PasswordField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms.validators import DataRequired, Length, Email, InputRequired
 
 
 class TableForm(FlaskForm):
@@ -18,7 +18,8 @@ class ProductUpload(FlaskForm):
     pname = StringField("Product Name", validators=[DataRequired()])
     pdescription = StringField("Description", validators=[DataRequired()])
     pprice = FloatField("Price", validators=[DataRequired()])
-    ptype = SelectField("Which Course: ", choices=[("starter", "Starter"), ("main", "Main Course"), ("dessert", "Dessert")])
+    ptype = SelectField("Which Course: ", choices=[
+                        ("starter", "Starter"), ("main", "Main Course"), ("dessert", "Dessert")])
     pgluten_free = SelectField("Gluten Free?", choices=[("no", "No"), ("yes", "Yes")])
     plactose_free = SelectField("Lactose Free?", choices=[("no", "No"), ("yes", "Yes")])
     pvegetarian = SelectField("Vegetarian?", choices=[("no", "No"), ("yes", "Yes")])
@@ -61,5 +62,7 @@ class WaiterLogin(FlaskForm):
 
 
 class SubmitOrder(FlaskForm):
-    Food = StringField("Type in your order", validators=[DataRequired()])
+    Starters = SelectField("Select your Starter")
+    Main = SelectField("Select your Main")
+    Dessert = SelectField("Select your Dessert")
     submit_button = SubmitField("Submit order")
