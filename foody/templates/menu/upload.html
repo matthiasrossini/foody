@@ -10,7 +10,7 @@
 
       <form  method="post" enctype="multipart/form-data">
         <div>
-            <h3> Upload new menu items here </h3> 
+            <h3> Upload new menu items here </h3>
             {{ form.hidden_tag() }}
 
             {{ form.pname.label }} {{ form.pname() }}
@@ -29,7 +29,7 @@
             <br>
             {{ form.pvegan.label }} {{ form.pvegan() }}
             <br>
-            {{ form.pimage() }}
+            {{ form.pimage_upload.label }} {{ form.image_upload() }}
             <br>
             <br>
             {{ form.submit_button() }}
