@@ -20,30 +20,12 @@
           <form  method="post" style="color:white;" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ form.Starters.label }} {{ form.Starters() }}
-            <br> <br>
-            {{ form.submit_button() }}
-          </form>
-      </div>
-      <div id ="menu" class="container">
-        <p style="color:white;">Please enter your orders individually</p>
-          <form  method="post" style="color:white;" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
             {{ form.Main.label }} {{ form.Main() }}
-            <br> <br>
-            {{ form.submit_button() }}
-          </form>
-      </div>
-
-      <div id ="menu" class="container">
-        <p style="color:white;">Please enter your orders individually</p>
-          <form  method="post" style="color:white;" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
             {{ form.Dessert.label }} {{ form.Dessert() }}
             <br> <br>
             {{ form.submit_button() }}
           </form>
       </div>
-
 
     <!-- End Menu Section -->
 

@@ -4,7 +4,7 @@ import sys
 from flask import Flask, render_template, redirect, url_for, request, flash
 
 from foody import app, db  # data
-from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, StarterOrder, MainOrder, DessertOrder
+from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, SubmitOrder
 from foody.models import Products, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
@@ -155,49 +155,45 @@ def table(table_number):
 @app.route("/menu", methods=["GET", "POST"])
 @login_required
 def menu():
+    products = get_products()
+    form = SubmitOrder()
     if current_user.role in ["client"]:
-        products = get_products()
         # with engine.connect() as connection:
         #     available_food = connection.execute("select pname from products")
         available_starters = Products.query.filter_by(ptype="starter")
         available_main = Products.query.filter_by(ptype="main")
         available_dessert = Products.query.filter_by(ptype="dessert")
-        starters_list = [(i.pname) for i in available_starters]
-        main_list = [(i.pname) for i in available_main]
-        dessert_list = [(i.pname) for i in available_dessert]
-        form = StarterOrder()
+        starters_list = [(i.pname) for i in available_starters] + ["none"]
+        main_list = [(i.pname) for i in available_main] + ["none"]
+        dessert_list = [(i.pname) for i in available_dessert] + ["none"]
+        form = SubmitOrder()
         form.Starters.choices = starters_list
-        if form.validate_on_submit():
-            starter = form.Starters.data
-            starter = Products.query.filter_by(pname=starter).first()
-            starter_name = starter.pname
-            starter_price = starter.pprice
-            Starter_Order = Orders(food=starter_name, price=starter_price,
-                                   user_id=current_user.table_number)
-            db.session.add(Starter_Order)
-            db.session.commit()
-        form = MainOrder()
         form.Main.choices = main_list
-        if form.validate_on_submit():
-            main = form.Main.data
-            main = Products.query.filter_by(pname=main).first()
-            main_name = main.pname
-            main_price = main.pprice
-            Main_Order = Orders(food=main_name, price=main_price, user_id=current_user.table_number)
-            db.session.add(Main_Order)
-            db.session.commit()
-        form = DessertOrder()
         form.Dessert.choices = dessert_list
         if form.validate_on_submit():
+            starter = form.Starters.data
+            main = form.Main.data
             dessert = form.Dessert.data
-            dessert = Products.query.filter_by(pname=dessert).first()
-            dessert_name = dessert.pname
-            dessert_price = dessert.pprice
-            Dessert_Order = Orders(food=dessert_name, price=dessert_price,
-                                   user_id=current_user.table_number)
-            db.session.add(Dessert_Order)
+            if starter != "none":
+                product = Products.query.filter_by(pname=starter).first()
+                name = product.pname
+                price = product.pprice
+                Starter = Orders(food=name, price=price, user_id=current_user.table_number)
+                db.session.add(Starter)
+            if main != "none":
+                product2 = Products.query.filter_by(pname=main).first()
+                name2 = product2.pname
+                price2 = product2.pprice
+                Main = Orders(food=name2, price=price2, user_id=current_user.table_number)
+                db.session.add(Main)
+            if dessert != "none":
+                product3 = Products.query.filter_by(pname=dessert).first()
+                name3 = product3.pname
+                price3 = product3.pprice
+                Dessert = Orders(food=name3, price=price3, user_id=current_user.table_number)
+                db.session.add(Dessert)
+            # db.session.add_all([Starter, Main, Dessert])
             db.session.commit()
-
             flash("Your order was successfully submitted!")
             return redirect(url_for("meal"))
     return render_template("menu/menu.html", products_df=products, form=form)
@@ -315,6 +311,7 @@ def orders():
         """
         orders1 = pd.read_sql(query, db.session.bind)
         orders = orders1.dropna(axis=0, subset=["table_number"])
+        orders = orders[orders.food != "none"]
         table_nums = orders["table_number"].unique()
         table_orders = {}
         for table in table_nums:
