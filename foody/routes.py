@@ -178,19 +178,19 @@ def menu():
                 product = Products.query.filter_by(pname=starter).first()
                 name = product.pname
                 price = product.pprice
-                Starter = Orders(food=name, price=price, user_id=current_user.table_number)
+                Starter = Orders(food=name, price=price, user_table=current_user.table_number)
                 db.session.add(Starter)
             if main != "none":
                 product2 = Products.query.filter_by(pname=main).first()
                 name2 = product2.pname
                 price2 = product2.pprice
-                Main = Orders(food=name2, price=price2, user_id=current_user.table_number)
+                Main = Orders(food=name2, price=price2, user_table=current_user.table_number)
                 db.session.add(Main)
             if dessert != "none":
                 product3 = Products.query.filter_by(pname=dessert).first()
                 name3 = product3.pname
                 price3 = product3.pprice
-                Dessert = Orders(food=name3, price=price3, user_id=current_user.table_number)
+                Dessert = Orders(food=name3, price=price3, user_table=current_user.table_number)
                 db.session.add(Dessert)
             # db.session.add_all([Starter, Main, Dessert])
             db.session.commit()
@@ -215,20 +215,20 @@ def meal():
 @login_required
 def stripe():
     if current_user.role == "client":
-        user_id = current_user.table_number
+        user_table = current_user.table_number
         orders = get_orders()
         # query = """
         # SELECT *
         # FROM User
         # LEFT JOIN Orders
-        # ON User.table_number == Orders.user_id
+        # ON User.table_number == Orders.user_table
         # """
         # orders1 = pd.read_sql(query, db.session.bind)
         # orders = orders1.dropna(axis=0, subset=["table_number"])
-        order_nums = orders["user_id"].unique()
+        order_nums = orders["user_table"].unique()
         # table_orders = {}
         for price in order_nums:
-            products_for_table = orders.loc[orders["user_id"] == price, "price"]
+            products_for_table = orders.loc[orders["user_table"] == price, "price"]
             products_for_table = list(products_for_table)
             total_price = sum(products_for_table)
         return render_template("stripe.html")
@@ -307,7 +307,7 @@ def orders():
         SELECT *
         FROM User
         LEFT JOIN Orders
-        ON User.table_number == Orders.user_id
+        ON User.table_number == Orders.user_table
         """
         orders1 = pd.read_sql(query, db.session.bind)
         orders = orders1.dropna(axis=0, subset=["table_number"])

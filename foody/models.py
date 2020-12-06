@@ -39,6 +39,7 @@ class Orders(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     food = db.Column(db.String)
     price = db.Column(db.Integer)
+    uuid = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     @validates('food')
