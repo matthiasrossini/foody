@@ -15,7 +15,13 @@ Foody is a beginner project built using the following stack:
 - Google Cloud Products
 
 <br>
+
 ![image](screenshot.png)
+<<<<<<< HEAD
+=======
+
+<br>
+>>>>>>> f39f271daf84188f55c4c9f3ba3f4321da7d4c1f
 
 Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
 
