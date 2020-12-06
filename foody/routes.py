@@ -308,7 +308,7 @@ def upload():
                 pvegetarian=form.pvegetarian.data,
                 pgluten_free=form.pgluten_free.data,
                 plactose_free=form.plactose_free.data,
-                img_public_url=public_url
+                img_public_url=public_url,
                 pimage=file_name
             )
 
