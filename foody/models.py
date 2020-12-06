@@ -51,6 +51,7 @@ class Products(db.Model, UserMixin):
     plactose_free = db.Column(db.String)
     pvegan = db.Column(db.String)
     pvegetarian = db.Column(db.String)
+    img_public_url = db.Column(db.String, nullable=False)
     pimage = db.Column(db.String)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     #user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
@@ -75,6 +76,8 @@ class User(db.Model, UserMixin):
     # return output1 + output2
 
 # this is to insert in the database what the user has input
+
+
 def register_login(form, table_number):
     uuid_table = str(uuid.uuid1())
     table = User(
@@ -90,7 +93,7 @@ def register_login(form, table_number):
     login_user(user)
 
 
-#Getting products from SQL
+# Getting products from SQL
 def get_products():
     df = pd.read_sql(Products.query.statement, db.session.bind)
 
@@ -176,7 +179,7 @@ def add_waiter(form):
 # this is to check the waiter login
 
 
-#this is to check the waiter login
+# this is to check the waiter login
 def check_waiter(form):
     username = form.username.data
     password = form.password.data.encode("utf-8")
@@ -200,3 +203,27 @@ def logout_client():
         logout_user()
     else:
         return redirect(url_for("logout"))
+
+# for pics to bucket
+
+
+def upload_bytes_to_gcs(bucket_name, bytes_data, destination_blob_name):
+
+    storage_client = storage.Client()
+
+    # get the bucket by name
+    bucket = storage_client.bucket(bucket_name)
+
+    # this creates the blob object in python but does not upload anything
+    blob = bucket.blob(destination_blob_name)
+
+    # upload the file
+    blob.upload_from_string(bytes_data)
+
+    # set the image to be publicly viewable
+    blob.make_public()
+
+    # get publicly viewable image of url
+    public_img_url = blob.public_url
+
+    return public_img_url

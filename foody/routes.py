@@ -1,19 +1,28 @@
 import pandas as pd
 import os
 import sys
+import io
+
+from PIL import Image
+from google.cloud import storage
 from flask import Flask, render_template, redirect, url_for, request, flash
 
 from foody import app, db  # data
 from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, SubmitOrder
-from foody.models import Products, Table, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
+from foody.models import Products, Table, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client, upload_bytes_to_gcs
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
 from foody.__init__ import login_manager
 
-from sqlalchemy import create_engine
+from secrets import SQL_PASSWORD, SQL_PUBLIC_IP, SQL_DATABASE_NAME
 
-engine = create_engine("sqlite:///site.db")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp_credentials/fast-oxide-294313-904286117194.json"
+# from sqlalchemy import create_engine
+#
+# engine = create_engine("sqlite:///site.db")
+
+GC_BUCKET_NAME = "foody-bucket"
 
 ###############
 # Main Routes #
@@ -40,7 +49,7 @@ def login_route():
 ################
 
 
-#Flask-login redirects you automatically here if login_required and you are not logged in
+# Flask-login redirects you automatically here if login_required and you are not logged in
 @app.route("/login")
 def login():
     return redirect(url_for("home"))
@@ -74,7 +83,7 @@ def add_waiter_route():
 @login_required
 def admin_page():
     if current_user.is_authenticated:
-        if current_user.role  == "admin":
+        if current_user.role == "admin":
             return render_template("users/adminpage.html")
     else:
         flash("You must be an admin to view this page.")
@@ -205,11 +214,14 @@ def upload():
         if form.validate_on_submit():
 
             # Saving Image
-            f = form.pimage.data
-            path_in_static_folder = os.path.join("product_images", form.pname.data)
-            filepath = os.path.join("foody/static", path_in_static_folder)
-            f.save(filepath)
-
+            image_as_bytes = form.pimage.data_upload.data.read()
+            # path_in_static_folder = os.path.join("product_images", form.pname.data)
+            file_name = form.pimage.item_name.data
+            # filepath = os.path.join("foody/static", path_in_static_folder)
+            # f.save(filepath)
+            public_url = upload_bytes_to_gcs(bucket_name=GC_BUCKET_NAME,
+                                             bytes_data=image_as_bytes,
+                                             destination_blob_name=file_name)
             # SQL
             product = Products(
                 pname=form.pname.data,
@@ -220,7 +232,8 @@ def upload():
                 pvegetarian=form.pvegetarian.data,
                 pgluten_free=form.pgluten_free.data,
                 plactose_free=form.plactose_free.data,
-                pimage=path_in_static_folder
+                img_public_url=public_url
+                pimage=file_name
             )
 
             db.session.add(product)
@@ -237,7 +250,7 @@ def upload():
 @app.route("/orders")
 @login_required
 def orders():
-    if current_user.role in ["admin","waiter"]:
+    if current_user.role in ["admin", "waiter"]:
         orders = get_orders()
         # query = """ to be added once we have the logged in function
         # SELECT *
@@ -260,4 +273,3 @@ def single_product(product_name):
     # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
     product_info = product_info.to_dict('records')[0]
     return render_template("menu/single_item.html", product_info=product_info)
-
