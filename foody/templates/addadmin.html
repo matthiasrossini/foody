@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>New admin</title>
+  </head>
+  <body>
+    <h1>Hello!</h1>
+    <br>
+    <h2>Please add a new admin.</h2>
+    <h3>Watch out! Admins have <em>level 2 access</em>, meaning they can access
+    the menu, change it, add new meals, and add new waiters.</h3>
+    <form class=""  method="post">
+      {{ form.hidden_tag() }}
+      {{ form.full_name.label }} {{form.full_name() }}
+      <br>
+      {{ form.email.label }} {{ form.email() }}
+      <br>
+      {{ form.username.label }} {{ form.username() }}
+      <br>
+      {{ form.password.label }} {{ form.password() }}
+      <br><br>
+      {{ form.submit() }}
+    </form>
+
+  </body>
+</html>
