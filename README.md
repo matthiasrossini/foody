@@ -1,4 +1,4 @@
-# foody
+# Foody
 
 ### Software for restaurants using the Flask framework for Python
 
@@ -15,7 +15,9 @@ Foody is a beginner project built using the following stack:
 - Google Cloud Products
 
 <br>
+
 ![image](screenshot.png)
+
 <br>
 
 Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
