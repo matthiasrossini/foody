@@ -8,7 +8,8 @@ from foody import login_manager, db
 import uuid
 import bcrypt
 import pandas as pd
-
+from sqlalchemy.orm import validates
+from flask_sqlalchemy import SQLAlchemy
 
 ###########
 # Models  #
@@ -21,24 +22,29 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-class Table(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    table_number = db.Column(db.Integer, nullable=False)
-    taken = db.Column(db.String(10), nullable=False)
-    number_guests = db.Column(db.Integer)
-    ptype = db.Column(db.String(20))
-    pgluten_free = db.Column(db.String(10))
-    plactose_free = db.Column(db.String(10))
-    pvegetarian = db.Column(db.String(10))
-    pvegan = db.Column(db.String(10))
-    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) --> backref needed for waiters view
+# class Table(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     table_number = db.Column(db.Integer, nullable=False)
+#     taken = db.Column(db.String(10), nullable=False)
+#     number_guests = db.Column(db.Integer)
+#     ptype = db.Column(db.String(20))
+#     pgluten_free = db.Column(db.String(10))
+#     plactose_free = db.Column(db.String(10))
+#     pvegetarian = db.Column(db.String(10))
+#     pvegan = db.Column(db.String(10))
+#     # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) --> backref needed for waiters view
 
 
 class Orders(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     food = db.Column(db.String)
     price = db.Column(db.Integer)
-    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) --> backref needed for waiters view
+    uuid = db.Column(db.Integer)
+    user_table = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+    @validates('food')
+    def convert_upper(self, key, value):
+        return value.upper()
 
 
 class Products(db.Model, UserMixin):
@@ -54,7 +60,10 @@ class Products(db.Model, UserMixin):
     img_public_url = db.Column(db.String, nullable=False)
     pimage = db.Column(db.String)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    #user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
+
+    @validates('pname')
+    def convert_upper(self, key, value):
+        return value.upper()
 
 
 class User(db.Model, UserMixin):
@@ -69,7 +78,7 @@ class User(db.Model, UserMixin):
     client_is_gone = db.Column(db.String(5))
     date = db.Column(db.DateTime, default=datetime.now)
     role = db.Column(db.String(20), nullable=False)
-
+    orders = db.relationship("Orders", backref="table", lazy=True)
     #output1 = (f" User ID: {self.id}, table number: {self.table_number} ")
     #output2 = (f" Number of guests: {self.number_guests}, date: {self.date} ")
     # def __repr__(self):
@@ -204,6 +213,7 @@ def logout_client():
     else:
         return redirect(url_for("logout"))
 
+
 # for pics to bucket
 
 
@@ -227,3 +237,4 @@ def upload_bytes_to_gcs(bucket_name, bytes_data, destination_blob_name):
     public_img_url = blob.public_url
 
     return public_img_url
+
