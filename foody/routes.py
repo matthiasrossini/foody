@@ -37,7 +37,7 @@ def login_route():
 
 @app.route("/about")
 def about():
-    return render_template("main/about.html", title="About", layout=About)
+    return render_template("main/about.html", title="About", layout="About")
 
 # to delete afterwards
 
@@ -71,7 +71,6 @@ def admin_login():
         if check_admin(form):
             return redirect(url_for("admin_page"))
     return render_template("users/adminlogin.html", form=form)
-
 
 
 @app.route("/add-waiter", methods=["GET", "POST"])
@@ -110,7 +109,6 @@ def waiter_login():
         if check_waiter(form):
             return redirect(url_for("waiter_page"))
     return render_template("users/waiterlogin.html", form=form)
-
 
 
 @app.route("/waiter")
@@ -218,7 +216,6 @@ def meal():
         return redirect(url_for("home"))
 
 
-
 @app.route("/stripe", methods=["GET", "POST"])
 @login_required
 def stripe():
@@ -235,13 +232,14 @@ def stripe():
             products_for_table = orders.loc[orders["user_id"] == price, "price"]
             products_for_table = list(products_for_table)
             total_price = sum(products_for_table)
-        return render_template("stripe.html")
+        return render_template("stripe.html", total_price)
     else:
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")
         return redirect(url_for("home"))
 
     # return render_template('stripe.html', amount=amount)
+
 
 @app.route("/end")
 @login_required
