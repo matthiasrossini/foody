@@ -223,6 +223,7 @@ def stripe():
     STRIPE_PUBLISHABLE_KEY = "pk_test_51HubNWKUsJQgM5cwhuLnrsSSOsiFfyFwhba9kEqnTJdQ9xB4zuPhqIM6Z6s1VeCWsCK1wkYNBDGXasFmBXyK7R4H00xIAt9ie3"
     STRIPE_SECRET_KEY = "sk_test_51HubNWKUsJQgM5cw3wivbgvNzM5EQRGj2gt5Y6mltt2mqSzeRmGi5pW4cW40nCibQUhSzjEc3WcJMYuwr52mE4gf00QER6iDbf"
     # Stripe.setPublishableKey()
+    stripe.api_key = STRIPE_SECRET_KEY
     if current_user.role == "client":
         user_table = current_user.table_number
         orders = get_orders()
@@ -241,13 +242,16 @@ def stripe():
             products_for_table = orders.loc[orders["user_table"] == price, "price"]
             products_for_table = list(products_for_table)
             total_price = sum(products_for_table)
-        return render_template("stripe.html", total_price=total_price)
+        return render_template("stripe.html", total_price=total_price, key=STRIPE_PUBLISHABLE_KEY)
     else:
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")
         return redirect(url_for("home"))
 
-    # return render_template('stripe.html', amount=amount)
+
+@app.route('/charge', methods=["GET", "POST"])
+def charge():
+    return render_template("end.html")
 
 
 @app.route("/end")
