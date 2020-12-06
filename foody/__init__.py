@@ -7,17 +7,17 @@ from flask_login import LoginManager, UserMixin, current_user
 from google.cloud import storage
 import pandas as pd
 
-#from secrets import SQL_PASSWORD, PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
+from foody.secrets import SQL_PASSWORD, SQL_PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
 
 # setup app and database
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "hard-to-guess-string"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SECRET_KEY'] = "axel-chupa-cojones"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{SQL_PASSWORD}@{SQL_PUBLIC_IP_ADDRESS}/{SQL_DATABASE_NAME}"
 db = SQLAlchemy(app)
 # old version: data = pd.read_csv("database.csv", sep=",")
 
-
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "foody\\gcp_credentials\\fast-oxide-294313-904286117194.json"
 # Bcrypt for hashing passwords and LoginManager
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)

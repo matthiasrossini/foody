@@ -15,8 +15,10 @@ from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
 from foody.__init__ import login_manager
 
-#from secrets import SQL_PASSWORD, PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
+from google.cloud import storage
+# from foody.secrets import SQL_PASSWORD, PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
 
+GC_BUCKET_NAME = "foody-bucket"
 
 ###############
 # Main Routes #
@@ -283,11 +285,16 @@ def upload():
     if current_user.role in ["admin", "waiter"]:
         form = ProductUpload()
         if form.validate_on_submit():
+
             # Saving Image
-            f = form.pimage.data
-            path_in_static_folder = os.path.join("product_images", form.pname.data)
-            filepath = os.path.join("foody/static", path_in_static_folder)
-            f.save(filepath)
+            image_as_bytes = form.pimage.data.read()
+            # path_in_static_folder = os.path.join("product_images", form.pname.data)
+            file_name = form.pname.data
+            # filepath = os.path.join("foody/static", path_in_static_folder)
+            # f.save(filepath)
+            public_url = upload_bytes_to_gcs(bucket_name=GC_BUCKET_NAME,
+                                             bytes_data=image_as_bytes,
+                                             destination_blob_name=file_name)
             # SQL
             product = Products(
                 pname=form.pname.data,
@@ -298,7 +305,8 @@ def upload():
                 pvegetarian=form.pvegetarian.data,
                 pgluten_free=form.pgluten_free.data,
                 plactose_free=form.plactose_free.data,
-                pimage=path_in_static_folder
+                img_public_url=public_url,
+                pimage=file_name
             )
 
             db.session.add(product)

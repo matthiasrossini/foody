@@ -10,7 +10,7 @@ import bcrypt
 import pandas as pd
 from sqlalchemy.orm import validates
 from flask_sqlalchemy import SQLAlchemy
-
+from google.cloud import storage
 ###########
 # Models  #
 ###########
@@ -49,14 +49,15 @@ class Orders(db.Model, UserMixin):
 
 class Products(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    pname = db.Column(db.String(30), unique=True, nullable=False)
-    pdescription = db.Column(db.String(30), nullable=False)
+    pname = db.Column(db.String(50), unique=True, nullable=False)
+    pdescription = db.Column(db.String(100), nullable=False)
     pprice = db.Column(db.Integer, nullable=False)
     ptype = db.Column(db.String)
     pgluten_free = db.Column(db.String)
     plactose_free = db.Column(db.String)
     pvegan = db.Column(db.String)
     pvegetarian = db.Column(db.String)
+    img_public_url = db.Column(db.String(300), nullable=False)
     pimage = db.Column(db.String)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
@@ -71,7 +72,7 @@ class User(db.Model, UserMixin):
     number_guests = db.Column(db.Integer)
     full_name = db.Column(db.String(50))
     username = db.Column(db.String(60))
-    password = db.Column(db.String(100))
+    password = db.Column(db.String(200))
     email = db.Column(db.String(60))
     uuid = db.Column(db.String(60))
     client_is_gone = db.Column(db.String(5))
@@ -129,7 +130,8 @@ def add_admin(form):
         return False
     salt = bcrypt.gensalt()
     password = form.password.data.encode("utf-8")
-    hashed_password = bcrypt.hashpw(password, salt)
+    hashed_password = bcrypt.hashpw(password, salt).decode("utf-8")
+    print(hashed_password)
 
     new_admin = User(
         full_name=form.full_name.data,
@@ -150,7 +152,7 @@ def check_admin(form):
     admin = User.query.filter_by(username=username).first()
 
     if admin is not None:
-        if bcrypt.checkpw(form.password.data.encode("utf-8"), admin.password):
+        if bcrypt.checkpw(form.password.data.encode("utf-8"), admin.password.encode("utf-8")):
             login_user(admin)
             return True
         else:
