@@ -231,11 +231,12 @@ def stripe():
         # orders = orders1.dropna(axis=0, subset=["table_number"])
         order_nums = orders["user_table"].unique()
         # table_orders = {}
+        total_price = 0
         for price in order_nums:
             products_for_table = orders.loc[orders["user_table"] == price, "price"]
             products_for_table = list(products_for_table)
             total_price = sum(products_for_table)
-        return render_template("stripe.html", total_price)
+        return render_template("stripe.html", total_price=total_price)
     else:
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")

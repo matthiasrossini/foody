@@ -40,7 +40,7 @@ class Orders(db.Model, UserMixin):
     food = db.Column(db.String)
     price = db.Column(db.Integer)
     uuid = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_table = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     @validates('food')
     def convert_upper(self, key, value):

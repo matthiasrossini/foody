@@ -1,12 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container" style="text-align: center;">
+  <div class="card col-sm-4" style="text-align: center;">
   <form action="/charge" method="post">
     <article>
       <label>
-        <span>Amount is $ {{ amount/100 }}</span>
+        <span>Total amount is $ {{ total_price }}</span>
       </label>
     </article>
-
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="A Flask Charge" data-amount={{ amount }} data-locale="auto"></script>
-  </form>
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="A Flask Charge" data-amount={{ total_price*100 }} data-locale="auto"></script>
+</form>
+</div>
+</div>
 {% endblock %}
