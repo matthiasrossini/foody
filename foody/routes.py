@@ -221,10 +221,6 @@ def stripe():
     if current_user.role == "client":
         user_table = current_user.table_number
         orders = get_orders()
-<<<<<<< HEAD
-
-        order_nums = orders["user_id"].unique()
-=======
         # query = """
         # SELECT *
         # FROM User
@@ -234,7 +230,6 @@ def stripe():
         # orders1 = pd.read_sql(query, db.session.bind)
         # orders = orders1.dropna(axis=0, subset=["table_number"])
         order_nums = orders["user_table"].unique()
->>>>>>> branlade
         # table_orders = {}
         for price in order_nums:
             products_for_table = orders.loc[orders["user_table"] == price, "price"]
