@@ -22,6 +22,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# file
+secrets.py
+gcp_credentials
 # mypy
 .mypy_cache/
 
