@@ -53,6 +53,8 @@ def add_admin_route():
         if add_admin(form):
             return redirect(url_for("admin_login"))
     return render_template("addadmin.html", form=form)
+
+
 ################
 # Login Routes #
 ################

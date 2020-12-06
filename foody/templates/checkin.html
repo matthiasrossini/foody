@@ -1,37 +1,30 @@
 {% extends "layout.html" %}
-{% block content %}
+{% block content0 %}
+<section id="hero2" class="d-flex align-items-center">
+  <div class="container position-relative text-center text-lg-left" data-aos="zoom-in" data-aos-delay="100">
+    <div class="row">
+      <div class="col-lg-8">
+        <h1>Time to <span>Check-In</span></h1>
+        <h2>Please let us know your table number and head count.</h2>
 
+        <form method="post">
+          <font color="white">
+          {{ form.hidden_tag() }}
+          {{ form.table_number.label }} {{ form.table_number() }}
+          <br>
+          {{ form.number_guests.label }} {{ form.number_guests() }}
+          <br><br>
 
-<div class="container" style="min-height:100% width:80%">
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-warning alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-      {{ message }}
+          <div class="btns">
+            <div class="btn-menu animated fadeInUp scrollto">
+              <font color="white">
+              <button type=submit class="btn btn-light-outline"><span style="color:white"> Submit </span></button>
+              </font>
+          </div>
+          </font>
       </div>
-    {% endfor %}
-    {% endif %}
-  {% endwith %}
-</div>
+    </div>
+  </div>
+</section>
 
-
-<div class="container">
-  <br>
-  <h3>Welcome</h3>
-  <p>Hello and welcome to Foody! Please select the number of people present at your table.</p>
-  
-  <form method="post">
-    {{ form.hidden_tag() }}
-    {{ form.table_number.label }} {{ form.table_number() }}
-    <br>
-    {{ form.number_guests.label }} {{ form.number_guests() }}
-    <br><br>
-    {{ form.submit() }}
-    <br><br>
-  </form>
-
-</div>
-
-
-{% endblock content %}
+{% endblock content0 %}

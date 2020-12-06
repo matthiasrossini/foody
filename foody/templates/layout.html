@@ -43,6 +43,7 @@
 
 
 <body>
+<body style="background-color:black;">
 
 {% if layout %}
 
@@ -52,12 +53,6 @@
       <div class="contact-info mr-auto">
         <i class="icofont-phone"></i> +41 061 061 06 06
         <span class="d-none d-lg-inline-block"><i class="icofont-clock-time icofont-rotate-180"></i> Mon-Sat: 11:00 AM - 11:00 PM</span>
-      </div>
-      <div class="languages">
-        <ul>
-          <li>En</li>
-          <li><a href="#">De</a></li>
-        </ul>
       </div>
     </div>
   </div>
@@ -69,7 +64,6 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li class="active"><a href={{ url_for("home") }}>Home</a></li>
-          <li><a href={{ url_for("about") }}>About</a></li>
           <li><a href={{ url_for("menu") }}>Menu</a></li>
           {% if current_user.is_authenticated %}
             {% if current_user.role == "admin" %}
@@ -93,6 +87,8 @@
     </div>
   </header>
   <!-- End Header -->
+
+
 
 {% else %}
 
@@ -171,6 +167,68 @@
 </div>
 
   {% block content0 %}{% endblock %}
+
+    <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-info">
+              <h3>Foody</h3>
+              <p>
+                Dufourstrasse 50 <br>
+                9000 St. Gallen, Switzerland<br><br>
+                <strong>Phone:</strong> +41 061 061 06 06<br>
+                <strong>Email:</strong> info@foody.com<br>
+              </p>
+              <div class="social-links mt-3">
+                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href={{ url_for("home") }}>Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href={{ url_for("menu") }}>Menu</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href={{ url_for("admin_login") }}>Admin Login</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href={{ url_for("waiter_login") }}>Waiter Login</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href={{ url_for("checkin") }}>Checkin</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>Our Newsletter</h4>
+            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Bootstrap Template by Restaurantly</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/restaurantly-restaurant-template/ -->
+      </div>
+    </div>
+  </footer><!-- End Footer -->
 
     <!-- Bootstrap Navigation Bar -->
 
