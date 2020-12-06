@@ -10,15 +10,13 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from foody import app, db  # data
 from foody.forms import TableForm, ProductUpload, AddAdmin, AdminLogin, MenuForm, AddWaiter, WaiterLogin, SubmitOrder
 
-from foody.models import Products, Table, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client, upload_bytes_to_gcs
-from foody.models import Products, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client
-
+from foody.models import Products, Orders, get_products, get_orders, User, register_login, load_user, add_admin, check_admin, add_waiter, check_waiter, logout_client, upload_bytes_to_gcs
 
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_login import logout_user, login_required
 from foody.__init__ import login_manager
 
-from secrets import SQL_PASSWORD, SQL_PUBLIC_IP, SQL_DATABASE_NAME
+from secrets import SQL_PASSWORD, PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp_credentials/fast-oxide-294313-904286117194.json"
 # from sqlalchemy import create_engine
