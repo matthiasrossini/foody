@@ -116,7 +116,7 @@
         <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
           {% for index, row in products_df.iterrows() %}
             <div class="col-lg-6 menu-item filter-{{row['ptype']}}">
-              <img src={{ url_for("static", filename=row["pimage"]) }} class="menu-img" alt="">
+              <img src={{ row["img_public_url"] }} class="menu-img" alt="">
               <div class="menu-content">
                 <a style="color:white">{{ row['pname'] }} </a><span> ${{ row['pprice'] }} </span>
               </div>
