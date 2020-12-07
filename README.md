@@ -69,12 +69,12 @@ pip install -r requirements.txt
 To run the app on Unix:
 
 ```bash
-cd flaskapp && python3 app.py
+cd foody && python3 run.py
 ```
 
 To run the app on Windows:
 ```bash
-cd flaskapp && python app.py
+cd foody && python run.py
 ```
 
 <br>
