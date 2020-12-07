@@ -5,7 +5,7 @@
 <br>
 <br>
 
-<div class="container">
+<div class="container"  style="color:white">
   <h1>Welcome</h1>
   <br>
   <h5>Welcome, {{ current_user.full_name }}, to the overview of the tables.</h5>
@@ -15,11 +15,10 @@
 </div>
 
 <div class="container" style="width: 420px;margin-left: auto; margin-right: auto;">
-  <table class="table table-striped table-bordered table-hover">
+  <table class="table table-striped table-bordered table-hover"  style="color:white; text-align:center;"  >
     <thead class="thead-dark">
       <tr>
         <th scope="col">Table number</th>
-        <th scope="col">Number of guests</th>
       </tr>
     </thead>
     <tbody>
@@ -27,7 +26,6 @@
       <tr>
         {% if row["client_is_gone"] != "yes" %}
           <th scope="row">{{ row["table_number"] }}</th>
-          <td>{{ row["number_guests"] }}</td>
         {% endif %}
       </tr>
       {% endfor %}
