@@ -126,13 +126,13 @@ We ran into a pretty considerable amount of challenges while making this project
 But then again, <em> why wouldn't we</em>? It's by making these mistakes and having difficulties that we learn best. 
 
 So here is a summary of our biggest challenges and hard points: 
-
+<br>
 <ul><b>Learning to collaborate with Github</b></ul>
 Out of 4 members, 3 had never collaborated on code nor used Github. It's a whole art to learn to work as a group on code. 
-
+<br>
 <ul><b>SQL Database issues</b></ul>
 This could possibly be the biggest challenge we faced, especially in the later stages. Learning to handle SQL databases when making changes to classes, using cloud databases was a hell of relentless error messages. 
-
+<br>
 <ul><b>Variety of programming languages</b></ul>
 The last difficulty we had was with the sheer amount of different programming languages we had to get familiar with. Being relatively new to coding, using HTML, CSS, Python, SQL languages, as well as Github, command line and Google Cloud commands; this was all something which required much work to be decent at. 
 
