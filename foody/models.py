@@ -174,7 +174,7 @@ def add_waiter(form):
         return False
     salt = bcrypt.gensalt()
     password = form.password.data.encode("utf-8")
-    hashed_password = bcrypt.hashpw(password, salt)
+    hashed_password = bcrypt.hashpw(password, salt).decode("utf-8")
 
     new_waiter = User(
         full_name=form.full_name.data,
@@ -195,7 +195,7 @@ def check_waiter(form):
     waiter = User.query.filter_by(username=username).first()
 
     if waiter is not None:
-        if bcrypt.checkpw(password, waiter.password):
+        if bcrypt.checkpw(password, waiter.password.encode("utf-8")):
             login_user(waiter)
             return True
 
