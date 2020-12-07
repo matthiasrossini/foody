@@ -82,23 +82,23 @@ cd foody && python run.py
 # 4 - Instructions for collaboration
 
 BEFORE STARTING
+- installed application & virtualenv as specified above
 - ``` git pull ```
 - enter virtualenv 
 
-1. Installed the application as specified above
-
-2. Test pushing and pulling:
+1. Test pushing and pulling:
 - ``` git pull ```
 - #add a new file/change e.g. touch test.txt
 - add all changes: ``` git add . ```
 - ``` git commit -m "name's first commit" ```
 - ``` git push ```
 
-3. Working with branches
+2. Working with branches
 - look at available branches: ``` git branch -a``` 
 - create a new branch and access it: ``` git checkout -b <branch-name> ```
 - access branch: ``` git checkout ```
 - check status of branch ``` git status ```
+- merge branch: ``` git merge ```
 
 <br>
 
