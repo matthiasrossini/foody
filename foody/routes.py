@@ -347,7 +347,7 @@ def orders():
                 table_orders += [table, products_for_table]
             order_and_table=[]
             i=0
-            while i < (len(orders)-3):
+            while i < (len(orders)-2):
                 text=f"Table {table_orders[i]}'s orders are:"
                 order_list = table_orders[i+1]
                 order_string = ""
