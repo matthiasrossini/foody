@@ -44,9 +44,7 @@
 
   {% for index, row in products_df.iterrows() %}
     <div class="col-lg-6 menu-item filter-{{row['ptype']}}">
-
       <img src={{ row["img_public_url"] }} class="menu-img" alt="">
-
       <div class="menu-content">
         <a style="color:white">{{ row['pname'] }} </a><span> ${{ row['pprice'] }} </span>
       </div>
