@@ -2,8 +2,6 @@
 
 ### Software for restaurants using the Flask framework for Python
 
-![image](screenshot.png)
-
 # 1 - Project Description
 Welcome to Foody 🎉 
 
@@ -19,15 +17,12 @@ Foody is a beginner project built using the following stack:
 
 <br>
 
-Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
+![image](screenshot.png)
 
-#### Customers
+<br>
 
-Customers can look at the current menu and the specials via the homepage, by checking in via "/checkin", they can state their table number, which allows them to order food which is sorted into appetizer/main/dessert and further categorized by dietary restrictions. Once the customer has ordered, he or she has the option to order more food, or pay via the stripe API. 
+Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. Customers can look at the current menu and the specials via the homepage, by checking in via "/checkin", they can state their table number, which allows them to order food which is sorted into appetizer/main/dessert and further categorized by dietary restrictions. Once the customer has ordered, he or she 
 
-#### Waiters and Admins
-
-Waiters and restaurant owners have specialized logins and they can use this web application to upload their latest products via the "/upload" window. These new products are dynamically rendered into the menu on the home & menu page. Via the "/orders" window, waiters have an overview of the current orders and via the "/overview" window, waiters can see which tables are currently being used.
 
 <br>
 
@@ -122,7 +117,25 @@ Now you should be able to copy your project to your Google Cloud Server (SCP) an
 
 <br>
 
-# 5 - Resources & Links
+# 6 - Challenges
+
+<br>
+
+We ran into a pretty considerable amount of challenges while making this project. 
+
+But then again, <em> why wouldn't we</em>? It's by making these mistakes and having difficulties that we learn best. 
+
+So here is a summary of our biggest challenges and hard points: 
+<ul> Learning to collaborate with Github </ul>
+Out of 4 members, 3 had never collaborated on code nor used Github. It's a whole art to learn to work as a group on code. 
+<ul> SQL Database issues </ul>
+This could possibly be the biggest challenge we faced, especially in the later stages. Learning to handle SQL databases when making changes to classes, using cloud databases was a hell of relentless error messages. 
+<ul> Variety of programming languages </ul>
+The last difficulty we had was with the sheer amount of different programming languages we had to get familiar with. Being relatively new to coding, using HTML, CSS, Python, SQL languages, as well as Github, command line and Google Cloud commands; this was all something which required much work to be decent at. 
+
+
+<br>
+# 7 - Resources & Links
 1. [Youtube Tutorial for Github](https://www.youtube.com/watch?v=SWYqp7iY_Tc)
 2. [Youtube Tutorial for Package Structure](https://www.youtube.com/watch?v=44PvX0Yv368)
 3. [Bootstrap Template](https://bootstrapmade.com/restaurantly-restaurant-template/)
