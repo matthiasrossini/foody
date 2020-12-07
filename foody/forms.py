@@ -10,7 +10,6 @@ from wtforms.validators import DataRequired, Length, Email, InputRequired
 
 class TableForm(FlaskForm):
     table_number = IntegerField("Table number:", validators=[DataRequired()])
-    number_guests = IntegerField("Number of people:", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 

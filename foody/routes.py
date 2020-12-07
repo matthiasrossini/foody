@@ -29,7 +29,8 @@ GC_BUCKET_NAME = "foody-bucket"
 @app.route("/index")
 @app.route("/home")
 def home():
-    return render_template('main/home.html', layout=home)
+    #products = get_products()
+    return render_template('main/home.html', layout=home) #products_df=products
 
 # this is the route Flask-login redirects you to automatically
 # if there is a login_required and you are not logged in
@@ -57,7 +58,7 @@ def add_admin_route():
     if form.validate_on_submit():
         if add_admin(form):
             return redirect(url_for("admin_login"))
-    return render_template("addadmin.html", form=form)
+    return render_template("addadmin.html", form=form, title="Add Admin")
 
 
 ################
@@ -77,7 +78,7 @@ def admin_login():
     if form.validate_on_submit():
         if check_admin(form):
             return redirect(url_for("admin_page"))
-    return render_template("users/adminlogin.html", form=form)
+    return render_template("users/adminlogin.html", form=form, title="Admin Login")
 
 
 @app.route("/add-waiter", methods=["GET", "POST"])
@@ -88,7 +89,7 @@ def add_waiter_route():
         if form.validate_on_submit():
             add_waiter(form)
             return redirect(url_for("admin_page"))
-        return render_template("users/addwaiter.html", form=form)
+        return render_template("users/addwaiter.html", form=form, title="Add Waiters")
 
     else:
         flash(f"Unfortunately, a {current_user.role} cannot add new waiters.")
@@ -100,7 +101,7 @@ def add_waiter_route():
 def admin_page():
     if current_user.is_authenticated:
         if current_user.role == "admin":
-            return render_template("users/adminpage.html")
+            return render_template("users/adminpage.html", title="Admin")
 
     else:
         flash("You must be an admin to view this page.")
@@ -115,7 +116,7 @@ def waiter_login():
     if form.validate_on_submit():
         if check_waiter(form):
             return redirect(url_for("waiter_page"))
-    return render_template("users/waiterlogin.html", form=form)
+    return render_template("users/waiterlogin.html", form=form, title="Waiter Login")
 
 
 @app.route("/waiter")
@@ -147,7 +148,7 @@ def checkin():
         table_number = form.table_number.data
         register_login(form, table_number)
         return redirect(url_for("menu"))
-    return render_template("checkin.html", form=form)
+    return render_template("checkin.html", form=form, title="Check-In")
 
 
 @app.route("/table/<table_number>", methods=["GET", "POST"])
@@ -157,7 +158,7 @@ def table(table_number):
     if form.validate_on_submit():
         register_login(form, table_number)
         return redirect(url_for("menu"))
-    return render_template("table.html", form=form, table_number=table_number)
+    return render_template("table.html", form=form, table_number=table_number, title="Table")
 
 
 @app.route("/menu", methods=["GET", "POST"])
@@ -204,7 +205,7 @@ def menu():
             db.session.commit()
             flash("Your order was successfully submitted!")
             return redirect(url_for("meal"))
-    return render_template("menu/menu.html", products_df=products, form=form)
+    return render_template("menu/menu.html", products_df=products, form=form, title="Menu")
 
 
 @app.route("/meal")
@@ -244,7 +245,7 @@ def stripe():
             products_for_table = orders.loc[orders["user_table"] == price, "price"]
             products_for_table = list(products_for_table)
             total_price = sum(products_for_table)
-        return render_template("stripe.html", total_price=total_price, key=STRIPE_PUBLISHABLE_KEY)
+        return render_template("stripe.html", total_price=total_price, key=STRIPE_PUBLISHABLE_KEY, title="Payment")
     else:
         flash("Sorry, but this route is for clients only. To try it out yourself, +\
         try out the customer journey from /table/<insert_number_here>!")
@@ -314,7 +315,7 @@ def upload():
 
             return redirect(url_for("menu"))
 
-        return render_template("menu/upload.html", form=form)
+        return render_template("menu/upload.html", form=form, title="Upload")
     else:
         flash(f"Sorry, but a {current_user.role} cannot add new products.")
         return redirect(url_for("menu"))
@@ -340,17 +341,8 @@ def orders():
             products_for_table = orders.loc[orders["table_number"] == table, "food"]
             products_for_table = list(products_for_table)
             table_orders[table] = ", ".join(products_for_table)
-        return render_template("orders.html", orders=table_orders)
+        return render_template("orders.html", orders=table_orders, title="Orders")
     else:
         flash("Sorry, but customers cannot access this page.")
         return redirect(url_for("menu"))
 
-
-@app.route("/product/<product_name>")
-def single_product(product_name):
-    # we access the row of the dataframe that we want
-    product_info = data.loc[data["name"] == product_name, :]
-    # we transform the single row into a dictionary (this is easier to access in the html)
-    # code from: https://stackoverflow.com/questions/50575802/convert-dataframe-row-to-dict
-    product_info = product_info.to_dict('records')[0]
-    return render_template("menu/single_item.html", product_info=product_info)

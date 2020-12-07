@@ -92,65 +92,32 @@
 
 {% else %}
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href={{ url_for("home") }}>Foody</a>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+      <a href={{ url_for("home") }} class="logo mr-auto"><img src={{ url_for('static', filename='img/apple-touch-icon.png') }} alt="" class="img-fluid">  </a>
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li class="active"><a href={{ url_for("home") }}>Home</a></li>
+          <li><a href={{ url_for("menu") }}>Menu</a></li>
+          {% if current_user.is_authenticated %}
+            {% if current_user.role == "admin" %}
+              <li><a href={{ url_for("admin_page") }}>Admin Page</a></li>
+            {% endif %}
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+            {% if current_user.role == "waiter" %}
+              <li><a href={{ url_for("waiter_page") }}>Waiter Page</a></li>
+            {% endif %}
 
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href={{ url_for("home") }}>Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href={{ url_for("menu") }}>Menu</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Checkout</a>
-      </li>
-      {% if current_user.is_authenticated %}
-        {% if current_user.role == "admin" %}
-        <li class="nav-item">
-          <a class="nav-link" href={{ url_for("admin_page") }}>Admin page</a>
-        </li>
-        {% endif %}
+              <li><a href={{ url_for("logout") }}>Logout</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+      <!-- .nav-menu -->
 
-        {% if current_user.role == "waiter" %}
-        <li class="nav-item">
-          <a class="nav-link" href={{ url_for("waiter_page") }}>Waiter page</a>
-        </li>
-        {% endif %}
-
-        <li class="nav-item">
-          <a class="nav-link" href={{ url_for("logout") }}>Logout</a>
-        </li>
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link" href={{ url_for("admin_login") }}>Admin</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href={{ url_for("waiter_login") }}>Waiter</a>
-      </li>
-      {% endif %}
-
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Developer links
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href={{ url_for("upload") }}>Upload</a>
-          <a class="dropdown-item" href={{ url_for("table", table_number=1) }}>Table 1 Check-In</a>
-          <a class="dropdown-item" href={{ url_for("overview") }}>Overview</a>
-          <a class="dropdown-item" href={{ url_for("admin_login") }}>Admin Login</a>
-          <a class="dropdown-item" href={{ url_for("waiter_login") }}>Waiter Login</a>
-        </div>
-      </li>
-
-    </ul>
-  </div>
-  </nav>
+    </div>
+  </header>
+  <!-- End Header -->
 
 {% endif %}
 <div class="container" style="min-height:100% width:80%">
@@ -206,7 +173,7 @@
 
           <div class="col-lg-4 col-md-6 footer-newsletter">
             <h4>Our Newsletter</h4>
-            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+            <p>Be the first to hear about the latest foody updates!</p>
             <form action="" method="post">
               <input type="email" name="email"><input type="submit" value="Subscribe">
             </form>

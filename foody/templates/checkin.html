@@ -5,16 +5,13 @@
     <div class="row">
       <div class="col-lg-8">
         <h1>Time to <span>Check-In</span></h1>
-        <h2>Please let us know your table number and head count.</h2>
+        <h2>Please tell us your table number so we can take your order.</h2>
 
         <form method="post">
           <font color="white">
           {{ form.hidden_tag() }}
           {{ form.table_number.label }} {{ form.table_number() }}
-          <br>
-          {{ form.number_guests.label }} {{ form.number_guests() }}
           <br><br>
-
           <div class="btns">
             <div class="btn-menu animated fadeInUp scrollto">
               <font color="white">

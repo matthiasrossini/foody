@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>New admin</title>
-  </head>
-  <body>
-    <h1>Hello!</h1>
+
+{% extends "layout.html" %}
+{% block content0 %}
+  <h1>Hello!</h1>
     <br>
     <h2>Please add a new admin.</h2>
     <h3>Watch out! Admins have <em>level 2 access</em>, meaning they can access
@@ -22,6 +18,4 @@
       <br><br>
       {{ form.submit() }}
     </form>
-
-  </body>
-</html>
+{% endblock content0 %}
