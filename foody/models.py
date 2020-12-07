@@ -92,7 +92,6 @@ def register_login(form, table_number):
     table = User(
         uuid=uuid_table,
         table_number=table_number,
-        number_guests=form.number_guests.data,
         role="client",
     )
     db.session.add(table)
