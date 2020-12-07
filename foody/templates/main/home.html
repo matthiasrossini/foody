@@ -114,91 +114,18 @@
         </div>
 
         <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="col-lg-6 menu-item filter-starter">
-            <img src={{ url_for("static", filename="product_images/Avocado") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🥑 Avocado</a><span>$1.95</span>
+          {% for index, row in products_df.iterrows() %}
+            <div class="col-lg-6 menu-item filter-{{row['ptype']}}">
+              <img src={{ url_for("static", filename=row["pimage"]) }} class="menu-img" alt="">
+              <div class="menu-content">
+                <a style="color:white">{{ row['pname'] }} </a><span> ${{ row['pprice'] }} </span>
+              </div>
+              <div class="menu-ingredients">
+                Gluten Free: {{ row['pgluten_free'] }}, Vegetarian: {{ row['pvegetarian'] }}, Vegan: {{ row['pvegan'] }}
+              </div>
             </div>
-            <div class="menu-ingredients">
-              Gluten Free: yes, Vegetarian: yes, Vegan: yes
-            </div>
-          </div>
-
-          <div class="col-sm-6 menu-item filter-dessert">
-            <img src= {{ url_for("static", filename="product_images/Chocolate Cake") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🍰 Chocolate Cake</a><span> $9.99 </span>
-            </div>
-            <div class="menu-ingredients">
-              Gluten Free: no, Vegetarian: yes, Vegan: yes
-            </div>
-          </div>
-
-          <div class="col-sm-6 menu-item filter-dessert">
-            <img src= {{ url_for("static", filename="product_images/Chocolate Dessert") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🍫 Chocolate Dessert</a><span> $6.99 </span>
-            </div>
-            <div class="menu-ingredients">
-              Gluten Free: no, Vegetarian: yes, Vegan: yes
-            </div>
-          </div>
-
-          <div class="col-sm-6 menu-item filter-main">
-            <img src= {{ url_for("static", filename="product_images/Pork Dumplings") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🥟 Pork Dumplings</a><span> $8.99 </span>
-            </div>
-            <div class="menu-ingredients">
-              Gluten Free: no, Vegetarian: no, Vegan: no
-            </div>
-          </div>
-
-
-
-          <div class="col-sm-6 menu-item filter-main">
-            <img src= {{ url_for("static", filename="product_images/Meatballs") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🍗 Meatballs</a><span> $1.99 </span>
-            </div>
-            <div class="menu-ingredients">
-              Gluten Free: no, Vegetarian: no, Vegan: no
-            </div>
-          </div>
-
-          <div class="col-sm-6 menu-item filter-dessert">
-            <img src= {{ url_for("static", filename="product_images/Pancakes") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🥞 Pancakes</a><span> $6.99 </span>
-            </div>
-            <div class="menu-ingredients">
-              Gluten Free: no, Vegetarian: yes, Vegan: yes
-            </div>
-          </div>
-
-          <div class="col-sm-6 menu-item filter-main">
-            <img src= {{ url_for("static", filename="product_images/Pesto Salas") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🥗 Pesto Salad</a><span> $18.99 </span>
-            </div>
-            <div class="menu-ingredients">
-              Gluten Free: yes, Vegetarian: yes, Vegan: yes
-            </div>
-          </div>
-
-          <div class="col-sm-6 menu-item filter-main">
-            <img src= {{ url_for("static", filename="product_images/Pizza") }} class="menu-img" alt="">
-            <div class="menu-content">
-              <a style="color:white">🍕 Pizza </a><span> $21.99 </span>
-            </div>
-            <div class="menu-ingredients">
-              Gluten Free: no, Vegetarian: no, Vegan: no
-            </div>
-          </div>
-
+          {% endfor %}
         </div>
-
       </div>
     </section>
     <!-- End Menu Section -->

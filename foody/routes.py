@@ -29,8 +29,8 @@ GC_BUCKET_NAME = "foody-bucket"
 @app.route("/index")
 @app.route("/home")
 def home():
-    #products = get_products()
-    return render_template('main/home.html', layout=home) #products_df=products
+    products = get_products()
+    return render_template('main/home.html', layout=home, products_df=products)
 
 # this is the route Flask-login redirects you to automatically
 # if there is a login_required and you are not logged in
