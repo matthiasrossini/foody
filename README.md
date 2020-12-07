@@ -2,6 +2,8 @@
 
 ### Software for restaurants using the Flask framework for Python
 
+![image](screenshot.png)
+
 # 1 - Project Description
 Welcome to Foody 🎉 
 
@@ -14,10 +16,6 @@ Foody is a beginner project built using the following stack:
 - Bootstrap
 - Google Cloud Products
 - Stripe API
-
-<br>
-
-![image](screenshot.png)
 
 <br>
 
