@@ -29,8 +29,8 @@ GC_BUCKET_NAME = "foody-bucket"
 @app.route("/index")
 @app.route("/home")
 def home():
-    #products = get_products()
-    return render_template('main/home.html', layout=home) #products_df=products
+    products = get_products()
+    return render_template('main/home.html', layout=home, products_df=products)
 
 # this is the route Flask-login redirects you to automatically
 # if there is a login_required and you are not logged in
@@ -293,7 +293,7 @@ def upload():
             file_name = form.pname.data
             # filepath = os.path.join("foody/static", path_in_static_folder)
             # f.save(filepath)
-            public_url = upload_bytes_to_gcs(bucket_name=GC_BUCKET_NAME,
+            public_img_url = upload_bytes_to_gcs(bucket_name=GC_BUCKET_NAME,
                                              bytes_data=image_as_bytes,
                                              destination_blob_name=file_name)
             # SQL
@@ -306,7 +306,7 @@ def upload():
                 pvegetarian=form.pvegetarian.data,
                 pgluten_free=form.pgluten_free.data,
                 plactose_free=form.plactose_free.data,
-                img_public_url=public_url,
+                img_public_url=public_img_url,
                 pimage=file_name
             )
 
@@ -359,4 +359,3 @@ def orders():
     else:
         flash("Sorry, but customers cannot access this page.")
         return redirect(url_for("menu"))
-

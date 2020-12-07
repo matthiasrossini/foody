@@ -44,7 +44,11 @@
 
   {% for index, row in products_df.iterrows() %}
     <div class="col-lg-6 menu-item filter-{{row['ptype']}}">
-      <img src={{ url_for("static", filename=row["pimage"]) }} class="menu-img" alt="">
+<<<<<<< HEAD
+      <img src={{ row["img_public_url"] }} class="menu-img" alt="">
+=======
+      <img src={{ row["pimage"] }} class="menu-img" alt="">
+>>>>>>> 96295f929eca8d14fdfcfd7b7a3881cd6fd02324
       <div class="menu-content">
         <a style="color:white">{{ row['pname'] }} </a><span> ${{ row['pprice'] }} </span>
       </div>
