@@ -60,6 +60,7 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
+
 # 3 - To run the app
 
 <br>
@@ -100,7 +101,14 @@ BEFORE STARTING
 
 <br>
 
-# 5 - Cloud
+# 5 - To run on Cloud
+
+<br>
+
+To run the app on Google Cloud, you will need a GCP Account with a running instance, bucket and SQL. 
+
+Then branch from the main branch to the GCP branch (damian_gcp)
+
 
 <br>
 
