@@ -13,6 +13,7 @@ Foody is a beginner project built using the following stack:
 - HTML/CSS/JS
 - Bootstrap
 - Google Cloud Products
+- Stripe API
 
 <br>
 
@@ -107,8 +108,12 @@ BEFORE STARTING
 
 To run the app on Google Cloud, you will need a GCP Account with a running instance, bucket and SQL. 
 
-Then branch from the main branch to the GCP branch (damian_gcp)
+Then branch from the main branch to the GCP branch (damian_gcp_final) and create your own secrets.py keys according to your own GCP setup. 
 
+The keys you will need from your SQL instance are: SQL_PASSWORD, SQL_PUBLIC_IP_ADDRESS, SQL_DATABASE_NAME
+e.g. SQL_PASSWORD = "password", SQL_PUBLIC_IP_ADDRESS = "00.000.000.00", SQL_DATABASE_NAME = "Foody"
+
+Now you should be able to copy your project to your Google Cloud Server (SCP) and run it via the IP address there. Enjoy! 🎉
 
 <br>
 
