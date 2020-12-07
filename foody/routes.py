@@ -335,13 +335,27 @@ def orders():
         orders1 = pd.read_sql(query, db.session.bind)
         orders = orders1.dropna(axis=0, subset=["table_number"])
         orders = orders[orders.food != "none"]
-        table_nums = orders["table_number"].unique()
-        table_orders = {}
-        for table in table_nums:
-            products_for_table = orders.loc[orders["table_number"] == table, "food"]
-            products_for_table = list(products_for_table)
-            table_orders[table] = ", ".join(products_for_table)
-        return render_template("orders.html", orders=table_orders, title="Orders")
+        if orders.empty:
+            flash ("There are currently no orders")
+            return redirect("/"+current_user.role)
+        else:
+            table_orders=[]
+            table_nums = orders["table_number"].unique().tolist()
+            for table in table_nums:
+                products_for_table = orders.loc[orders["table_number"] == table, "food"]
+                products_for_table = products_for_table.values.tolist()
+                table_orders += [table, products_for_table]
+            order_and_table=[]
+            i=0
+            while i < (len(orders)-3):
+                text=f"Table {table_orders[i]}'s orders are:"
+                order_list = table_orders[i+1]
+                order_string = ""
+                for meal in order_list:
+                    order_string += f"{meal}, "
+                i+=2
+                order_and_table += text + order_string
+            return render_template("orders.html", order_and_table = order_and_table)
     else:
         flash("Sorry, but customers cannot access this page.")
         return redirect(url_for("menu"))
