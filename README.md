@@ -23,11 +23,11 @@ Foody is a beginner project built using the following stack:
 
 Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
 
-####Customers
+#### Customers
 
 Customers can look at the current menu and the specials via the homepage, by checking in via "/checkin", they can state their table number, which allows them to order food which is sorted into appetizer/main/dessert and further categorized by dietary restrictions. Once the customer has ordered, he or she has the option to order more food, or pay via the stripe API. 
 
-####Waiters and Admins
+#### Waiters and Admins
 
 Waiters and restaurant owners have specialized logins and they can use this web application to upload their latest products via the "/upload" window. These new products are dynamically rendered into the menu on the home & menu page. Via the "/orders" window, waiters have an overview of the current orders and via the "/overview" window, waiters can see which tables are currently being used.
 
