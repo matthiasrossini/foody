@@ -21,7 +21,7 @@ Foody is a beginner project built using the following stack:
 
 <br>
 
-Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. 
+Foody enables restaurant owners to offer next gen services to their clientele. Focus on the food and the unique experience you offer, while foody handles the boring stuff. For foodies, from foodies. Customers can look at the current menu and the specials via the homepage, by checking in via "/checkin", they can state their table number, which allows them to order food which is sorted into appetizer/main/dessert and further categorized by dietary restrictions. Once the customer has ordered, he or she 
 
 
 <br>
